@@ -1,6 +1,7 @@
 :: CREATE THE DATABASE SCHEMA
 @echo off
 
+:: Get parent folder.
 for %%i in ("%~dp0..") do set "folder=%%~fi"
 echo %folder%
 
