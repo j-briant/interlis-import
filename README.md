@@ -1,6 +1,6 @@
 # import-interlis-mensuration-officielle
 
-A script for looping through a folder an load interlis files into a database.
+Un projet permettant de télécharger des fichiers interlis, créer un schéma dans une base de données, importer les données.
 
 ## Objectifs
 
@@ -19,3 +19,7 @@ Trois opérations peuvent être réalisées indépendamment ou enchaînées:
 
 Ces trois scripts se touvent dans le dossier /src. Ils peuvent être enchaînés en lançant le script main.bat à la racine du projet.
 Un script se lance depuis Windows en double cliquant sur un des script.
+
+## Paramétrage
+
+Les scripts sont paramétrés grâce à un fichier .env à placer à la racine. Le fichier .envexample indique les variables d'environnement à définir pour le bon fonctionnement des scripts.
