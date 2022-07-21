@@ -22,13 +22,13 @@ for %%a in (%CANTONAL_NUMBER%) do (
 	set array[!n!].cantonal=%%a
 	set /A n+=1
 )
-
+ 
 :: Loop through the structured array and download the interlis files.
 set "x=0"
 :SymLoop
 if defined array[%x%].cantonal (
     echo !array[%x%].federal! : !array[%x%].cantonal!
-	curl -H "authorization: %AUTHORIZATION%" "%DOWNLOAD_LINK%/!array[%x%].federal!" --output %folder%/%MOVD_FOLDER%/!array[%x%].cantonal!.itf
+	curl -H "authorization: %AUTHORIZATION%" "%DOWNLOAD_LINK%/!array[%x%].federal!" --output %MOVD_FOLDER%\!array[%x%].cantonal!.itf
     set /a "x+=1"
 	)
     GOTO :SymLoop
