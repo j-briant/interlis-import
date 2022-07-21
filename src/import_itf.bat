@@ -23,13 +23,16 @@ if not exist %DURATION_DIRECTORY% mkdir %DURATION_DIRECTORY%
 set START_TIME=%time%
 
 :: Get environment variables from .env file.
-setlocal
+setlocal enabledelayedexpansion
 for /F "tokens=*" %%i in ('type %folder%\.env') do set %%i
 
 :: Run ili2db.
-for %%f in (%folder%\%MOVD_FOLDER%\*.itf) do (
+for %%f in (%MOVD_FOLDER%\*.itf) do (
 	echo ========================= %%f %%~nf =========================
-	C:\ProgramData\Oracle\Java\javapath\java.exe -jar C:\Users\SGCA0260\AppData\Roaming\QGIS\QGIS3\profiles\test\python\plugins\QgisModelBaker\libs\modelbaker\iliwrapper\bin\ili2pg-4.6.1\ili2pg-4.6.1.jar --replace --dbhost %MOVD_HOST% --dbport %MOVD_PORT% --dbusr %MOVD_USER% --dbpwd %MOVD_PASSWORD% --dbdatabase %MOVD_DB% --dbschema %MOVD_SCHEMA% --importTid --importBid --disableValidation --log %LOG_DIRECTORY%\%%~nf_%time:~0,2%%time:~3,2%%time:~6,2%_%DATE%.log --dataset %%~nf %%f 
+	set log_name=%%~nf_%time:~0,2%%time:~3,2%%time:~6,2%_%DATE%
+	set log_name=!log_name: =0!
+
+	C:\ProgramData\Oracle\Java\javapath\java.exe -jar C:\Users\SGCA0260\AppData\Roaming\QGIS\QGIS3\profiles\test\python\plugins\QgisModelBaker\libs\modelbaker\iliwrapper\bin\ili2pg-4.6.1\ili2pg-4.6.1.jar --replace --dbhost %MOVD_HOST% --dbport %MOVD_PORT% --dbusr %MOVD_USER% --dbpwd %MOVD_PASSWORD% --dbdatabase %MOVD_DB% --dbschema %MOVD_SCHEMA% --importTid --importBid --disableValidation --log %LOG_DIRECTORY%\!log_name!.log --dataset %%~nf %%f 
 	)
 endlocal
 
