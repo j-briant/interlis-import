@@ -1,4 +1,4 @@
-#!usr/bin/bash
+#!/usr/bin/bash
 :: DOWNLOAD ITF FILES
 :: Parameters:
 ::	%1 federal numbers of required cities
