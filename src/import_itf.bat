@@ -32,7 +32,7 @@ for %%f in (%MOVD_FOLDER%\*.itf) do (
 	set log_name=%%~nf_%time:~0,2%%time:~3,2%%time:~6,2%_%DATE%
 	set log_name=!log_name: =0!
 
-	C:\ProgramData\Oracle\Java\javapath\java.exe -jar C:\Users\SGCA0260\AppData\Roaming\QGIS\QGIS3\profiles\test\python\plugins\QgisModelBaker\libs\modelbaker\iliwrapper\bin\ili2pg-4.6.1\ili2pg-4.6.1.jar --replace --dbhost %MOVD_HOST% --dbport %MOVD_PORT% --dbusr %MOVD_USER% --dbpwd %MOVD_PASSWORD% --dbdatabase %MOVD_DB% --dbschema %MOVD_SCHEMA% --importTid --importBid --disableValidation --log %LOG_DIRECTORY%\!log_name!.log --dataset %%~nf %%f 
+	C:\ProgramData\Oracle\Java\javapath\java.exe -jar C:\Users\SGCA0260\AppData\Roaming\QGIS\QGIS3\profiles\test\python\plugins\QgisModelBaker\libs\modelbaker\iliwrapper\bin\ili2pg-4.6.1\ili2pg-4.6.1.jar --replace --dbhost %MOVD_HOST% --dbport %MOVD_PORT% --dbusr %MOVD_USER% --dbpwd %MOVD_PASSWORD% --dbdatabase %MOVD_DB% --dbschema %MOVD_SCHEMA% --t_id_Name fid --importTid --importBid --disableValidation --log %LOG_DIRECTORY%\!log_name!.log --dataset %%~nf %%f 
 	)
 endlocal
 
