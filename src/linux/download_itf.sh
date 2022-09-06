@@ -31,8 +31,7 @@ done < <(jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' $communes)
 
 # Loop through the structured array and download the interlis files.
 for key in "${!communes_arr[@]}"; do
-	echo $key
-	curl -H "authorization: $authorization" "$dlink/$key" --output $dfolder/${communes_arr[$key]}.itf
+	curl -H "authorization: $authorization" "$dlink/$key" --output $dfolder/${communes_arr[$key]}.itf 2>&1
 done
 
 # Echo final words.

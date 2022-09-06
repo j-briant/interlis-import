@@ -15,7 +15,7 @@
 # -m interlis model path  
 
 # Set parameters
-while getopts U:h:p:s:d:w:E:T:B:n:m: flag
+while getopts U:h:p:s:d:w:n:m:ETB flag
 do
         case "${flag}" in
                 U) user=${OPTARG};;
@@ -33,4 +33,4 @@ do
 done
 
 # Run ili2db and create the schema.
-java -jar "./lib/ili2pg-4.9.0/ili2pg-4.9.0.jar" --schemaimport --dbusr $user --dbhost $host --dbport $port --dbschema $schema --dbdatabase $database --dbpwd $password --sqlEnableNull --coalesceCatalogueRef --createEnumTabs --createNumChecks --createFk --createFkIdx --coalesceMultiSurface --coalesceMultiLine --coalesceMultiPoint --coalesceArray --beautifyEnumDispName --createGeomIdx --createMetaInfo --expandMultilingual --createTypeConstraint $tidcol --t_id_Name $tidname $enumtab $basketcol --importTid --smart2Inheritance --defaultSrsCode 2056 --models MD01MOVDMN95V24 $interlismodel
+java -jar "./lib/ili2pg-4.9.0/ili2pg-4.9.0.jar" --schemaimport --dbusr $user --dbhost $host --dbport $port --dbschema $schema --dbdatabase $database --dbpwd $password --sqlEnableNull --coalesceCatalogueRef --createEnumTabs --createNumChecks --createFk --createFkIdx --coalesceMultiSurface --coalesceMultiLine --coalesceMultiPoint --coalesceArray --beautifyEnumDispName --createGeomIdx --createMetaInfo --expandMultilingual --createTypeConstraint $tidcol --t_id_Name $tidname $enumtab $basketcol --importTid --smart2Inheritance --defaultSrsCode 2056 --models MD01MOVDMN95V24 $interlismodel 2>&1
