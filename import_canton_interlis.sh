@@ -1,13 +1,20 @@
 #!/usr/bin/bash
 
 # Get environment variables.
-setlocal
-for /F "tokens=*" %%i in ('type %folder%\.env') do set %%i
+. .env
+
+echo $MOVD_FOLDER
+echo $COMMUNES
+echo $DOWNLOAD_LINK
+echo $AUTHORIZATION
+
+read -p "Waiting..."
 
 echo ===================================== DOWNLOADING FILES =====================================
-call ./src/download_itf.bat "FEDERAL_NUMBER=%FEDERAL_NUMBER%" "CANTONAL_NUMBER=%CANTONAL_NUMBER%" "AUTHORIZATION=%AUTHORIZATION%" "DOWNLOAD_LINK=%DOWNLOAD_LINK%" "MOVD_FOLDER=%MOVD_FOLDER%"
+./src/linux/download_itf.sh -a "$AUTHORIZATION" -c $COMMUNES -l $DOWNLOAD_LINK -f $MOVD_FOLDER
+read -p "Waiting..."
 echo ===================================== CREATING SCHEMA =====================================
-call ./src/create_schema.bat "MOVD_USER=%MOVD_USER%" "MOVD_SCHEMA=%MOVD_SCHEMA%" "MOVD_HOST=%MOVD_HOST%" "MOVD_HOST=%MOVD_HOST%" "MOVD_DB=%MOVD_DB%" "MOVD_PASSWORD=%MOVD_PASSWORD%" "MOVD_MODEL=%MOVD_MODEL%" >nul
+./src/create_schema.sh "MOVD_USER=$MOVD_USER" "MOVD_SCHEMA=$MOVD_SCHEMA" "MOVD_HOST=$MOVD_HOST" "MOVD_HOST=$MOVD_HOST" "MOVD_DB=$MOVD_DB" "MOVD_PASSWORD=$MOVD_PASSWORD" "MOVD_MODEL=$MOVD_MODEL" >/dev/null
 echo ===================================== IMPORT STARTING =====================================
-call ./src/import_itf.bat
+./src/import_itf.sh
 pause

@@ -18,6 +18,8 @@ do
 	esac
 done
 
+# Create output folder if not exists
+mkdir -p $dfolder
 
 # Load communes into a structured array.
 declare -A communes_arr
