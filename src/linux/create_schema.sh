@@ -32,10 +32,5 @@ do
         esac
 done
 
-echo enumtab=$enumtab
-echo user=$user
-echo interlis_model=$interlismodel
-echo tidname=$tidname
-
 # Run ili2db and create the schema.
 java -jar "./lib/ili2pg-4.9.0/ili2pg-4.9.0.jar" --schemaimport --dbusr $user --dbhost $host --dbport $port --dbschema $schema --dbdatabase $database --dbpwd $password --sqlEnableNull --coalesceCatalogueRef --createEnumTabs --createNumChecks --createFk --createFkIdx --coalesceMultiSurface --coalesceMultiLine --coalesceMultiPoint --coalesceArray --beautifyEnumDispName --createGeomIdx --createMetaInfo --expandMultilingual --createTypeConstraint $tidcol --t_id_Name $tidname $enumtab $basketcol --importTid --smart2Inheritance --defaultSrsCode 2056 --models MD01MOVDMN95V24 $interlismodel
