@@ -1,25 +1,39 @@
 #!/usr/bin/bash
 
 # DOWNLOAD ITF FILES
-# Parameters:
-#	%c cities numbers json file
-#	%a authorization
-#	%l download link
-#	%f destination folder 
-  
+
+usage="$(basename "$0") [-h] [-c COMMUNES] [-a AUTHORIZATION] [-l DLINK] [-f DFOLDER]
+Download ASIT-VD interlis files based on a list of city numbers:
+	-h show this help text
+	-c cities numbers json file
+	-a authorization
+	-l download link
+	-f destination folder"
+
 # Get parameters.
-while getopts c:a:l:f: flag
+while getopts :hc:a:l:f: flag
 do
 	case "${flag}" in
+		h) echo "$usage"; exit;;
 		c) communes=${OPTARG};;
 		a) authorization=${OPTARG};;
 		l) dlink=${OPTARG};;
 		f) dfolder=${OPTARG};;
+		:) printf "missing argument for -%s\n" "$OPTARG" >&2; echo "$usage" >&2; exit 1;;
+               \?) printf "illegal option: -%s\n" "$OPTARG" >&2; echo "$usage" >&2; exit 1;;
 	esac
 done
 
+# Make parameters mandatory
+if [ ! ${communes} ] || [ ! ${authorization} ] || [ ! ${dlink} ] || [ ! ${dfolder} ]; then
+  echo "arguments -c, -a, -l and -f must be provided"
+  echo "$usage" >&2; exit 1
+fi
+
+
 # Create output folder if not exists
 mkdir -p $dfolder
+
 
 # Load communes into a structured array.
 declare -A communes_arr
