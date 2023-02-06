@@ -22,7 +22,7 @@ echo START TIME: $(date +"%T") > $LOGFILE
 
 
 echo ===================================== EXPORTING SHAPEFILES =====================================
-/usr/local/lib/update_guichet/src/export_shp.sh -f $EXPORT_FOLDER -d $MOVD_DB -s $MOVD_SCHEMA -x $PREFIX -c $EXPORT_COMMUNES >> $LOGFILE 2>&1
+/usr/local/bin/update_guichet/src/export_shp.sh -f $EXPORT_FOLDER -d $MOVD_DB -s $MOVD_SCHEMA -x $PREFIX -c $EXPORT_COMMUNES >> $LOGFILE 2>&1
 
 
 # Get end time.
