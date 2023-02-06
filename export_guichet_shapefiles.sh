@@ -2,8 +2,11 @@
 
 # This script exports data views from the database, identified with a prefix, to shapefiles into the desired folder. 
 
-# Get environment variables.
-. /etc/update_guichet/.env
+# Get configuration variables
+. ./conf/paths.conf
+
+# Get environment variables
+. $CONFPATH/.env
 
 # Get date.
 RUNDATE=$(date +"%Y%m%d")
@@ -22,7 +25,7 @@ echo START TIME: $(date +"%T") > $LOGFILE
 
 
 echo ===================================== EXPORTING SHAPEFILES =====================================
-/usr/local/lib/update_guichet/src/export_shp.sh -f $EXPORT_FOLDER -d $MOVD_DB -s $MOVD_SCHEMA -x $PREFIX -c $EXPORT_COMMUNES >> $LOGFILE 2>&1
+$SCRIPTPATH/src/export_shp.sh -f $EXPORT_FOLDER -d $MOVD_DB -s $MOVD_SCHEMA -x $PREFIX -c $EXPORT_COMMUNES >> $LOGFILE 2>&1
 
 
 # Get end time.

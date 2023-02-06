@@ -6,9 +6,13 @@
 #	3. Import downloaded Interlis files into the newly created schema
 
 
+# Get configuration variables
+. ./conf/paths.conf
+
 # Get environment variables.
-. /etc/update_guichet/.env
-COMMUNES=$CONF_PATH/communes.json
+. $CONFPATH/.env
+
+COMMUNES=$CONFPATH/communes.json
 
 # Get date.
 RUNDATE=$(date +"%Y%m%d")
@@ -28,13 +32,13 @@ echo START TIME: $(date +"%T") > $LOGFILE
 
 
 echo ===================================== DOWNLOADING FILES =====================================
-/usr/local/lib/update_guichet/src/download_itf.sh -a "$AUTHORIZATION" -c $COMMUNES -l $DOWNLOAD_LINK -f $DOWNLOAD_PATH >> $LOGFILE 2>&1
+$SCRIPTPATH/src/download_itf.sh -a "$AUTHORIZATION" -c $COMMUNES -l $DOWNLOAD_LINK -f $DOWNLOAD_PATH >> $LOGFILE 2>&1
 
 echo ===================================== CREATING SCHEMA =====================================
-/usr/local/lib/update_guichet/src/create_schema.sh -U $MOVD_USER -p $MOVD_PORT -H $MOVD_HOST -s $MOVD_SCHEMA -d $MOVD_DB -w $MOVD_PASSWORD -n $T_ID_NAME -m $MOVD_MODEL -E -T -B >> $LOGFILE 2>&1
+$SCRIPTPATH/src/create_schema.sh -U $MOVD_USER -p $MOVD_PORT -H $MOVD_HOST -s $MOVD_SCHEMA -d $MOVD_DB -w $MOVD_PASSWORD -n $T_ID_NAME -m $MOVD_MODEL -E -T -B >> $LOGFILE 2>&1
 
 echo ===================================== IMPORT STARTING =====================================
-/usr/local/lib/update_guichet/src/import_itf.sh -U $MOVD_USER -p $MOVD_PORT -H $MOVD_HOST -s $MOVD_SCHEMA -d $MOVD_DB -w $MOVD_PASSWORD -n $T_ID_NAME -f $DOWNLOAD_PATH >> $LOGFILE 2>&1
+$SCRIPTPATH/src/import_itf.sh -U $MOVD_USER -p $MOVD_PORT -H $MOVD_HOST -s $MOVD_SCHEMA -d $MOVD_DB -w $MOVD_PASSWORD -n $T_ID_NAME -f $DOWNLOAD_PATH >> $LOGFILE 2>&1
 
 
 # Get end time.

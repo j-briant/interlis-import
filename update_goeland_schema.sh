@@ -25,8 +25,11 @@ if [ ! ${database} ] ; then
   echo "$usage" >&2; exit 1
 fi
 
-# Get environment variables.
-. /etc/update_guichet/.env
+# Get configuration variables
+. ./conf/paths.conf
+
+# Get environment variables
+. $CONFPATH/.env
 
 # Get date.
 RUNDATE=$(date +"%Y%m%d")
