@@ -26,7 +26,7 @@ if [ ! ${database} ] ; then
 fi
 
 # Get configuration variables
-. ./conf/paths.conf
+. /etc/update_guichet/paths.conf
 
 # Get environment variables
 . $CONFPATH/.env
@@ -49,22 +49,22 @@ echo START TIME: $(date +"%T") > $LOGFILE
 
 # Run psql.
 truncate_command="
-	DO \$\$
+	DO \$$
 	DECLARE r record;
 	BEGIN
 	FOR r in (SELECT table_schema, table_name FROM information_schema.tables where table_schema = 'goeland')
 	LOOP
 		EXECUTE 'TRUNCATE ' || r.table_schema || '.' || r.table_name || ';';
 	END LOOP;
-	END \$\$;	
+	END \$$;	
 	"
 
 echo ============================= TRUNCATING THE GOELAND SCHEMA =============================
-psql -d $database -c "$truncate_command" >> $LOGFILE 2>&1
+echo "$truncate_command" | su - postgres -c "psql $database" >> $LOGFILE 2>&1
 
 echo ============================= BACKUP AND RESTORE FROM GOELAND =============================
 # Backup and restore goeland data.
-pg_dump -d goeland -a -n public -T spatial_ref_sys -T goeland_addresse_lausanne | sed 's/public\./goeland\./g' | psql -d $database >> $LOGFILE 2>&1
+su - postgres -c "pg_dump goeland -a -n public -T spatial_ref_sys -T goeland_addresse_lausanne" | sed 's/public\./goeland\./g' | su - postgres -c "psql $database" >> $LOGFILE 2>&1
 
 
 

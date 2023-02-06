@@ -7,7 +7,7 @@
 
 
 # Get configuration variables
-. ./conf/paths.conf
+. /etc/update_guichet/paths.conf
 
 # Get environment variables.
 . $CONFPATH/.env
