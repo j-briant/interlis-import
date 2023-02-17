@@ -19,7 +19,9 @@ die() {
 # Get parameters.
 while :; do
 	case $1 in
-		-h|-\?|--help) echo "$usage" exit;;
+		-h|-\?|--help) 
+			echo "$usage" 
+			exit;;
 		-d|--dbname) 
 			if [ "$2" ]; then 
 				dbname=$2 
