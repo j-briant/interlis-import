@@ -30,6 +30,8 @@ mkdir -p $LOG_PATH
 echo START TIME: $(date +"%T") > $LOGFILE
 
 
+echo ===================================== BACKUPING DATABASE =====================================
+su - postgres -c "pg_dump gc_transfert -Fc > /tmp/gc_transfert_backup.backup" >> $LOGFILE 2>&1
 
 echo ===================================== DOWNLOADING FILES =====================================
 $SCRIPTPATH/src/download_itf.sh -a "$AUTHORIZATION" -c $COMMUNES -l $DOWNLOAD_LINK -f $DOWNLOAD_PATH >> $LOGFILE 2>&1
