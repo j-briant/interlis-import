@@ -77,6 +77,23 @@ echo ===================================== EXPORTING SHAPEFILES ================
 $SCRIPTPATH/src/export_shp.sh -f $EXPORTPATH -d $MOVD_DB -s $MOVD_SCHEMA -x $PREFIX -c $EXPORT_COMMUNES >> $LOGFILE 2>&1
 
 
+# COUNT OBJECTS FOR CONTROL
+echo ===================================== COUNTING TABLES AND VIEWS OBJECTS =====================================
+su - postgres -c "psql -d gc_transfert -c \"select db_monitoring.count_table_object('movd'); select db_monitoring.count_table_object('specificite_lausanne');\"" >> $LOGFILE 2>&1
+su - postgres -c "psql -d gc_transfert -c \"select db_monitoring.count_gc_view_object('movd');\"" >> $LOGFILE 2>&1
+
+
+# CREATE ATTACHMENTS AND SEND EMAIL NOTIFICATION
+echo ===================================== SENDING EMAIL NOTIFICATION =====================================
+echo -e "MOVD TABLES COUNTS\n" > /tmp/gc_counts.txt
+su - postgres -c "psql gc_transfert -c \"select * from db_monitoring.table_last_update_difference;\"" >> /tmp/gc_counts.txt
+echo -e "\n\nPAR COMMUNE COUNTS\n" >> /tmp/gc_counts.txt
+su - postgres -c "psql gc_transfert -c \"select datasetname, sum(difference) as diff_sum from db_monitoring.view_last_update_difference group by datasetname order by datasetname;\"" >> /tmp/gc_counts.txt
+echo -e "\n\nPAR COUCHE COUNTS\n" >> /tmp/gc_counts.txt
+su - postgres -c "psql gc_transfert -c \"select schemaname, viewname, sum(difference) as diff_sum from db_monitoring.view_last_update_difference group by schemaname, viewname order by viewname;\"" >> /tmp/gc_counts.txt
+
+echo -e "Bonjour,\n\nVous trouverez en pièce jointe les décomptes de la mise à jour du $(date +"%Y-%m-%d").\n\nBonne semaine,\n\nUn serveur" | mail -s "Mise a jour du $(date +"%Y-%m-%d")" julien.briant@lausanne.ch -a "From: go-db@update-guichet" -A /tmp/gc_counts.txt
+
 # Get end time.
 echo END TIME: $(date +"%T") >> $LOGFILE
 
