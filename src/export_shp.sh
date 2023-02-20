@@ -95,7 +95,7 @@ view_list=$(su postgres -c "psql -d $dbname -t -c \"select table_name from infor
 for item in $view_list
 do
   echo "Exporting $item..."
-  su postgres -c "pgsql2shp -f /tmp/export_shape/$item $dbname \"select * from $sname.$item $communes_condition\"" 2>&1
+  su postgres -c "pgsql2shp -f /tmp/export_shape/$(echo ${item#$prefix} | tr [:lower:] [:upper:]) $dbname \"select * from $sname.$item $communes_condition\"" 2>&1
 done
 
 # Copy to destination
