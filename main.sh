@@ -7,6 +7,7 @@
 #	4. Importing downloaded Interlis files into the newly created schema
 #	5. Importing Goeland data from the goeland database
 #	6. Count objects in tables and views
+#	7. Send email notification
 
 
 # Get configuration variables
@@ -35,7 +36,6 @@ echo START TIME: $(date +"%T") > $LOGFILE
 
 
 # DOWNLOAD AND IMPORT INTERLIS FILES FROM AVRIC.
-
 echo ===================================== BACKING UP DATABASE =====================================
 su - postgres -c "pg_dump $MOVD_DB -Fc > /tmp/gc_transfert_backup.backup" >> $LOGFILE 2>&1
 
@@ -50,7 +50,6 @@ $SCRIPTPATH/src/import_itf.sh -U $MOVD_USER -p $MOVD_PORT -H $MOVD_HOST -s $MOVD
 
 
 # TRUNCATE GOELAND SCHEMA THEN DUMP/RESTORE FROM GOELAND DATABASE.
-
 # Run psql.
 truncate_command="
 	DO \$$
@@ -67,12 +66,10 @@ echo ============================= TRUNCATING THE GOELAND SCHEMA ===============
 echo "$truncate_command" | su - postgres -c "psql $MOVD_DB" >> $LOGFILE 2>&1
 
 echo ============================= BACKUP AND RESTORE FROM GOELAND =============================
-# Backup and restore goeland data.
 su - postgres -c "pg_dump goeland -a -n public -T spatial_ref_sys -T goeland_addresse_lausanne" | sed 's/public\./goeland\./g' | su - postgres -c "psql $MOVD_DB" >> $LOGFILE 2>&1
 
 
 # EXPORT VIEWS AS SHAPEFILES.
-
 echo ===================================== EXPORTING SHAPEFILES =====================================
 $SCRIPTPATH/src/export_shp.sh -f $EXPORTPATH -d $MOVD_DB -s $MOVD_SCHEMA -x $PREFIX -c $EXPORT_COMMUNES >> $LOGFILE 2>&1
 
@@ -94,8 +91,10 @@ su - postgres -c "psql gc_transfert -c \"select schemaname, viewname, sum(differ
 
 echo -e "Bonjour,\n\nVous trouverez en pièce jointe les décomptes de la mise à jour du $(date +"%Y-%m-%d").\n\nBonne semaine,\n\nUn serveur" | mail -s "Mise a jour du $(date +"%Y-%m-%d")" julien.briant@lausanne.ch -a "From: go-db@update-guichet" -A /tmp/gc_counts.txt
 
+
 # Get end time.
 echo END TIME: $(date +"%T") >> $LOGFILE
 
 # Copy error from LOGFILE into ERRORFILE
 grep -n -i error $LOGFILE > $ERRORFILE 
+
