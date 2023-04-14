@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.6 (Ubuntu 14.6-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.6 (Ubuntu 14.6-0ubuntu0.22.04.1)
+-- Dumped from database version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -15,6 +15,15 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: amenagement; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA amenagement;
+
+
+ALTER SCHEMA amenagement OWNER TO postgres;
 
 --
 -- Name: db_monitoring; Type: SCHEMA; Schema: -; Owner: gc_transfert_dbo
@@ -42,6 +51,15 @@ CREATE SCHEMA movd;
 
 
 ALTER SCHEMA movd OWNER TO gc_transfert_dbo;
+
+--
+-- Name: qsout_public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA qsout_public;
+
+
+ALTER SCHEMA qsout_public OWNER TO postgres;
 
 --
 -- Name: specificite_lausanne; Type: SCHEMA; Schema: -; Owner: gc_transfert_dbo
@@ -167,6 +185,168 @@ ALTER FUNCTION db_monitoring.go_count_object() OWNER TO gc_transfert_dbo;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: distances_a_la_foret; Type: TABLE; Schema: amenagement; Owner: postgres
+--
+
+CREATE TABLE amenagement.distances_a_la_foret (
+    ogc_fid integer NOT NULL,
+    id bigint NOT NULL,
+    status_jur character varying(250) NOT NULL,
+    date_publi date NOT NULL,
+    designation character varying(80) NOT NULL,
+    abreviation character varying(10),
+    force_obli character varying(250) NOT NULL,
+    geometrie public.geometry(Geometry,2056) NOT NULL
+);
+
+
+ALTER TABLE amenagement.distances_a_la_foret OWNER TO postgres;
+
+--
+-- Name: distances_a_la_foret_ogc_fid_seq; Type: SEQUENCE; Schema: amenagement; Owner: postgres
+--
+
+CREATE SEQUENCE amenagement.distances_a_la_foret_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE amenagement.distances_a_la_foret_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: distances_a_la_foret_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: amenagement; Owner: postgres
+--
+
+ALTER SEQUENCE amenagement.distances_a_la_foret_ogc_fid_seq OWNED BY amenagement.distances_a_la_foret.ogc_fid;
+
+
+--
+-- Name: limites_de_la_foret; Type: TABLE; Schema: amenagement; Owner: postgres
+--
+
+CREATE TABLE amenagement.limites_de_la_foret (
+    ogc_fid integer NOT NULL,
+    id bigint NOT NULL,
+    status_jur character varying(250) NOT NULL,
+    date_publi date NOT NULL,
+    designation character varying(80) NOT NULL,
+    abreviation character varying(10),
+    force_obli character varying(250) NOT NULL,
+    genre character varying(250) NOT NULL,
+    geometrie public.geometry(Geometry,2056) NOT NULL
+);
+
+
+ALTER TABLE amenagement.limites_de_la_foret OWNER TO postgres;
+
+--
+-- Name: limites_de_la_foret_ogc_fid_seq; Type: SEQUENCE; Schema: amenagement; Owner: postgres
+--
+
+CREATE SEQUENCE amenagement.limites_de_la_foret_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE amenagement.limites_de_la_foret_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: limites_de_la_foret_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: amenagement; Owner: postgres
+--
+
+ALTER SEQUENCE amenagement.limites_de_la_foret_ogc_fid_seq OWNED BY amenagement.limites_de_la_foret.ogc_fid;
+
+
+--
+-- Name: limites_des_constructions; Type: TABLE; Schema: amenagement; Owner: postgres
+--
+
+CREATE TABLE amenagement.limites_des_constructions (
+    ogc_fid integer NOT NULL,
+    id bigint NOT NULL,
+    id_lc character varying(255) NOT NULL,
+    categorie character varying(250) NOT NULL,
+    qualite character varying(250) NOT NULL,
+    foi_publ character varying(250),
+    plan character varying(50),
+    radiee character varying(250) NOT NULL,
+    num_dgmr character varying(50),
+    date_appro date NOT NULL,
+    nom_plan character varying(150) NOT NULL,
+    geometrie public.geometry(CompoundCurve,2056) NOT NULL
+);
+
+
+ALTER TABLE amenagement.limites_des_constructions OWNER TO postgres;
+
+--
+-- Name: limites_des_constructions_ogc_fid_seq; Type: SEQUENCE; Schema: amenagement; Owner: postgres
+--
+
+CREATE SEQUENCE amenagement.limites_des_constructions_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE amenagement.limites_des_constructions_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: limites_des_constructions_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: amenagement; Owner: postgres
+--
+
+ALTER SEQUENCE amenagement.limites_des_constructions_ogc_fid_seq OWNED BY amenagement.limites_des_constructions.ogc_fid;
+
+
+--
+-- Name: servitudes; Type: TABLE; Schema: amenagement; Owner: postgres
+--
+
+CREATE TABLE amenagement.servitudes (
+    ogc_fid integer NOT NULL,
+    id bigint NOT NULL,
+    ereid character varying(22),
+    genre character varying(250) NOT NULL,
+    geometrie public.geometry(Geometry,2056) NOT NULL
+);
+
+
+ALTER TABLE amenagement.servitudes OWNER TO postgres;
+
+--
+-- Name: servitudes_ogc_fid_seq; Type: SEQUENCE; Schema: amenagement; Owner: postgres
+--
+
+CREATE SEQUENCE amenagement.servitudes_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE amenagement.servitudes_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: servitudes_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: amenagement; Owner: postgres
+--
+
+ALTER SEQUENCE amenagement.servitudes_ogc_fid_seq OWNED BY amenagement.servitudes.ogc_fid;
+
 
 --
 -- Name: table_count; Type: TABLE; Schema: db_monitoring; Owner: gc_transfert_dbo
@@ -1411,38 +1591,54 @@ ALTER TABLE specificite_lausanne.localisation_rue OWNER TO gc_transfert_dbo;
 --
 
 CREATE VIEW movd.gc_ad_axe_rue AS
- SELECT s.idthing AS id_thing,
-    nl.texte AS longname,
-    nl.texte_abrege AS shortname,
-    s.estrid,
-    s.coderue,
-    ts.description AS typestreet,
-    s.datedecisionmuni AS datemuni,
-    (d.datasetname)::integer AS numcom,
-    public.st_union(tr.geometrie) AS geom
-   FROM ((((((movd.localisation l
-     JOIN movd.nom_localisation nl ON ((l.fid = nl.nom_localisation_de)))
-     JOIN movd.troncon_rue tr ON ((l.fid = tr.troncon_rue_de)))
-     LEFT JOIN goeland.thi_street s ON (((nl.texte)::text = s.longname)))
-     LEFT JOIN goeland.type_thi_street ts ON ((s.idtypestreet = ts.idtypestreet)))
-     JOIN movd.t_ili2db_basket b ON ((l.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE (ts.description <> ALL (ARRAY['Place'::text, 'Placette'::text, 'Esplanade'::text, 'Parc'::text, 'Terrasse'::text, 'Square'::text, 'Quartier'::text]))
-  GROUP BY s.idthing, nl.texte, nl.texte_abrege, s.estrid, s.coderue, ts.description, s.datedecisionmuni, (d.datasetname)::integer
-UNION ALL
- SELECT s.idthing AS id_thing,
-    r.longname,
-    r.shortname,
-    s.estrid,
-    s.coderue,
-    split_part((r.longname)::text, ' '::text, 1) AS typestreet,
-    s.datedecisionmuni AS datemuni,
-    (r.numcom)::integer AS numcom,
-    r.geometrie AS geom
-   FROM ((specificite_lausanne.localisation_rue r
-     LEFT JOIN goeland.thi_street s ON ((r.coderue = s.coderue)))
-     LEFT JOIN goeland.type_thi_street ts ON ((s.idtypestreet = ts.idtypestreet)))
-  WHERE (split_part((r.longname)::text, ' '::text, 1) <> 'Parc'::text);
+ SELECT foo.idthing,
+    (foo.longname)::character varying(150) AS longname,
+    (foo.shortname)::character varying(100) AS shortname,
+    foo.estrid,
+    foo.coderue,
+    (foo.typestreet)::character varying(150) AS typestreet,
+    (foo.datemuni)::character varying(20) AS datemuni,
+    foo.numcom,
+    (foo.lien_idgo)::character varying(254) AS lien_idgo,
+    (foo.color)::character varying(50) AS color,
+    ((((('#'::text || lpad(to_hex((split_part(foo.color, ','::text, 1))::integer), 2, '0'::text)) || lpad(to_hex((split_part(foo.color, ','::text, 2))::integer), 2, '0'::text)) || lpad(to_hex((split_part(foo.color, ','::text, 3))::integer), 2, '0'::text)))::character varying(50))::text AS color_html,
+    foo.geom
+   FROM ( SELECT s.idthing,
+            nl.texte AS longname,
+            nl.texte_abrege AS shortname,
+            s.estrid,
+            s.coderue,
+            ts.description AS typestreet,
+            s.datedecisionmuni AS datemuni,
+            (d.datasetname)::integer AS numcom,
+            (((('<a href="https://golux.lausanne.ch/goeland/objet/getobjetinfo.php?idObjet='::text || s.idthing) || '" target="_blank">'::text) || s.idthing) || '</a>'::text) AS lien_idgo,
+            ((((floor((random() * (256)::double precision)) || ','::text) || floor((random() * (256)::double precision))) || ','::text) || floor((random() * (256)::double precision))) AS color,
+            public.st_union(tr.geometrie) AS geom
+           FROM ((((((movd.localisation l
+             JOIN movd.nom_localisation nl ON ((l.fid = nl.nom_localisation_de)))
+             JOIN movd.troncon_rue tr ON ((l.fid = tr.troncon_rue_de)))
+             LEFT JOIN goeland.thi_street s ON (((nl.texte)::text = s.longname)))
+             LEFT JOIN goeland.type_thi_street ts ON ((s.idtypestreet = ts.idtypestreet)))
+             JOIN movd.t_ili2db_basket b ON ((l.t_basket = b.fid)))
+             JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+          WHERE ((ts.description <> ALL (ARRAY['Place'::text, 'Placette'::text, 'Esplanade'::text, 'Parc'::text, 'Terrasse'::text, 'Square'::text, 'Quartier'::text])) AND ((d.datasetname)::text = '132'::text))
+          GROUP BY s.idthing, nl.texte, nl.texte_abrege, s.estrid, s.coderue, ts.description, s.datedecisionmuni, (d.datasetname)::integer
+        UNION ALL
+         SELECT s.idthing,
+            r.longname,
+            r.shortname,
+            s.estrid,
+            s.coderue,
+            split_part((r.longname)::text, ' '::text, 1) AS typestreet,
+            s.datedecisionmuni AS datemuni,
+            (r.numcom)::integer AS numcom,
+            (((('<a href="https://golux.lausanne.ch/goeland/objet/getobjetinfo.php?idObjet='::text || s.idthing) || '" target="_blank">'::text) || s.idthing) || '</a>'::text) AS lien_idgo,
+            ((((floor((random() * (256)::double precision)) || ','::text) || floor((random() * (256)::double precision))) || ','::text) || floor((random() * (256)::double precision))) AS color,
+            r.geometrie AS geom
+           FROM ((specificite_lausanne.localisation_rue r
+             LEFT JOIN goeland.thi_street s ON ((r.coderue = s.coderue)))
+             LEFT JOIN goeland.type_thi_street ts ON ((s.idtypestreet = ts.idtypestreet)))
+          WHERE (split_part((r.longname)::text, ' '::text, 1) <> 'Parc'::text)) foo;
 
 
 ALTER TABLE movd.gc_ad_axe_rue OWNER TO gc_transfert_dbo;
@@ -1470,23 +1666,46 @@ CREATE TABLE movd.posnumero_maison (
 ALTER TABLE movd.posnumero_maison OWNER TO gc_transfert_dbo;
 
 --
+-- Name: entree_batiment; Type: TABLE; Schema: specificite_lausanne; Owner: gc_transfert_dbo
+--
+
+CREATE TABLE specificite_lausanne.entree_batiment (
+    fid bigint NOT NULL,
+    numero character varying(5),
+    extension character varying(5),
+    nom_complet character varying(200),
+    nom_court character varying(100),
+    coordonnee_e real,
+    coordonnee_n real,
+    geometrie public.geometry(Point,2056),
+    code_rue integer,
+    orientation numeric(7,3)
+);
+
+
+ALTER TABLE specificite_lausanne.entree_batiment OWNER TO gc_transfert_dbo;
+
+--
 -- Name: gc_ad_bati; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
 --
 
 CREATE VIEW movd.gc_ad_bati AS
- SELECT eb.numero_maison AS textstring,
+ SELECT (d.datasetname)::integer AS numcom,
+    leb.code_rue AS cd_rue,
+    eb.numero_maison AS textstring,
     eb.regbl_egid AS egid,
     eb.regbl_edid AS edid,
+    (mod(((450)::numeric - (0.9 * pm.ori)), (360)::numeric))::real AS text_angle,
     nl.texte AS rue_off,
     nl.texte_abrege AS rue_abr,
     g.idthingbuilding AS id_go,
-    (d.datasetname)::integer AS numcom,
     eb.pos AS geom
-   FROM ((((((movd.entree_batiment eb
+   FROM (((((((movd.entree_batiment eb
      JOIN movd.localisation l ON ((l.fid = eb.entree_batiment_de)))
      JOIN movd.nom_localisation nl ON ((l.fid = nl.nom_localisation_de)))
      JOIN movd.posnumero_maison pm ON ((eb.fid = pm.posnumero_batiment_de)))
      LEFT JOIN goeland.thi_street_building_address g ON (((eb.regbl_egid = g.egid) AND ((eb.numero_maison)::text = concat((g.number)::text, g.extention)))))
+     LEFT JOIN specificite_lausanne.entree_batiment leb ON ((((eb.numero_maison)::text = concat(leb.numero, leb.extension)) AND ((nl.texte)::text = (leb.nom_complet)::text))))
      JOIN movd.t_ili2db_basket b ON ((l.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)));
 
@@ -1518,12 +1737,12 @@ ALTER TABLE specificite_lausanne.entree_batiment_projet OWNER TO gc_transfert_db
 --
 
 CREATE VIEW movd.gc_ad_bati_projet AS
- SELECT concat(eb.numero, eb.extension) AS textstring,
+ SELECT (concat(eb.numero, eb.extension))::character varying(12) AS textstring,
     eb.code_rue AS cd_rue,
     0 AS egid,
     0 AS edid,
-    eb.nom_complet AS rue_off,
-    eb.nom_court AS rue_abr,
+    (eb.nom_complet)::character varying(60) AS rue_off,
+    (eb.nom_court)::character varying(24) AS rue_abr,
     eb.orientation AS text_angle,
     g.idthing AS id_go,
     132 AS numcom,
@@ -1534,6 +1753,119 @@ CREATE VIEW movd.gc_ad_bati_projet AS
 
 
 ALTER TABLE movd.gc_ad_bati_projet OWNER TO gc_transfert_dbo;
+
+--
+-- Name: surfacecs; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
+--
+
+CREATE TABLE movd.surfacecs (
+    fid bigint DEFAULT nextval('movd.t_ili2db_seq'::regclass) NOT NULL,
+    t_basket bigint NOT NULL,
+    t_ili_tid character varying(200),
+    geometrie public.geometry(CurvePolygon,2056),
+    qualite character varying(255),
+    genre character varying(255),
+    ufid bigint,
+    origine bigint,
+    CONSTRAINT surfacecs_ufid_check CHECK (((ufid >= 0) AND (ufid <= '9999999999'::bigint)))
+);
+
+
+ALTER TABLE movd.surfacecs OWNER TO gc_transfert_dbo;
+
+--
+-- Name: localisation_place; Type: TABLE; Schema: specificite_lausanne; Owner: gc_transfert_dbo
+--
+
+CREATE TABLE specificite_lausanne.localisation_place (
+    fid integer,
+    location_number character varying(25),
+    ufid integer,
+    code_rue smallint,
+    id_rue integer,
+    geometrie public.geometry(Geometry,2056)
+);
+
+
+ALTER TABLE specificite_lausanne.localisation_place OWNER TO gc_transfert_dbo;
+
+--
+-- Name: gc_ad_place_rue; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
+--
+
+CREATE VIEW movd.gc_ad_place_rue AS
+ SELECT foo.idthing,
+    (foo.longname)::character varying(150) AS longname,
+    (foo.shortname)::character varying(100) AS shortname,
+    foo.estrid,
+    foo.coderue,
+    (foo.typestreet)::character varying(150) AS typestreet,
+    (foo.datemuni)::character varying(20) AS datemuni,
+    foo.numcom,
+    (foo.lien_idgo)::character varying(254) AS lien_idgo,
+    (foo.color)::character varying(50) AS color,
+    ((((('#'::text || lpad(to_hex((split_part(foo.color, ','::text, 1))::integer), 2, '0'::text)) || lpad(to_hex((split_part(foo.color, ','::text, 2))::integer), 2, '0'::text)) || lpad(to_hex((split_part(foo.color, ','::text, 3))::integer), 2, '0'::text)))::character varying(50))::text AS color_html,
+    foo.geom
+   FROM ( SELECT g.idthing,
+            g.longname,
+            g.shortname,
+            g.estrid,
+            g.coderue,
+            ts.description AS typestreet,
+            g.datedecisionmuni AS datemuni,
+            132 AS numcom,
+            (((('<a href="https://golux.lausanne.ch/goeland/objet/getobjetinfo.php?idObjet='::text || g.idthing) || '" target="_blank">'::text) || g.idthing) || '</a>'::text) AS lien_idgo,
+            ((((floor((random() * (256)::double precision)) || ','::text) || floor((random() * (256)::double precision))) || ','::text) || floor((random() * (256)::double precision))) AS color,
+            COALESCE(public.st_difference(p.geometrie, b.geom), p.geometrie) AS geom
+           FROM (((goeland.thi_street g
+             JOIN specificite_lausanne.localisation_place p ON ((g.coderue = p.code_rue)))
+             JOIN goeland.type_thi_street ts ON ((g.idtypestreet = ts.idtypestreet)))
+             CROSS JOIN LATERAL ( SELECT public.st_union(s.geometrie) AS geom
+                   FROM movd.surfacecs s
+                  WHERE (((s.genre)::text = 'batiment'::text) AND public.st_intersects(s.geometrie, p.geometrie))) b)) foo;
+
+
+ALTER TABLE movd.gc_ad_place_rue OWNER TO gc_transfert_dbo;
+
+--
+-- Name: lieudit; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
+--
+
+CREATE TABLE movd.lieudit (
+    fid bigint DEFAULT nextval('movd.t_ili2db_seq'::regclass) NOT NULL,
+    t_basket bigint NOT NULL,
+    t_ili_tid character varying(200),
+    nom character varying(40),
+    ufid bigint,
+    origine bigint,
+    CONSTRAINT lieudit_ufid_check CHECK (((ufid >= 0) AND (ufid <= '9999999999'::bigint)))
+);
+
+
+ALTER TABLE movd.lieudit OWNER TO gc_transfert_dbo;
+
+--
+-- Name: poslieudit; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
+--
+
+CREATE TABLE movd.poslieudit (
+    fid bigint DEFAULT nextval('movd.t_ili2db_seq'::regclass) NOT NULL,
+    t_basket bigint NOT NULL,
+    t_ili_tid character varying(200),
+    pos public.geometry(Point,2056),
+    ori numeric(4,1),
+    hali character varying(255),
+    vali character varying(255),
+    grandeur character varying(255),
+    astyle character varying(255),
+    ufid bigint,
+    poslieudit_de bigint,
+    CONSTRAINT poslieudit_ori_check CHECK (((ori >= 0.0) AND (ori <= 399.9))),
+    CONSTRAINT poslieudit_ufid_check CHECK (((ufid >= 0) AND (ufid <= '9999999999'::bigint)))
+);
+
+
+ALTER TABLE movd.poslieudit OWNER TO gc_transfert_dbo;
 
 --
 -- Name: posnom_localisation; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
@@ -1567,7 +1899,7 @@ ALTER TABLE movd.posnom_localisation OWNER TO gc_transfert_dbo;
 --
 
 CREATE VIEW movd.gc_ad_route_txt AS
- SELECT nl.texte AS textstring,
+ SELECT (nl.texte)::character varying(100) AS textstring,
         CASE
             WHEN ((pnl.grandeur)::text = 'petite'::text) THEN 0.5
             WHEN ((pnl.grandeur)::text = 'moyenne'::text) THEN (1)::numeric
@@ -1575,18 +1907,35 @@ CREATE VIEW movd.gc_ad_route_txt AS
             ELSE (NULL::integer)::numeric
         END AS text_size,
     mod(((450)::numeric - (0.9 * pnl.ori)), (360)::numeric) AS text_angle,
+    (
         CASE
             WHEN ((l.genre)::text = 'Rue'::text) THEN 'ROUTE_TXT'::text
             WHEN ((l.genre)::text = 'Lieu_denomme'::text) THEN 'NOM_TXT'::text
             WHEN ((l.genre)::text = 'Place'::text) THEN 'PLACE_TXT'::text
             ELSE NULL::text
-        END AS type,
+        END)::character varying(30) AS type,
     (d.datasetname)::integer AS numcom,
     pnl.pos AS geom
    FROM ((((movd.localisation l
      JOIN movd.nom_localisation nl ON ((l.fid = nl.nom_localisation_de)))
      JOIN movd.posnom_localisation pnl ON ((nl.fid = pnl.posnom_localisation_de)))
      JOIN movd.t_ili2db_basket b ON ((l.t_basket = b.fid)))
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+UNION ALL
+ SELECT (ld.nom)::character varying(100) AS textstring,
+        CASE
+            WHEN ((pld.grandeur)::text = 'petite'::text) THEN 0.5
+            WHEN ((pld.grandeur)::text = 'moyenne'::text) THEN (1)::numeric
+            WHEN ((pld.grandeur)::text = 'grande'::text) THEN (2)::numeric
+            ELSE (NULL::integer)::numeric
+        END AS text_size,
+    mod(((450)::numeric - (0.9 * pld.ori)), (360)::numeric) AS text_angle,
+    'NOM_TXT'::character varying(30) AS type,
+    (d.datasetname)::integer AS numcom,
+    pld.pos AS geom
+   FROM (((movd.lieudit ld
+     JOIN movd.poslieudit pld ON ((ld.fid = pld.poslieudit_de)))
+     JOIN movd.t_ili2db_basket b ON ((ld.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)));
 
 
@@ -1644,15 +1993,15 @@ ALTER TABLE movd.posimmeuble OWNER TO gc_transfert_dbo;
 --
 
 CREATE VIEW movd.gc_bf_parc_no AS
- SELECT i.numero AS no_parc,
+ SELECT (i.numero)::character varying(20) AS no_parc,
     (
         CASE
             WHEN ((i.genre)::text ~~ 'DDP.%'::text) THEN 'DDP'::text
             WHEN ((i.genre)::text ~~ '%.parcelle_prive'::text) THEN 'PAR'::text
             WHEN ((i.genre)::text ~~ '%.DP_%'::text) THEN 'DP'::text
             ELSE NULL::text
-        END)::character varying(10) AS type,
-    mod(((450)::numeric - (0.9 * pi.ori)), (360)::numeric) AS or_text,
+        END)::character varying(30) AS type,
+    (mod(((450)::numeric - (0.9 * pi.ori)), (360)::numeric))::real AS or_text,
     (d.datasetname)::integer AS numcom,
     pi.pos AS geom
    FROM (((movd.immeuble i
@@ -1688,7 +2037,8 @@ ALTER TABLE movd.mine OWNER TO gc_transfert_dbo;
 --
 
 CREATE VIEW movd.gc_bf_parc_pol AS
- SELECT i.numero AS no_parc,
+ SELECT (i.numero)::character varying(20) AS no_parc,
+    (
         CASE
             WHEN ((i.genre)::text = 'bien_fonds.DP_communal'::text) THEN 'DP_COM'::character varying
             WHEN ((i.genre)::text = 'bien_fonds.DP_cantonal'::text) THEN 'DP_CANT'::character varying
@@ -1697,18 +2047,25 @@ CREATE VIEW movd.gc_bf_parc_pol AS
             WHEN (((i.genre)::text = 'bien_fonds.parcelle_prive'::text) AND (p.resumeproprietaire = 'Commune de Lausanne'::text)) THEN 'PARCOM'::character varying(10)
             WHEN (((i.genre)::text = 'bien_fonds.parcelle_prive'::text) AND (p.resumeproprietaire <> 'Commune de Lausanne'::text)) THEN 'PAR'::character varying
             ELSE NULL::character varying(10)
-        END AS type,
-    i.egris_egrid AS egrid,
+        END)::character varying(30) AS type,
+    (regexp_replace((i.egris_egrid)::text, '\D'::text, ''::text, 'g'::text))::bigint AS egrid,
     p.idthing AS id_go,
     (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(bf.geometrie) AS geom
-   FROM ((((movd.immeuble i
+    (nc.nom)::character varying(40) AS nom_com,
+    public.st_curvetoline(bf.geometrie) AS geom,
+    NULL::integer AS gid_old
+   FROM (((((movd.immeuble i
      JOIN movd.bien_fonds bf ON ((i.fid = bf.bien_fonds_de)))
      LEFT JOIN goeland.parcelle p ON (((i.egris_egrid)::text = p.egrid)))
      JOIN movd.t_ili2db_basket b ON ((i.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-UNION
- SELECT i.numero AS no_parc,
+     JOIN ( SELECT nc_1.nom,
+            d_1.fid
+           FROM ((movd.commune nc_1
+             JOIN movd.t_ili2db_basket b_1 ON ((nc_1.t_basket = b_1.fid)))
+             JOIN movd.t_ili2db_dataset d_1 ON ((b_1.dataset = d_1.fid)))) nc ON ((d.fid = nc.fid)))
+UNION ALL
+ SELECT (i.numero)::character varying(20) AS no_parc,
     (
         CASE
             WHEN ((i.genre)::text = 'bien_fonds.DP_communal'::text) THEN 'DP_COM'::text
@@ -1718,18 +2075,25 @@ UNION
             WHEN (((i.genre)::text = 'bien_fonds.parcelle_prive'::text) AND (p.resumeproprietaire = 'Commune de Lausanne'::text)) THEN 'PARCOM'::text
             WHEN (((i.genre)::text = 'bien_fonds.parcelle_prive'::text) AND (p.resumeproprietaire <> 'Commune de Lausanne'::text)) THEN 'PAR'::text
             ELSE NULL::text
-        END)::character varying(10) AS type,
-    i.egris_egrid AS egrid,
+        END)::character varying(30) AS type,
+    (regexp_replace((i.egris_egrid)::text, '\D'::text, ''::text, 'g'::text))::bigint AS egrid,
     p.idthing AS id_go,
     (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(ddp.geometrie) AS geom
-   FROM ((((movd.immeuble i
+    (nc.nom)::character varying(40) AS nom_com,
+    public.st_curvetoline(ddp.geometrie) AS geom,
+    NULL::integer AS gid_old
+   FROM (((((movd.immeuble i
      JOIN movd.ddp ON ((i.fid = ddp.ddp_de)))
      LEFT JOIN goeland.parcelle p ON (((i.egris_egrid)::text = p.egrid)))
      JOIN movd.t_ili2db_basket b ON ((i.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-UNION
- SELECT i.numero AS no_parc,
+     JOIN ( SELECT nc_1.nom,
+            d_1.fid
+           FROM ((movd.commune nc_1
+             JOIN movd.t_ili2db_basket b_1 ON ((nc_1.t_basket = b_1.fid)))
+             JOIN movd.t_ili2db_dataset d_1 ON ((b_1.dataset = d_1.fid)))) nc ON ((d.fid = nc.fid)))
+UNION ALL
+ SELECT (i.numero)::character varying(20) AS no_parc,
     (
         CASE
             WHEN ((i.genre)::text = 'bien_fonds.DP_communal'::text) THEN 'DP_COM'::text
@@ -1739,16 +2103,23 @@ UNION
             WHEN (((i.genre)::text = 'bien_fonds.parcelle_prive'::text) AND (p.resumeproprietaire = 'Commune de Lausanne'::text)) THEN 'PARCOM'::text
             WHEN (((i.genre)::text = 'bien_fonds.parcelle_prive'::text) AND (p.resumeproprietaire <> 'Commune de Lausanne'::text)) THEN 'PAR'::text
             ELSE NULL::text
-        END)::character varying(10) AS type,
-    i.egris_egrid AS egrid,
+        END)::character varying(30) AS type,
+    (regexp_replace((i.egris_egrid)::text, '\D'::text, ''::text, 'g'::text))::bigint AS egrid,
     p.idthing AS id_go,
     (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(m.geometrie) AS geom
-   FROM ((((movd.immeuble i
+    (nc.nom)::character varying(40) AS nom_com,
+    public.st_curvetoline(m.geometrie) AS geom,
+    NULL::integer AS gid_old
+   FROM (((((movd.immeuble i
      JOIN movd.mine m ON ((i.fid = m.mine_de)))
      LEFT JOIN goeland.parcelle p ON (((i.egris_egrid)::text = p.egrid)))
      JOIN movd.t_ili2db_basket b ON ((i.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)));
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+     JOIN ( SELECT nc_1.nom,
+            d_1.fid
+           FROM ((movd.commune nc_1
+             JOIN movd.t_ili2db_basket b_1 ON ((nc_1.t_basket = b_1.fid)))
+             JOIN movd.t_ili2db_dataset d_1 ON ((b_1.dataset = d_1.fid)))) nc ON ((d.fid = nc.fid)));
 
 
 ALTER TABLE movd.gc_bf_parc_pol OWNER TO gc_transfert_dbo;
@@ -1812,7 +2183,7 @@ CREATE VIEW movd.gc_bf_point AS
     p.identdn,
     (p.signe)::character varying(20) AS signe,
     (p.defini_exactement)::character varying(8) AS def_exact,
-    (p.precplan)::numeric(5,1) AS prec_plan,
+    ((p.precplan / (100)::numeric))::numeric(5,1) AS prec_plan,
     (p.fiabplan)::character varying(8) AS fiab_plan,
     NULL::character varying(4) AS codea,
     (public.st_y(p.geometrie))::numeric(10,3) AS y,
@@ -1827,7 +2198,7 @@ UNION ALL
     NULL::character varying(12) AS identdn,
     (t.signe)::character varying(20) AS signe,
     (t.defini_exactement)::character varying(8) AS def_exact,
-    (t.precplan)::numeric(5,1) AS prec_plan,
+    ((t.precplan / (100)::numeric))::numeric(5,1) AS prec_plan,
     (t.fiabplan)::character varying(8) AS fiab_plan,
     NULL::character varying(4) AS codea,
     (public.st_y(t.geometrie))::numeric(10,3) AS y,
@@ -1929,8 +2300,7 @@ ALTER TABLE movd.posnumero_objet OWNER TO gc_transfert_dbo;
 --
 
 CREATE VIEW movd.gc_cs_bati_eca AS
- SELECT n.numero AS textstring,
-    n.regbl_egid AS egid,
+ SELECT (n.numero)::character varying(15) AS textstring,
     mod(((450)::numeric - (0.9 * p.ori)), (360)::numeric) AS text_angle,
     (d.datasetname)::integer AS numcom,
     p.pos AS geom
@@ -1939,8 +2309,7 @@ CREATE VIEW movd.gc_cs_bati_eca AS
      JOIN movd.t_ili2db_basket b ON ((n.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
 UNION ALL
- SELECT n.numero AS textstring,
-    n.regbl_egid AS egid,
+ SELECT (n.numero)::character varying(15) AS textstring,
     mod(((450)::numeric - (0.9 * p.ori)), (360)::numeric) AS text_angle,
     (d.datasetname)::integer AS numcom,
     p.pos AS geom
@@ -2021,39 +2390,21 @@ CREATE TABLE movd.objet_divers (
 ALTER TABLE movd.objet_divers OWNER TO gc_transfert_dbo;
 
 --
--- Name: surfacecs; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
---
-
-CREATE TABLE movd.surfacecs (
-    fid bigint DEFAULT nextval('movd.t_ili2db_seq'::regclass) NOT NULL,
-    t_basket bigint NOT NULL,
-    t_ili_tid character varying(200),
-    geometrie public.geometry(CurvePolygon,2056),
-    qualite character varying(255),
-    genre character varying(255),
-    ufid bigint,
-    origine bigint,
-    CONSTRAINT surfacecs_ufid_check CHECK (((ufid >= 0) AND (ufid <= '9999999999'::bigint)))
-);
-
-
-ALTER TABLE movd.surfacecs OWNER TO gc_transfert_dbo;
-
---
 -- Name: gc_cs_bati_pol; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
 --
 
 CREATE VIEW movd.gc_cs_bati_pol AS
  SELECT g.idthibuilding AS id_go,
-    n.regbl_egid AS egid,
-    n.numero AS no_eca,
-    (n.designation)::character varying(30) AS design,
-    initcap(regexp_replace((db.dispname)::text, '\.'::text, ' - '::text, 'g'::text)) AS design_txt,
-    (s.genre)::character varying(30) AS type,
-    no.nom AS nom_objet,
+    (n.numero)::character varying(10) AS no_eca,
+    (n.designation)::character varying(40) AS design,
+    (initcap(split_part((db.dispname)::text, '.'::text, '-1'::integer)))::character varying(40) AS design_txt,
+    'BAT'::character varying(30) AS type,
     (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(s.geometrie) AS geom
-   FROM ((((((movd.surfacecs s
+    public.st_curvetoline(s.geometrie) AS geom,
+    (nc.nom)::character varying(40) AS nom_com,
+    NULL::integer AS gid_old,
+    db.itfcode AS design_id
+   FROM (((((((movd.surfacecs s
      JOIN movd.numero_de_batiment n ON ((s.fid = n.numero_de_batiment_de)))
      JOIN movd.designation_batiment db ON (((n.designation)::text = (db.ilicode)::text)))
      LEFT JOIN movd.nom_objet no ON ((s.fid = no.nom_objet_de)))
@@ -2063,19 +2414,39 @@ CREATE VIEW movd.gc_cs_bati_pol AS
           ORDER BY thi_building_no_eca.numeroeca, thi_building_no_eca.idthibuilding) g ON ((g.numeroeca = regexp_replace((n.numero)::text, '\D$'::text, ''::text, 'g'::text))))
      JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+     JOIN ( SELECT nc_1.nom,
+            d_1.fid
+           FROM ((movd.commune nc_1
+             JOIN movd.t_ili2db_basket b_1 ON ((nc_1.t_basket = b_1.fid)))
+             JOIN movd.t_ili2db_dataset d_1 ON ((b_1.dataset = d_1.fid)))) nc ON ((d.fid = nc.fid)))
 UNION ALL
  SELECT g.idthibuilding AS id_go,
-    n.regbl_egid AS egid,
-    n.numero AS no_eca,
-    (n.designation)::character varying(30) AS design,
-    initcap(regexp_replace((go.dispname)::text, '\.'::text, ' - '::text, 'g'::text)) AS design_txt,
-    (s.genre)::character varying(30) AS type,
-    no.nom AS nom_objet,
+    (n.numero)::character varying(10) AS no_eca,
+    (
+        CASE
+            WHEN (n.designation IS NOT NULL) THEN n.designation
+            ELSE go.ilicode
+        END)::character varying(40) AS design,
+    (
+        CASE
+            WHEN (n.designation IS NOT NULL) THEN initcap(split_part((db.dispname)::text, '.'::text, '-1'::integer))
+            ELSE initcap(split_part((go.dispname)::text, '.'::text, '-1'::integer))
+        END)::character varying(40) AS design_txt,
+    (
+        CASE
+            WHEN ((s.genre)::text = 'batiment_souterrain'::text) THEN 'SOUT'::text
+            WHEN ((s.genre)::text = 'couvert_independant'::text) THEN 'COUV'::text
+            ELSE NULL::text
+        END)::character varying(30) AS type,
     (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(es.geometrie) AS geom
-   FROM (((((((movd.objet_divers s
+    public.st_curvetoline(es.geometrie) AS geom,
+    (nc.nom)::character varying(40) AS nom_com,
+    NULL::integer AS gid_old,
+    go.itfcode AS design_id
+   FROM (((((((((movd.objet_divers s
      JOIN movd.element_surfacique es ON ((s.fid = es.element_surfacique_de)))
-     JOIN movd.numero_objet n ON ((s.fid = n.numero_objet_de)))
+     LEFT JOIN movd.numero_objet n ON ((s.fid = n.numero_objet_de)))
+     LEFT JOIN movd.designation_batiment db ON (((n.designation)::text = (db.ilicode)::text)))
      JOIN movd.genre_od go ON (((s.genre)::text = (go.ilicode)::text)))
      LEFT JOIN movd.md01mvdmn95v24objets_divers_nom_objet no ON ((s.fid = no.nom_objet_de)))
      LEFT JOIN ( SELECT DISTINCT ON (thi_building_no_eca.numeroeca) thi_building_no_eca.idthibuilding,
@@ -2083,7 +2454,13 @@ UNION ALL
            FROM goeland.thi_building_no_eca
           ORDER BY thi_building_no_eca.numeroeca, thi_building_no_eca.idthibuilding) g ON ((g.numeroeca = regexp_replace((n.numero)::text, '\D$'::text, ''::text, 'g'::text))))
      JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)));
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+     JOIN ( SELECT nc_1.nom,
+            d_1.fid
+           FROM ((movd.commune nc_1
+             JOIN movd.t_ili2db_basket b_1 ON ((nc_1.t_basket = b_1.fid)))
+             JOIN movd.t_ili2db_dataset d_1 ON ((b_1.dataset = d_1.fid)))) nc ON ((d.fid = nc.fid)))
+  WHERE ((s.genre)::text = ANY (ARRAY[('batiment'::character varying)::text, ('batiment_souterrain'::character varying)::text, ('couvert_independant'::character varying)::text]));
 
 
 ALTER TABLE movd.gc_cs_bati_pol OWNER TO gc_transfert_dbo;
@@ -2126,27 +2503,43 @@ ALTER TABLE specificite_lausanne.surface_batiment_projet OWNER TO gc_transfert_d
 --
 
 CREATE VIEW movd.gc_cs_bati_pol_projet AS
- SELECT NULL::text AS no_eca,
-    NULL::text AS design_id,
-    'batiment_projet'::text AS design,
-    'Batiment projet'::text AS design_txt,
-    bp.genre AS type,
+ SELECT NULL::character varying(10) AS no_eca,
+    100 AS design_id,
+    'batiment_projet'::character varying(40) AS design,
+    'Batiment projet'::character varying(40) AS design_txt,
+    (
+        CASE
+            WHEN ((bp.genre)::text = 'vl_batiment_projet'::text) THEN 'BAT_PROJET'::text
+            WHEN ((bp.genre)::text = ANY ((ARRAY['vl_batiment_chantier'::character varying, 'vl_batiment_non_cadastre'::character varying])::text[])) THEN 'BAT_CHANTIER'::text
+            WHEN ((bp.genre)::text = 'vl_batiment_souterrain_chantier'::text) THEN 'BAT_SOUT_CHANTIER'::text
+            WHEN ((bp.genre)::text = 'vl_batiment_souterrain_projet'::text) THEN 'BAT_SOUT_PROJET'::text
+            ELSE NULL::text
+        END)::character varying(30) AS type,
     bp.id_go,
+    (bp.fid)::integer AS gid_old,
     132 AS numcom,
+    'Lausanne'::character varying(40) AS nom_com,
     public.st_curvetoline(bp.geometrie) AS geom
    FROM specificite_lausanne.surface_batiment_projet bp
 UNION ALL
- SELECT NULL::text AS no_eca,
-    NULL::text AS design_id,
-    'batiment_projet'::text AS design,
-    'Batiment projet'::text AS design_txt,
-    (s.genre)::character varying(50) AS type,
+ SELECT NULL::character varying(10) AS no_eca,
+    100 AS design_id,
+    'batiment_projet'::character varying(40) AS design,
+    'Batiment projet'::character varying(40) AS design_txt,
+    'BAT_PROJET'::character varying(30) AS type,
     NULL::integer AS id_go,
+    NULL::integer AS gid_old,
     (d.datasetname)::integer AS numcom,
+    (nc.nom)::character varying(40) AS nom_com,
     public.st_curvetoline(s.geometrie) AS geom
-   FROM ((movd.surfacecsproj s
+   FROM (((movd.surfacecsproj s
      JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+     JOIN ( SELECT nc_1.nom,
+            d_1.fid
+           FROM ((movd.commune nc_1
+             JOIN movd.t_ili2db_basket b_1 ON ((nc_1.t_basket = b_1.fid)))
+             JOIN movd.t_ili2db_dataset d_1 ON ((b_1.dataset = d_1.fid)))) nc ON ((d.fid = nc.fid)))
   WHERE ((d.datasetname)::text <> '132'::text);
 
 
@@ -2169,10 +2562,10 @@ CREATE TABLE movd.genre_cs (
 ALTER TABLE movd.genre_cs OWNER TO gc_transfert_dbo;
 
 --
--- Name: gc_cs_boise; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
+-- Name: gc_cs_boisee; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
 --
 
-CREATE VIEW movd.gc_cs_boise AS
+CREATE VIEW movd.gc_cs_boisee AS
  SELECT (s.genre)::character varying(50) AS genre,
         CASE
             WHEN (g.itfcode = 18) THEN 19
@@ -2183,7 +2576,8 @@ CREATE VIEW movd.gc_cs_boise AS
         END AS genre_id,
     (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(s.geometrie) AS geom
+    public.st_curvetoline(s.geometrie) AS geom,
+    NULL::integer AS gid_old
    FROM (((movd.surfacecs s
      JOIN movd.genre_cs g ON (((s.genre)::text = (g.ilicode)::text)))
      JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
@@ -2191,7 +2585,7 @@ CREATE VIEW movd.gc_cs_boise AS
   WHERE ((s.genre)::text ~~ 'boisee.%'::text);
 
 
-ALTER TABLE movd.gc_cs_boise OWNER TO gc_transfert_dbo;
+ALTER TABLE movd.gc_cs_boisee OWNER TO gc_transfert_dbo;
 
 --
 -- Name: gc_cs_eau; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
@@ -2207,9 +2601,10 @@ CREATE VIEW movd.gc_cs_eau AS
             ELSE NULL::integer
         END AS genre_id,
     (s.genre)::character varying(50) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(s.geometrie) AS geom
+    public.st_curvetoline(s.geometrie) AS geom,
+    NULL::integer AS gid_old
    FROM (((movd.surfacecs s
      JOIN movd.genre_cs g ON (((s.genre)::text = (g.ilicode)::text)))
      JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
@@ -2250,9 +2645,9 @@ CREATE VIEW movd.gc_cs_pts_fiab AS
  SELECT p.identification AS numero,
     p.identdn,
     (d.datasetname)::integer AS numcom,
-    6 AS signe,
+    '6'::character varying(20) AS signe,
     (p.defini_exactement)::character varying(8) AS def_exact,
-    p.precplan AS prec_plan,
+    (p.precplan / (100)::numeric) AS prec_plan,
     (p.fiabplan)::character varying(8) AS fiab_plan,
     public.st_x(p.geometrie) AS x,
     public.st_y(p.geometrie) AS y,
@@ -2282,9 +2677,10 @@ CREATE VIEW movd.gc_cs_rev_dur AS
             ELSE NULL::integer
         END AS genre_id,
     (s.genre)::character varying(50) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(s.geometrie) AS geom
+    public.st_curvetoline(s.geometrie) AS geom,
+    NULL::integer AS gid_old
    FROM (((movd.surfacecs s
      JOIN movd.genre_cs g ON (((s.genre)::text = (g.ilicode)::text)))
      JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
@@ -2295,29 +2691,72 @@ CREATE VIEW movd.gc_cs_rev_dur AS
 ALTER TABLE movd.gc_cs_rev_dur OWNER TO gc_transfert_dbo;
 
 --
+-- Name: gc_cs_rev_dur_gc; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
+--
+
+CREATE VIEW movd.gc_cs_rev_dur_gc AS
+ SELECT foo.genre_id,
+    foo.genre,
+    (foo.genre_txt)::character varying(50) AS genre_txt,
+    foo.numcom,
+    (public.st_dump(public.st_union(public.st_makevalid(foo.geom)))).geom AS geom,
+    NULL::integer AS gid_old
+   FROM ( SELECT
+                CASE
+                    WHEN (g.itfcode = 1) THEN 2
+                    WHEN (g.itfcode = 2) THEN 3
+                    WHEN (g.itfcode = 3) THEN 4
+                    WHEN (g.itfcode = 4) THEN 5
+                    WHEN (g.itfcode = 5) THEN 6
+                    WHEN (g.itfcode = 7) THEN 8
+                    WHEN (g.itfcode = 8) THEN 9
+                    ELSE NULL::integer
+                END AS genre_id,
+            (s.genre)::character varying(50) AS genre,
+            initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+            (d.datasetname)::integer AS numcom,
+            public.st_curvetoline(s.geometrie) AS geom
+           FROM (((movd.surfacecs s
+             JOIN movd.genre_cs g ON (((s.genre)::text = (g.ilicode)::text)))
+             JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
+             JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+          WHERE (((s.genre)::text ~~ 'revetement_dur.%'::text) AND ((s.genre)::text !~~ '%.bassin'::text))) foo
+  GROUP BY foo.genre, foo.genre_id, foo.genre_txt, foo.numcom;
+
+
+ALTER TABLE movd.gc_cs_rev_dur_gc OWNER TO gc_transfert_dbo;
+
+--
 -- Name: gc_cs_sans_veg; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
 --
 
 CREATE VIEW movd.gc_cs_sans_veg AS
- SELECT
-        CASE
-            WHEN (g.itfcode = 22) THEN 23
-            WHEN (g.itfcode = 23) THEN 24
-            WHEN (g.itfcode = 24) THEN 25
-            WHEN (g.itfcode = 25) THEN 26
-            WHEN (g.itfcode = 26) THEN 27
-            WHEN (g.itfcode = 27) THEN 28
-            ELSE NULL::integer
-        END AS genre_id,
-    (s.genre)::character varying(50) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
-    (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(s.geometrie) AS geom
-   FROM (((movd.surfacecs s
-     JOIN movd.genre_cs g ON (((s.genre)::text = (g.ilicode)::text)))
-     JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE ((s.genre)::text ~~ 'sans_vegetation.%'::text);
+ SELECT foo.genre_id,
+    foo.genre,
+    (foo.genre_txt)::character varying(50) AS genre_txt,
+    foo.numcom,
+    NULL::integer AS gid_old,
+    (public.st_dump(public.st_union(public.st_makevalid(foo.geom)))).geom AS geom
+   FROM ( SELECT
+                CASE
+                    WHEN (g.itfcode = 22) THEN 23
+                    WHEN (g.itfcode = 23) THEN 24
+                    WHEN (g.itfcode = 24) THEN 25
+                    WHEN (g.itfcode = 25) THEN 26
+                    WHEN (g.itfcode = 26) THEN 27
+                    WHEN (g.itfcode = 27) THEN 28
+                    ELSE NULL::integer
+                END AS genre_id,
+            (s.genre)::character varying(50) AS genre,
+            initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+            (d.datasetname)::integer AS numcom,
+            public.st_curvetoline(s.geometrie) AS geom
+           FROM (((movd.surfacecs s
+             JOIN movd.genre_cs g ON (((s.genre)::text = (g.ilicode)::text)))
+             JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
+             JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+          WHERE ((s.genre)::text ~~ 'sans_vegetation.%'::text)) foo
+  GROUP BY foo.genre_id, foo.genre, foo.genre_txt, foo.numcom;
 
 
 ALTER TABLE movd.gc_cs_sans_veg OWNER TO gc_transfert_dbo;
@@ -2327,25 +2766,32 @@ ALTER TABLE movd.gc_cs_sans_veg OWNER TO gc_transfert_dbo;
 --
 
 CREATE VIEW movd.gc_cs_verte AS
- SELECT
-        CASE
-            WHEN (g.itfcode = 9) THEN 10
-            WHEN (g.itfcode = 10) THEN 11
-            WHEN (g.itfcode = 11) THEN 12
-            WHEN (g.itfcode = 12) THEN 13
-            WHEN (g.itfcode = 13) THEN 14
-            WHEN (g.itfcode = 14) THEN 15
-            ELSE NULL::integer
-        END AS genre_id,
-    (s.genre)::character varying(50) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
-    (d.datasetname)::integer AS numcom,
-    public.st_curvetoline(s.geometrie) AS geom
-   FROM (((movd.surfacecs s
-     JOIN movd.genre_cs g ON (((s.genre)::text = (g.ilicode)::text)))
-     JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE ((s.genre)::text ~~ 'verte.%'::text);
+ SELECT foo.genre_id,
+    foo.genre,
+    (foo.genre_txt)::character varying(50) AS genre_txt,
+    foo.numcom,
+    NULL::integer AS gid_old,
+    (public.st_dump(public.st_union(public.st_makevalid(foo.geom)))).geom AS geom
+   FROM ( SELECT
+                CASE
+                    WHEN (g.itfcode = 9) THEN 10
+                    WHEN (g.itfcode = 10) THEN 11
+                    WHEN (g.itfcode = 11) THEN 12
+                    WHEN (g.itfcode = 12) THEN 13
+                    WHEN (g.itfcode = 13) THEN 14
+                    WHEN (g.itfcode = 14) THEN 15
+                    ELSE NULL::integer
+                END AS genre_id,
+            (s.genre)::character varying(50) AS genre,
+            initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+            (d.datasetname)::integer AS numcom,
+            public.st_curvetoline(s.geometrie) AS geom
+           FROM (((movd.surfacecs s
+             JOIN movd.genre_cs g ON (((s.genre)::text = (g.ilicode)::text)))
+             JOIN movd.t_ili2db_basket b ON ((s.t_basket = b.fid)))
+             JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+          WHERE ((s.genre)::text ~~ 'verte.%'::text)) foo
+  GROUP BY foo.genre_id, foo.genre, foo.genre_txt, foo.numcom;
 
 
 ALTER TABLE movd.gc_cs_verte OWNER TO gc_transfert_dbo;
@@ -2375,7 +2821,7 @@ ALTER TABLE movd.limite_commune OWNER TO gc_transfert_dbo;
 CREATE VIEW movd.gc_lim_com AS
  SELECT c.noofs,
     c.numcom,
-    c.nom,
+    (c.nom)::character varying(50) AS nom,
     public.st_curvetoline(lc.geometrie) AS geom
    FROM (movd.commune c
      JOIN movd.limite_commune lc ON ((c.fid = lc.limite_commune_de)));
@@ -2399,20 +2845,21 @@ CREATE TABLE specificite_lausanne.objet_divers_ponctuel (
 ALTER TABLE specificite_lausanne.objet_divers_ponctuel OWNER TO gc_transfert_dbo;
 
 --
--- Name: gc_od_arbre; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
+-- Name: gc_od_arbre_sym; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
 --
 
-CREATE VIEW movd.gc_od_arbre AS
- SELECT objet_divers_ponctuel.genre_id,
+CREATE VIEW movd.gc_od_arbre_sym AS
+ SELECT (objet_divers_ponctuel.genre_id)::integer AS genre_id,
     objet_divers_ponctuel.genre,
-    initcap(regexp_replace((objet_divers_ponctuel.genre)::text, '_'::text, ' '::text, 'g'::text)) AS genre_txt,
+    (initcap(regexp_replace((objet_divers_ponctuel.genre)::text, '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
     (objet_divers_ponctuel.numcom)::integer AS numcom,
-    objet_divers_ponctuel.geometrie AS geom
+    objet_divers_ponctuel.geometrie AS geom,
+    objet_divers_ponctuel.ufid AS gid_old
    FROM specificite_lausanne.objet_divers_ponctuel
   WHERE (objet_divers_ponctuel.genre_id = 40);
 
 
-ALTER TABLE movd.gc_od_arbre OWNER TO gc_transfert_dbo;
+ALTER TABLE movd.gc_od_arbre_sym OWNER TO gc_transfert_dbo;
 
 --
 -- Name: objet_divers_lineaire; Type: TABLE; Schema: specificite_lausanne; Owner: gc_transfert_dbo
@@ -2435,9 +2882,10 @@ ALTER TABLE specificite_lausanne.objet_divers_lineaire OWNER TO gc_transfert_dbo
 
 CREATE VIEW movd.gc_od_bati_lim AS
  SELECT (g.itfcode + 1) AS genre_id,
-    od.genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (od.genre)::character varying(50) AS genre,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS gid_old,
     public.st_curvetoline(el.geometrie) AS geom
    FROM ((((movd.objet_divers od
      JOIN movd.genre_od g ON (((od.genre)::text = (g.ilicode)::text)))
@@ -2445,14 +2893,15 @@ CREATE VIEW movd.gc_od_bati_lim AS
      JOIN movd.t_ili2db_basket b ON ((od.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
   WHERE ((od.genre)::text = ANY (ARRAY[('autre_corps_de_batiment.details'::character varying)::text, ('autre_corps_de_batiment.mur_mitoyen'::character varying)::text, ('couvert_independant'::character varying)::text]))
-UNION
- SELECT objet_divers_lineaire.genre_id,
+UNION ALL
+ SELECT (objet_divers_lineaire.genre_id)::integer AS genre_id,
     objet_divers_lineaire.genre,
-    initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)) AS genre_txt,
+    (initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
     (objet_divers_lineaire.numcom)::integer AS numcom,
+    objet_divers_lineaire.ufid AS gid_old,
     public.st_curvetoline(objet_divers_lineaire.geometrie) AS geom
    FROM specificite_lausanne.objet_divers_lineaire
-  WHERE (objet_divers_lineaire.genre_id = ANY (ARRAY[77, 20001, 20002, 20003, 20023, 20038]));
+  WHERE (objet_divers_lineaire.genre_id = ANY (ARRAY[77, 79]));
 
 
 ALTER TABLE movd.gc_od_bati_lim OWNER TO gc_transfert_dbo;
@@ -2462,10 +2911,11 @@ ALTER TABLE movd.gc_od_bati_lim OWNER TO gc_transfert_dbo;
 --
 
 CREATE VIEW movd.gc_od_bati_lim_projet AS
- SELECT objet_divers_lineaire.genre_id,
+ SELECT (objet_divers_lineaire.genre_id)::integer AS genre_id,
     objet_divers_lineaire.genre,
-    initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)) AS genre_txt,
+    (initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
     (objet_divers_lineaire.numcom)::integer AS numcom,
+    objet_divers_lineaire.ufid AS gid_old,
     public.st_curvetoline(objet_divers_lineaire.geometrie) AS geom
    FROM specificite_lausanne.objet_divers_lineaire
   WHERE (objet_divers_lineaire.genre_id = ANY (ARRAY[77, 57, 58, 59, 94]));
@@ -2479,9 +2929,10 @@ ALTER TABLE movd.gc_od_bati_lim_projet OWNER TO gc_transfert_dbo;
 
 CREATE VIEW movd.gc_od_divers_lim AS
  SELECT (g.itfcode + 1) AS genre_id,
-    od.genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (od.genre)::character varying(50) AS genre,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS gid_old,
     public.st_curvetoline(el.geometrie) AS geom
    FROM ((((movd.objet_divers od
      JOIN movd.genre_od g ON (((od.genre)::text = (g.ilicode)::text)))
@@ -2490,10 +2941,11 @@ CREATE VIEW movd.gc_od_divers_lim AS
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
   WHERE ((od.genre)::text <> ALL (ARRAY[((('autre_corps_de_batiment.details'::character varying)::text)::character varying)::text, ((('autre_corps_de_batiment.mur_mitoyen'::character varying)::text)::character varying)::text, ((('couvert_independant'::character varying)::text)::character varying)::text, 'escalier_important'::text, 'mur'::text, 'autre.trottoir_a_ventiler'::text, 'sentier'::text, 'autre.bord_de_chaussee_a_ventiler'::text, 'eau_canalisee_souterraine'::text]))
 UNION
- SELECT objet_divers_lineaire.genre_id,
+ SELECT (objet_divers_lineaire.genre_id)::integer AS genre_id,
     objet_divers_lineaire.genre,
-    initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)) AS genre_txt,
+    (initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
     (objet_divers_lineaire.numcom)::integer AS numcom,
+    objet_divers_lineaire.ufid AS gid_old,
     public.st_curvetoline(objet_divers_lineaire.geometrie) AS geom
    FROM specificite_lausanne.objet_divers_lineaire
   WHERE (objet_divers_lineaire.genre_id = ANY (ARRAY[20, 24, 32, 45, 62, 63, 65, 66, 75, 78, 80, 45, 46, 88]));
@@ -2522,9 +2974,10 @@ ALTER TABLE specificite_lausanne.objet_divers_surfacique OWNER TO gc_transfert_d
 
 CREATE VIEW movd.gc_od_divers_pol AS
  SELECT (g.itfcode + 1) AS genre_id,
-    (od.genre)::character varying(100) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (od.genre)::character varying(50) AS genre,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS gid_old,
     public.st_curvetoline(es.geometrie) AS geom
    FROM ((((movd.objet_divers od
      JOIN movd.genre_od g ON (((od.genre)::text = (g.ilicode)::text)))
@@ -2533,10 +2986,11 @@ CREATE VIEW movd.gc_od_divers_pol AS
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
   WHERE ((od.genre)::text = ANY (ARRAY[('tunnel_passage_inferieur_galerie'::character varying)::text, ('pont_passerelle'::character varying)::text, ('autre.terrain_de_sport'::character varying)::text, 'monument'::text, 'ruine_objet_archeologique'::text, 'ouvrage_de_protection_des_rives'::text, 'debarcadere'::text, 'quai'::text, 'ru'::text, 'silo_tour_gazometre'::text, 'tour_panoramique'::text, 'reservoir'::text, 'autre.autre'::text]))
 UNION ALL
- SELECT objet_divers_surfacique.genre_id,
-    (objet_divers_surfacique.genre)::character varying(100) AS genre,
-    initcap(regexp_replace(split_part((objet_divers_surfacique.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)) AS genre_txt,
+ SELECT (objet_divers_surfacique.genre_id)::integer AS genre_id,
+    objet_divers_surfacique.genre,
+    (initcap(regexp_replace(split_part((objet_divers_surfacique.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
     (objet_divers_surfacique.numcom)::integer AS numcom,
+    objet_divers_surfacique.ufid AS gid_old,
     public.st_curvetoline(objet_divers_surfacique.geometrie) AS geom
    FROM specificite_lausanne.objet_divers_surfacique
   WHERE (objet_divers_surfacique.genre_id = 77);
@@ -2550,9 +3004,10 @@ ALTER TABLE movd.gc_od_divers_pol OWNER TO gc_transfert_dbo;
 
 CREATE VIEW movd.gc_od_eau_lim AS
  SELECT (g.itfcode + 1) AS genre_id,
-    (od.genre)::character varying(100) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (od.genre)::character varying(50) AS genre,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS gid_old,
     public.st_curvetoline(el.geometrie) AS geom
    FROM ((((movd.objet_divers od
      JOIN movd.genre_od g ON (((od.genre)::text = (g.ilicode)::text)))
@@ -2561,10 +3016,11 @@ CREATE VIEW movd.gc_od_eau_lim AS
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
   WHERE ((od.genre)::text = ANY (ARRAY[('conduite_forcee'::character varying)::text, ('autre.eau_a_ventiler'::character varying)::text, ('eau_canalisee_souterraine'::character varying)::text, ('source'::character varying)::text, 'ru'::text]))
 UNION ALL
- SELECT objet_divers_lineaire.genre_id,
-    (objet_divers_lineaire.genre)::character varying(100) AS genre,
-    initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)) AS genre_txt,
+ SELECT (objet_divers_lineaire.genre_id)::integer AS genre_id,
+    objet_divers_lineaire.genre,
+    (initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
     (objet_divers_lineaire.numcom)::integer AS numcom,
+    objet_divers_lineaire.ufid AS gid_old,
     public.st_curvetoline(objet_divers_lineaire.geometrie) AS geom
    FROM specificite_lausanne.objet_divers_lineaire
   WHERE (objet_divers_lineaire.genre_id = ANY (ARRAY[6, 48, 61, 64, 82, 93]));
@@ -2578,9 +3034,10 @@ ALTER TABLE movd.gc_od_eau_lim OWNER TO gc_transfert_dbo;
 
 CREATE VIEW movd.gc_od_eau_pol AS
  SELECT (g.itfcode + 1) AS genre_id,
-    (od.genre)::character varying(100) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (od.genre)::character varying(50) AS genre,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS gid_old,
     public.st_curvetoline(es.geometrie) AS geom
    FROM ((((movd.objet_divers od
      JOIN movd.genre_od g ON (((od.genre)::text = (g.ilicode)::text)))
@@ -2589,10 +3046,11 @@ CREATE VIEW movd.gc_od_eau_pol AS
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
   WHERE ((od.genre)::text = ANY (ARRAY[('eau_canalisee_souterraine'::character varying)::text, ('autre.piscine'::character varying)::text, ('fontaine'::character varying)::text]))
 UNION ALL
- SELECT objet_divers_surfacique.genre_id,
-    (objet_divers_surfacique.genre)::character varying(100) AS genre,
-    initcap(regexp_replace(split_part((objet_divers_surfacique.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)) AS genre_txt,
+ SELECT (objet_divers_surfacique.genre_id)::integer AS genre_id,
+    objet_divers_surfacique.genre,
+    (initcap(regexp_replace(split_part((objet_divers_surfacique.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
     (objet_divers_surfacique.numcom)::integer AS numcom,
+    objet_divers_surfacique.ufid AS gid_old,
     public.st_curvetoline(objet_divers_surfacique.geometrie) AS geom
    FROM specificite_lausanne.objet_divers_surfacique
   WHERE ((objet_divers_surfacique.genre)::text = ANY (ARRAY[('vl.eau_rive_a_ventiler'::character varying)::text, ('vl.bassin_a_ventiler'::character varying)::text]));
@@ -2606,16 +3064,26 @@ ALTER TABLE movd.gc_od_eau_pol OWNER TO gc_transfert_dbo;
 
 CREATE VIEW movd.gc_od_mur_esc_lim AS
  SELECT (g.itfcode + 1) AS genre_id,
-    (od.genre)::character varying(30) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (od.genre)::character varying(50) AS genre,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS gid_old,
     public.st_curvetoline(el.geometrie) AS geom
    FROM ((((movd.objet_divers od
      JOIN movd.genre_od g ON (((od.genre)::text = (g.ilicode)::text)))
      JOIN movd.element_lineaire el ON ((od.fid = el.element_lineaire_de)))
      JOIN movd.t_ili2db_basket b ON ((od.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE ((od.genre)::text = ANY (ARRAY[('mur'::character varying)::text, ('escalier_important'::character varying)::text]));
+  WHERE ((od.genre)::text = ANY (ARRAY[('mur'::character varying)::text, ('escalier_important'::character varying)::text]))
+UNION ALL
+ SELECT (objet_divers_lineaire.genre_id)::integer AS genre_id,
+    objet_divers_lineaire.genre,
+    (initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
+    (objet_divers_lineaire.numcom)::integer AS numcom,
+    objet_divers_lineaire.ufid AS gid_old,
+    public.st_curvetoline(objet_divers_lineaire.geometrie) AS geom
+   FROM specificite_lausanne.objet_divers_lineaire
+  WHERE (objet_divers_lineaire.genre_id = ANY (ARRAY[1, 7]));
 
 
 ALTER TABLE movd.gc_od_mur_esc_lim OWNER TO gc_transfert_dbo;
@@ -2626,9 +3094,10 @@ ALTER TABLE movd.gc_od_mur_esc_lim OWNER TO gc_transfert_dbo;
 
 CREATE VIEW movd.gc_od_mur_esc_pol AS
  SELECT (g.itfcode + 1) AS genre_id,
-    (od.genre)::character varying(30) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (od.genre)::character varying(50) AS genre,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS gid_old,
     public.st_curvetoline(es.geometrie) AS geom
    FROM ((((movd.objet_divers od
      JOIN movd.genre_od g ON (((od.genre)::text = (g.ilicode)::text)))
@@ -2647,20 +3116,22 @@ ALTER TABLE movd.gc_od_mur_esc_pol OWNER TO gc_transfert_dbo;
 CREATE VIEW movd.gc_od_route_lim AS
  SELECT (g.itfcode + 1) AS genre_id,
     (od.genre)::character varying(50) AS genre,
-    initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)) AS genre_txt,
+    (initcap(split_part((g.dispname)::text, '.'::text, '-1'::integer)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS gid_old,
     public.st_curvetoline(el.geometrie) AS geom
    FROM ((((movd.objet_divers od
      JOIN movd.genre_od g ON (((od.genre)::text = (g.ilicode)::text)))
      JOIN movd.element_lineaire el ON ((od.fid = el.element_lineaire_de)))
      JOIN movd.t_ili2db_basket b ON ((od.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE ((od.genre)::text = ANY (ARRAY[('autre.bord_de_chaussee_a_ventiler'::character varying)::text, ('autre.berme_ilot_a_ventiler'::character varying)::text, ('sentier'::character varying)::text, ('autre.trottoir_a_ventiler'::character varying)::text]))
+  WHERE ((od.genre)::text = ANY (ARRAY[('autre.bord_de_chaussee_a_ventiler'::character varying)::text, ('autre.berme_ilot_a_ventiler'::character varying)::text, ('sentier'::character varying)::text, 'autre.acces_sentier_a_ventiler'::text, ('autre.trottoir_a_ventiler'::character varying)::text]))
 UNION ALL
- SELECT objet_divers_lineaire.genre_id,
-    (objet_divers_lineaire.genre)::character varying(100) AS genre,
-    initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)) AS genre_txt,
+ SELECT (objet_divers_lineaire.genre_id)::integer AS genre_id,
+    objet_divers_lineaire.genre,
+    (initcap(regexp_replace(split_part((objet_divers_lineaire.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
     (objet_divers_lineaire.numcom)::integer AS numcom,
+    objet_divers_lineaire.ufid AS gid_old,
     public.st_curvetoline(objet_divers_lineaire.geometrie) AS geom
    FROM specificite_lausanne.objet_divers_lineaire
   WHERE (objet_divers_lineaire.genre_id = ANY (ARRAY[67, 68, 69, 70, 71, 72, 84, 85, 86]));
@@ -2677,6 +3148,7 @@ CREATE VIEW movd.gc_od_route_pol AS
     (od.genre)::character varying(50) AS genre,
     (initcap(regexp_replace(split_part((od.genre)::text, '.'::text, '-1'::integer), '_'::text, ' '::text, 'g'::text)))::character varying(50) AS genre_txt,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS gid_old,
     public.st_curvetoline(es.geometrie) AS geom
    FROM ((((movd.objet_divers od
      JOIN movd.genre_od g ON (((od.genre)::text = (g.ilicode)::text)))
@@ -2733,34 +3205,6 @@ CREATE TABLE movd.posnom_objet (
 ALTER TABLE movd.posnom_objet OWNER TO gc_transfert_dbo;
 
 --
--- Name: gc_od_text; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
---
-
-CREATE VIEW movd.gc_od_text AS
- SELECT no.nom AS textstring,
-    'OBJ_TXT'::character varying(15) AS type,
-    mod(((450)::numeric - pno.ori), (360)::numeric) AS text_angle,
-    (d.datasetname)::integer AS numcom,
-    pno.pos AS geom
-   FROM (((movd.md01mvdmn95v24objets_divers_nom_objet no
-     JOIN movd.md01mvdmn95v24objets_divers_posnom_objet pno ON ((no.fid = pno.posnom_objet_de)))
-     JOIN movd.t_ili2db_basket b ON ((no.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-UNION ALL
- SELECT no.nom AS textstring,
-    'COUV_SOL'::character varying(15) AS type,
-    mod(((450)::numeric - pno.ori), (360)::numeric) AS text_angle,
-    (d.datasetname)::integer AS numcom,
-    pno.pos AS geom
-   FROM (((movd.nom_objet no
-     JOIN movd.posnom_objet pno ON ((no.fid = pno.posnom_objet_de)))
-     JOIN movd.t_ili2db_basket b ON ((no.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)));
-
-
-ALTER TABLE movd.gc_od_text OWNER TO gc_transfert_dbo;
-
---
 -- Name: objet_divers_texte; Type: TABLE; Schema: specificite_lausanne; Owner: gc_transfert_dbo
 --
 
@@ -2770,24 +3214,61 @@ CREATE TABLE specificite_lausanne.objet_divers_texte (
     type character varying(50),
     text_angle real,
     textstring character varying(100),
-    geometrie public.geometry(Point,2056)
+    geometrie public.geometry(Point,2056),
+    id_type integer
 );
 
 
 ALTER TABLE specificite_lausanne.objet_divers_texte OWNER TO gc_transfert_dbo;
 
 --
+-- Name: gc_od_text; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
+--
+
+CREATE VIEW movd.gc_od_text AS
+ SELECT (d.datasetname)::integer AS numcom,
+    'OBJ_TXT'::character varying(30) AS type,
+    (mod(((450)::numeric - pno.ori), (360)::numeric))::real AS text_angle,
+    (no.nom)::character varying(50) AS textstring,
+    pno.pos AS geom
+   FROM (((movd.md01mvdmn95v24objets_divers_nom_objet no
+     JOIN movd.md01mvdmn95v24objets_divers_posnom_objet pno ON ((no.fid = pno.posnom_objet_de)))
+     JOIN movd.t_ili2db_basket b ON ((no.t_basket = b.fid)))
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+UNION ALL
+ SELECT (d.datasetname)::integer AS numcom,
+    'COUV_SOL'::character varying(30) AS type,
+    (mod(((450)::numeric - pno.ori), (360)::numeric))::real AS text_angle,
+    (no.nom)::character varying(50) AS textstring,
+    pno.pos AS geom
+   FROM (((movd.nom_objet no
+     JOIN movd.posnom_objet pno ON ((no.fid = pno.posnom_objet_de)))
+     JOIN movd.t_ili2db_basket b ON ((no.t_basket = b.fid)))
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+UNION ALL
+ SELECT (objet_divers_texte.numcom)::integer AS numcom,
+    (objet_divers_texte.type)::character varying(30) AS type,
+    objet_divers_texte.text_angle,
+    (objet_divers_texte.textstring)::character varying(50) AS textstring,
+    objet_divers_texte.geometrie AS geom
+   FROM specificite_lausanne.objet_divers_texte
+  WHERE (objet_divers_texte.id_type <> ALL (ARRAY[20031, 20039, 20040, 20041, 20001, 20002, 20003, 20038, 20042, 20043, 20044]));
+
+
+ALTER TABLE movd.gc_od_text OWNER TO gc_transfert_dbo;
+
+--
 -- Name: gc_od_text_projet; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
 --
 
 CREATE VIEW movd.gc_od_text_projet AS
- SELECT (objet_divers_texte.textstring)::character varying(30) AS textstring,
-    (objet_divers_texte.type)::character varying(15) AS type,
+ SELECT (objet_divers_texte.numcom)::integer AS numcom,
+    (objet_divers_texte.type)::character varying(10) AS type,
     (objet_divers_texte.text_angle)::numeric AS text_angle,
-    (objet_divers_texte.numcom)::integer AS numcom,
+    (objet_divers_texte.textstring)::character varying(50) AS textstring,
     objet_divers_texte.geometrie AS geom
    FROM specificite_lausanne.objet_divers_texte
-  WHERE ((objet_divers_texte.type)::text = ANY ((ARRAY['PROJET'::character varying, 'CHANTIER'::character varying, 'DEMOLI'::character varying])::text[]));
+  WHERE ((objet_divers_texte.type)::text = ANY (ARRAY[('PROJET'::character varying)::text, ('CHANTIER'::character varying)::text, ('DEMOLI'::character varying)::text]));
 
 
 ALTER TABLE movd.gc_od_text_projet OWNER TO gc_transfert_dbo;
@@ -2903,105 +3384,123 @@ ALTER TABLE specificite_lausanne.pfa OWNER TO gc_transfert_dbo;
 --
 
 CREATE VIEW movd.gc_pf_pfa AS
- SELECT pfa.numero_point AS no_pt,
-    (regexp_replace((pfa.type)::text, 'Point Fixe Altimétrique'::text, 'PFA'::text))::character varying AS pftype,
-    pfa.x,
-    pfa.y,
+ SELECT (pfa.numero_point)::character varying(10) AS no_pt,
+    (regexp_replace((pfa.type)::text, 'Point Fixe Altimétrique'::text, 'PFA'::text))::character varying(8) AS pftype,
+    pfa.x AS y,
+    pfa.y AS x,
     pfa.z,
     pfa.precision_planimetrique AS prec_pl,
     pfa.precision_altimetrique AS prec_al,
+    (
+        CASE
+            WHEN ((pfa.type)::text ~~ '%1'::text) THEN ((('<a href="https://dav0.bgdi.admin.ch/fpds/Protokolle/LN02AV/1243/VD0200000VDE_'::text || (pfa.numero_point)::text) || '.pdf" target="_blank">fiche</a>'::text))::character varying
+            ELSE NULL::character varying(254)
+        END)::character varying(254) AS lien_vd,
+    (
         CASE
             WHEN (pfa.fiabilite_planimetrique = 1) THEN 'fiable'::text
             WHEN (pfa.fiabilite_planimetrique = 0) THEN 'non-fiable'::text
             ELSE NULL::text
-        END AS fiab_pl,
+        END)::character varying(10) AS fiab_pl,
+    (
         CASE
             WHEN (pfa.fiabilite_altimetrique = 1) THEN 'fiable'::text
             WHEN (pfa.fiabilite_altimetrique = 0) THEN 'non-fiable'::text
             ELSE NULL::text
-        END AS fiab_al,
+        END)::character varying(10) AS fiab_al,
     pfa.situation1 AS sit1,
     pfa.situation2 AS sit2,
     pfa.id_goeland AS idgo_thing,
     (pfa.numcom)::integer AS numcom,
+    pfa.id_goeland AS id_go,
     pfa.geometrie AS geom
    FROM specificite_lausanne.pfa
 UNION ALL
- SELECT p.numero AS no_pt,
-    'PFA1'::character varying AS pftype,
-    public.st_x(p.geometrie) AS x,
-    public.st_y(p.geometrie) AS y,
+ SELECT (p.numero)::character varying(10) AS no_pt,
+    'PFA1'::character varying(8) AS pftype,
+    (public.st_x(p.geometrie))::numeric(10,3) AS y,
+    (public.st_y(p.geometrie))::numeric(10,3) AS x,
     p.geomalt AS z,
-    p.precplan AS prec_pl,
-    p.precalt AS prec_al,
+    ((p.precplan / (100)::numeric))::real AS prec_pl,
+    ((p.precalt / (100)::numeric))::real AS prec_al,
+    (('<a href="https://dav0.bgdi.admin.ch/fpds/Protokolle/LN02AV/1243/VD0200000VDE_'::text || (p.numero)::text) || ('.pdf" target="_blank">fiche</a>'::character varying(254))::text) AS lien_vd,
+    (
         CASE
             WHEN ((p.fiabplan)::text = 'oui'::text) THEN 'fiable'::text
             WHEN ((p.fiabplan)::text = 'non'::text) THEN 'non-fiable'::text
             ELSE NULL::text
-        END AS fiab_pl,
+        END)::character varying(10) AS fiab_pl,
+    (
         CASE
             WHEN ((p.fiabalt)::text = 'oui'::text) THEN 'fiable'::text
             WHEN ((p.fiabalt)::text = 'non'::text) THEN 'non-fiable'::text
             ELSE NULL::text
-        END AS fiab_al,
+        END)::character varying(10) AS fiab_al,
     NULL::character varying(100) AS sit1,
     NULL::character varying(100) AS sit2,
     NULL::integer AS idgo_thing,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS id_go,
     p.geometrie AS geom
    FROM ((movd.pfa1 p
      JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE ((d.datasetname)::text <> '132'::text)
 UNION ALL
- SELECT p.numero AS no_pt,
-    'PFA2'::character varying AS pftype,
-    public.st_x(p.geometrie) AS x,
-    public.st_y(p.geometrie) AS y,
+ SELECT (p.numero)::character varying(10) AS no_pt,
+    'PFA2'::character varying(8) AS pftype,
+    (public.st_x(p.geometrie))::numeric(10,3) AS y,
+    (public.st_y(p.geometrie))::numeric(10,3) AS x,
     p.geomalt AS z,
-    p.precplan AS prec_pl,
-    p.precalt AS prec_al,
+    ((p.precplan / (100)::numeric))::real AS prec_pl,
+    ((p.precalt / (100)::numeric))::real AS prec_al,
+    (('<a href="https://dav0.bgdi.admin.ch/fpds/Protokolle/LN02AV/1243/VD0100000001_'::text || (p.numero)::text) || ('.pdf" target="_blank">fiche</a>'::character varying(254))::text) AS lien_vd,
+    (
         CASE
             WHEN ((p.fiabplan)::text = 'oui'::text) THEN 'fiable'::text
             WHEN ((p.fiabplan)::text = 'non'::text) THEN 'non-fiable'::text
             ELSE NULL::text
-        END AS fiab_pl,
+        END)::character varying(10) AS fiab_pl,
+    (
         CASE
             WHEN ((p.fiabalt)::text = 'oui'::text) THEN 'fiable'::text
             WHEN ((p.fiabalt)::text = 'non'::text) THEN 'non-fiable'::text
             ELSE NULL::text
-        END AS fiab_al,
+        END)::character varying(10) AS fiab_al,
     NULL::character varying(100) AS sit1,
     NULL::character varying(100) AS sit2,
     NULL::integer AS idgo_thing,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS id_go,
     p.geometrie AS geom
    FROM ((movd.pfa2 p
      JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE ((d.datasetname)::text <> '132'::text)
 UNION ALL
- SELECT p.numero AS no_pt,
-    'PFA3'::character varying AS pftype,
-    public.st_x(p.geometrie) AS x,
-    public.st_y(p.geometrie) AS y,
+ SELECT (p.numero)::character varying(10) AS no_pt,
+    'PFA3'::character varying(8) AS pftype,
+    (public.st_x(p.geometrie))::numeric(10,3) AS y,
+    (public.st_y(p.geometrie))::numeric(10,3) AS x,
     p.geomalt AS z,
-    p.precplan AS prec_pl,
-    p.precalt AS prec_al,
+    ((p.precplan / (100)::numeric))::real AS prec_pl,
+    ((p.precalt / (100)::numeric))::real AS prec_al,
+    NULL::character varying(254) AS lien_vd,
+    (
         CASE
             WHEN ((p.fiabplan)::text = 'oui'::text) THEN 'fiable'::text
             WHEN ((p.fiabplan)::text = 'non'::text) THEN 'non-fiable'::text
             ELSE NULL::text
-        END AS fiab_pl,
+        END)::character varying(10) AS fiab_pl,
+    (
         CASE
             WHEN ((p.fiabalt)::text = 'oui'::text) THEN 'fiable'::text
             WHEN ((p.fiabalt)::text = 'non'::text) THEN 'non-fiable'::text
             ELSE NULL::text
-        END AS fiab_al,
+        END)::character varying(10) AS fiab_al,
     NULL::character varying(100) AS sit1,
     NULL::character varying(100) AS sit2,
     NULL::integer AS idgo_thing,
     (d.datasetname)::integer AS numcom,
+    NULL::integer AS id_go,
     p.geometrie AS geom
    FROM ((movd.pfa3 p
      JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
@@ -3143,163 +3642,10 @@ ALTER TABLE specificite_lausanne.pfp OWNER TO gc_transfert_dbo;
 --
 
 CREATE VIEW movd.gc_pf_pfp AS
- SELECT pfp.numero_point AS no_pt,
-    (pfp.type)::character varying(10) AS pftype,
-    pfp.x,
-    pfp.y,
-    pfp.z,
-    pfp.precision_planimetrique AS prec_pl,
-    pfp.precision_altimetrique AS prec_al,
-        CASE
-            WHEN (pfp.fiabilite_planimetrique = 1) THEN 'fiable'::text
-            WHEN (pfp.fiabilite_planimetrique = 0) THEN 'non-fiable'::text
-            ELSE NULL::text
-        END AS fiab_pl,
-        CASE
-            WHEN (pfp.fiabilite_altimetrique = 1) THEN 'fiable'::text
-            WHEN (pfp.fiabilite_altimetrique = 0) THEN 'non-fiable'::text
-            ELSE NULL::text
-        END AS fiab_al,
-        CASE
-            WHEN (pfp.accessible = 1) THEN 'accessible'::text
-            WHEN (pfp.accessible = 0) THEN 'inaccessible'::text
-            ELSE NULL::text
-        END AS accessible,
-    (pfp.signe)::character varying(10) AS signe,
-    pfp.situation1 AS sit1,
-    pfp.situation2 AS sit2,
-    pfp.visible_gnss AS vis_gnss,
-    pfp.id_goeland AS idgo_thing,
-    (pfp.numcom)::integer AS numcom,
-    pfp.geometrie AS geom
-   FROM specificite_lausanne.pfp
-  WHERE (((pfp.type)::text <> ALL (ARRAY['PFP4 cadastre souterrain'::text, 'PFP4'::text, 'PFP technique'::text])) AND ((pfp.id_etat IS NULL) OR (pfp.id_etat <> ALL (ARRAY[20006, 20011]))) AND ((pfp.numero_point)::text <> 'new'::text))
-UNION ALL
- SELECT (p.numero)::character varying(64) AS no_pt,
-    'PFP1'::character varying(10) AS pftype,
-    public.st_x(p.geometrie) AS x,
-    public.st_y(p.geometrie) AS y,
-    p.geomalt AS z,
-    p.precplan AS prec_pl,
-    p.precalt AS prec_al,
-    p.fiabplan AS fiab_pl,
-    p.fiabalt AS fiab_al,
-    NULL::text AS accessible,
-    (p.signe)::character varying(10) AS signe,
-    NULL::character varying AS sit1,
-    NULL::character varying AS sit2,
-    NULL::character varying AS vis_gnss,
-    NULL::integer AS idgo_thing,
-    (d.datasetname)::integer AS numcom,
-    p.geometrie AS geom
-   FROM ((movd.pfp1 p
-     JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE ((d.datasetname)::text <> '132'::text)
-UNION ALL
- SELECT (p.numero)::character varying(64) AS no_pt,
-    'PFP2'::character varying(10) AS pftype,
-    public.st_x(p.geometrie) AS x,
-    public.st_y(p.geometrie) AS y,
-    p.geomalt AS z,
-    p.precplan AS prec_pl,
-    p.precalt AS prec_al,
-    p.fiabplan AS fiab_pl,
-    p.fiabalt AS fiab_al,
-    NULL::text AS accessible,
-    p.signe,
-    NULL::character varying AS sit1,
-    NULL::character varying AS sit2,
-    NULL::character varying AS vis_gnss,
-    NULL::integer AS idgo_thing,
-    (d.datasetname)::integer AS numcom,
-    p.geometrie AS geom
-   FROM ((movd.pfp2 p
-     JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE ((d.datasetname)::text <> '132'::text)
-UNION ALL
- SELECT (p.numero)::character varying(64) AS no_pt,
-    'PFP3'::character varying(10) AS pftype,
-    public.st_x(p.geometrie) AS x,
-    public.st_y(p.geometrie) AS y,
-    p.geomalt AS z,
-    p.precplan AS prec_pl,
-    p.precalt AS prec_al,
-    p.fiabplan AS fiab_pl,
-    p.fiabalt AS fiab_al,
-    NULL::text AS accessible,
-    p.signe,
-    NULL::character varying AS sit1,
-    NULL::character varying AS sit2,
-    NULL::character varying AS vis_gnss,
-    NULL::integer AS idgo_thing,
-    (d.datasetname)::integer AS numcom,
-    p.geometrie AS geom
-   FROM ((movd.pfp3 p
-     JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
-     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
-  WHERE ((d.datasetname)::text <> '132'::text);
-
-
-ALTER TABLE movd.gc_pf_pfp OWNER TO gc_transfert_dbo;
-
---
--- Name: gc_pf_pfp4; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
---
-
-CREATE VIEW movd.gc_pf_pfp4 AS
- SELECT pfp.numero_point AS no_pt,
-    (pfp.type)::character varying(20) AS pftype,
-    pfp.x,
-    pfp.y,
-    pfp.z,
-    pfp.precision_planimetrique AS prec_pl,
-    pfp.precision_altimetrique AS prec_al,
-        CASE
-            WHEN (pfp.fiabilite_planimetrique = 1) THEN 'fiable'::text
-            WHEN ((pfp.fiabilite_planimetrique = 0) OR (pfp.fiabilite_planimetrique IS NULL)) THEN 'non-fiable'::text
-            ELSE NULL::text
-        END AS fiab_pl,
-        CASE
-            WHEN (pfp.fiabilite_altimetrique = 1) THEN 'fiable'::text
-            WHEN ((pfp.fiabilite_altimetrique = 0) OR (pfp.fiabilite_altimetrique IS NULL)) THEN 'non-fiable'::text
-            ELSE NULL::text
-        END AS fiab_al,
-        CASE
-            WHEN (pfp.accessible = 1) THEN 'accessible'::text
-            WHEN (pfp.accessible = 0) THEN 'inaccessible'::text
-            ELSE NULL::text
-        END AS accessible,
-    pfp.signe,
-    pfp.situation1 AS sit1,
-    pfp.situation2 AS sit2,
-    pfp.visible_gnss AS vis_gnss,
-    pfp.id_goeland AS idgo_thing,
-    (pfp.numcom)::integer AS numcom,
-    pfp.geometrie AS geom
-   FROM specificite_lausanne.pfp
-  WHERE (((pfp.type)::text = ANY (ARRAY['PFP'::text, 'PFP4 cadastre souterrain'::text])) AND ((pfp.id_etat <> ALL (ARRAY[20002, 20006, 20010, 20011])) OR (pfp.id_etat IS NULL)));
-
-
-ALTER TABLE movd.gc_pf_pfp4 OWNER TO gc_transfert_dbo;
-
---
--- Name: gc_pf_pfp_tech; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
---
-
-CREATE VIEW movd.gc_pf_pfp_tech AS
- SELECT (pfp.fid)::integer AS fid,
-    pfp.numero_point AS no_pt,
-    (
-        CASE
-            WHEN ((pfp.type)::text ~~ 'PFP %'::text) THEN 'PFP'::text
-            WHEN ((pfp.type)::text ~~ 'PFP3%'::text) THEN 'PFP3'::text
-            WHEN ((pfp.type)::text ~~ 'PFP4%'::text) THEN 'PFP4'::text
-            ELSE NULL::text
-        END)::character varying(10) AS pftype,
-    pfp.x,
-    pfp.y,
+ SELECT (pfp.numero_point)::integer AS no_pt,
+    (pfp.type)::character varying(8) AS pftype,
+    pfp.x AS y,
+    pfp.y AS x,
     pfp.z,
     pfp.precision_planimetrique AS prec_pl,
     pfp.precision_altimetrique AS prec_al,
@@ -3320,14 +3666,267 @@ CREATE VIEW movd.gc_pf_pfp_tech AS
             WHEN (pfp.accessible = 1) THEN 'accessible'::text
             WHEN (pfp.accessible = 0) THEN 'inaccessible'::text
             ELSE NULL::text
-        END)::character varying(12) AS "varchar",
-    (pfp.signe)::character varying(10) AS signe,
-    pfp.situation1,
-    pfp.situation2,
-    pfp.visible_gnss,
-    pfp.id_goeland,
+        END)::character varying(20) AS accessible,
+    (pfp.signe)::character varying(20) AS signe,
+    pfp.situation1 AS sit1,
+    pfp.situation2 AS sit2,
+    (pfp.visible_gnss)::character varying(100) AS vis_gnss,
+    pfp.id_goeland AS idgo_thing,
     (pfp.numcom)::integer AS numcom,
-    pfp.geometrie AS geom,
+    pfp.id_goeland AS id_go,
+    (
+        CASE
+            WHEN (((pfp.type)::text ~~ '%1'::text) OR ((pfp.type)::text ~~ '%2'::text)) THEN ((('<a href="https://data.geo.admin.ch/ch.swisstopo.fixpunkte-lfp1/protokolle/LV03AV/1243/CH0300001243_1243'::text || (pfp.numero_point)::text) || ('.pdf" target="_blank">fiche</a>'::character varying(254))::text))::character varying
+            ELSE NULL::character varying(254)
+        END)::character varying(254) AS lien_vd,
+    pfp.geometrie AS geom
+   FROM specificite_lausanne.pfp
+  WHERE (((pfp.type)::text <> ALL (ARRAY['PFP4 cadastre souterrain'::text, 'PFP4'::text, 'PFP technique'::text])) AND ((pfp.id_etat IS NULL) OR (pfp.id_etat <> ALL (ARRAY[20006, 20011]))) AND ((pfp.numero_point)::text <> 'new'::text))
+UNION ALL
+ SELECT (p.numero)::integer AS no_pt,
+    'PFP1'::character varying(8) AS pftype,
+    (public.st_x(p.geometrie))::numeric(10,3) AS y,
+    (public.st_y(p.geometrie))::numeric(10,3) AS x,
+    p.geomalt AS z,
+    ((p.precplan / (100)::numeric))::real AS prec_pl,
+    ((p.precalt / (100)::numeric))::real AS prec_al,
+    (
+        CASE
+            WHEN ((p.fiabplan)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabplan)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_pl,
+    (
+        CASE
+            WHEN ((p.fiabalt)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabalt)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_al,
+    (p.accessibilite)::character varying(20) AS accessible,
+    (p.signe)::character varying(20) AS signe,
+    NULL::character varying(100) AS sit1,
+    NULL::character varying(100) AS sit2,
+    'inconnue'::character varying(100) AS vis_gnss,
+    NULL::integer AS idgo_thing,
+    (d.datasetname)::integer AS numcom,
+    NULL::integer AS id_go,
+    (('<a href="https://data.geo.admin.ch/ch.swisstopo.fixpunkte-lfp1/protokolle/LV03AV/1243/CH0300001243_1243'::text || (p.numero)::text) || ('.pdf" target="_blank">fiche</a>'::character varying(254))::text) AS lien_vd,
+    p.geometrie AS geom
+   FROM ((movd.pfp1 p
+     JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+UNION ALL
+ SELECT (p.numero)::integer AS no_pt,
+    'PFP2'::character varying(8) AS pftype,
+    (public.st_x(p.geometrie))::numeric(10,3) AS y,
+    (public.st_y(p.geometrie))::numeric(10,3) AS x,
+    p.geomalt AS z,
+    ((p.precplan / (100)::numeric))::real AS prec_pl,
+    ((p.precalt / (100)::numeric))::real AS prec_al,
+    (
+        CASE
+            WHEN ((p.fiabplan)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabplan)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_pl,
+    (
+        CASE
+            WHEN ((p.fiabalt)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabalt)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_al,
+    (p.accessibilite)::character varying(20) AS accessible,
+    (p.signe)::character varying(20) AS signe,
+    NULL::character varying(100) AS sit1,
+    NULL::character varying(100) AS sit2,
+    'inconnue'::character varying(100) AS vis_gnss,
+    NULL::integer AS idgo_thing,
+    (d.datasetname)::integer AS numcom,
+    NULL::integer AS id_go,
+    (('<a href="https://data.geo.admin.ch/ch.swisstopo.fixpunkte-lfp1/protokolle/LV03AV/1243/CH0300001243_1243'::text || (p.numero)::text) || ('.pdf" target="_blank">fiche</a>'::character varying(254))::text) AS lien_vd,
+    p.geometrie AS geom
+   FROM ((movd.pfp2 p
+     JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+UNION ALL
+ SELECT (p.numero)::integer AS no_pt,
+    'PFP3'::character varying(8) AS pftype,
+    (public.st_x(p.geometrie))::numeric(10,3) AS y,
+    (public.st_y(p.geometrie))::numeric(10,3) AS x,
+    p.geomalt AS z,
+    ((p.precplan / (100)::numeric))::real AS prec_pl,
+    ((p.precalt / (100)::numeric))::real AS prec_al,
+    (
+        CASE
+            WHEN ((p.fiabplan)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabplan)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_pl,
+    (
+        CASE
+            WHEN ((p.fiabalt)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabalt)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_al,
+    NULL::character varying(20) AS accessible,
+    (p.signe)::character varying(20) AS signe,
+    NULL::character varying(100) AS sit1,
+    NULL::character varying(100) AS sit2,
+    'inconnue'::character varying(100) AS vis_gnss,
+    NULL::integer AS idgo_thing,
+    (d.datasetname)::integer AS numcom,
+    NULL::integer AS id_go,
+    NULL::character varying(254) AS lien_vd,
+    p.geometrie AS geom
+   FROM ((movd.pfp3 p
+     JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+  WHERE ((d.datasetname)::text <> '132'::text);
+
+
+ALTER TABLE movd.gc_pf_pfp OWNER TO gc_transfert_dbo;
+
+--
+-- Name: gc_pf_pfp4; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
+--
+
+CREATE VIEW movd.gc_pf_pfp4 AS
+ SELECT (pfp.numero_point)::integer AS no_pt,
+    (split_part((pfp.type)::text, ' '::text, 1))::character varying(8) AS pftype,
+    pfp.x AS y,
+    pfp.y AS x,
+    pfp.z,
+    pfp.precision_planimetrique AS prec_pl,
+    pfp.precision_altimetrique AS prec_al,
+    (
+        CASE
+            WHEN (pfp.fiabilite_planimetrique = 1) THEN 'fiable'::text
+            WHEN ((pfp.fiabilite_planimetrique = 0) OR (pfp.fiabilite_planimetrique IS NULL)) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_pl,
+    (
+        CASE
+            WHEN (pfp.fiabilite_altimetrique = 1) THEN 'fiable'::text
+            WHEN ((pfp.fiabilite_altimetrique = 0) OR (pfp.fiabilite_altimetrique IS NULL)) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_al,
+    (
+        CASE
+            WHEN (pfp.accessible = 1) THEN 'accessible'::text
+            WHEN (pfp.accessible = 0) THEN 'inaccessible'::text
+            ELSE NULL::text
+        END)::character varying(20) AS accessible,
+    (pfp.signe)::character varying(20) AS signe,
+    pfp.situation1 AS sit1,
+    pfp.situation2 AS sit2,
+    (
+        CASE
+            WHEN (pfp.visible_gnss IS NULL) THEN 'inconnue'::character varying
+            ELSE pfp.visible_gnss
+        END)::character varying(100) AS vis_gnss,
+    pfp.id_goeland AS idgo_thing,
+    (pfp.numcom)::integer AS numcom,
+    pfp.id_goeland AS id_go,
+    NULL::character varying(254) AS lien_vd,
+    pfp.geometrie AS geom
+   FROM specificite_lausanne.pfp
+  WHERE (((pfp.type)::text = ANY (ARRAY['PFP'::text, 'PFP4 cadastre souterrain'::text])) AND ((pfp.id_etat <> ALL (ARRAY[20002, 20006, 20010, 20011])) OR (pfp.id_etat IS NULL)));
+
+
+ALTER TABLE movd.gc_pf_pfp4 OWNER TO gc_transfert_dbo;
+
+--
+-- Name: pfp4; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.pfp4 (
+    id integer NOT NULL,
+    fk_signe integer,
+    fk_etat integer,
+    date_etat date,
+    remarque character varying,
+    gis_ctrl1 numeric(10,4),
+    gis_ctrl2 numeric(10,4),
+    gis_ctrl3 numeric(10,4),
+    gis_ctrl4 numeric(10,4),
+    gis_ctrl5 numeric(10,4),
+    gis_ctrl_com1 character varying,
+    gis_ctrl_com2 character varying,
+    gis_ctrl_com3 character varying,
+    gis_ctrl_com4 character varying,
+    gis_ctrl_com5 character varying,
+    fid numeric(10,0),
+    numero integer NOT NULL,
+    geom public.geometry(PointZ,2056)
+);
+
+
+ALTER TABLE qsout_public.pfp4 OWNER TO postgres;
+
+--
+-- Name: tbd_signe_pfp4; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.tbd_signe_pfp4 (
+    id integer NOT NULL,
+    short_value character varying,
+    value character varying,
+    active boolean
+);
+
+
+ALTER TABLE qsout_public.tbd_signe_pfp4 OWNER TO postgres;
+
+--
+-- Name: gc_pf_pfp_tech; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
+--
+
+CREATE VIEW movd.gc_pf_pfp_tech AS
+ SELECT (pfp.fid)::integer AS fid,
+    (pfp.numero_point)::integer AS no_pt,
+    (
+        CASE
+            WHEN ((pfp.type)::text ~~ 'PFP %'::text) THEN 'PFP'::text
+            WHEN ((pfp.type)::text ~~ 'PFP3%'::text) THEN 'PFP3'::text
+            WHEN ((pfp.type)::text ~~ 'PFP2%'::text) THEN 'PFP2'::text
+            WHEN ((pfp.type)::text ~~ 'PFP1%'::text) THEN 'PFP1'::text
+            ELSE NULL::text
+        END)::character varying(8) AS pftype,
+    pfp.x AS y,
+    pfp.y AS x,
+    pfp.z,
+    pfp.precision_planimetrique AS prec_pl,
+    pfp.precision_altimetrique AS prec_al,
+    (
+        CASE
+            WHEN (pfp.fiabilite_planimetrique = 1) THEN 'fiable'::text
+            WHEN (pfp.fiabilite_planimetrique = 0) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_pl,
+    (
+        CASE
+            WHEN (pfp.fiabilite_altimetrique = 1) THEN 'fiable'::text
+            WHEN (pfp.fiabilite_altimetrique = 0) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_al,
+    (
+        CASE
+            WHEN (pfp.accessible = 1) THEN 'accessible'::text
+            WHEN (pfp.accessible = 0) THEN 'inaccessible'::text
+            ELSE NULL::text
+        END)::character varying(20) AS accessible,
+    (pfp.signe)::character varying(20) AS signe,
+    pfp.situation1 AS sit1,
+    pfp.situation2 AS sit2,
+    (pfp.visible_gnss)::character varying(100) AS vis_gnss,
+    pfp.id_goeland AS idgo_thing,
+    (pfp.numcom)::integer AS numcom,
+    pfp.id_goeland AS id_go,
+    (
+        CASE
+            WHEN (((pfp.type)::text ~~ '%PFP1'::text) OR ((pfp.type)::text ~~ '%PFP2'::text)) THEN (('<a href="https://data.geo.admin.ch/ch.swisstopo.fixpunkte-lfp1/protokolle/LV03AV/1243/CH0300001243_1243'::text || (pfp.numero_point)::text) || '.pdf" target="_blank">fiche</a>'::text)
+            ELSE NULL::text
+        END)::character varying(254) AS lien_vd,
     pfp.gis_ctrl1,
     pfp.gis_ctrl2,
     pfp.gis_ctrl3,
@@ -3339,9 +3938,187 @@ CREATE VIEW movd.gc_pf_pfp_tech AS
     pfp.gis_com4,
     pfp.gis_com5,
     pfp.alt_tech,
-    pfp.id_etat
+    pfp.id_etat,
+    pfp.geometrie AS geom
    FROM specificite_lausanne.pfp
-  WHERE ((pfp.id_etat <> ALL (ARRAY[20002, 20006, 20010, 20011])) OR (pfp.id_etat IS NULL));
+  WHERE (((pfp.type)::text !~~ 'PFP4%'::text) AND ((pfp.id_etat <> ALL (ARRAY[20002, 20006, 20010, 20011])) OR (pfp.id_etat IS NULL)))
+UNION ALL
+ SELECT (pfp4.fid)::integer AS fid,
+    pfp4.numero AS no_pt,
+    'PFP4'::character varying(8) AS pftype,
+    (public.st_x(pfp4.geom))::numeric(10,3) AS y,
+    (public.st_y(pfp4.geom))::numeric(10,3) AS x,
+    (public.st_z(pfp4.geom))::numeric(7,3) AS z,
+    1 AS prec_pl,
+    1 AS prec_al,
+    'fiable'::character varying(10) AS fiab_pl,
+    'fiable'::character varying(10) AS fiab_al,
+    'inconnu'::character varying(20) AS accessible,
+    (s.value)::character varying(20) AS signe,
+    NULL::character varying(100) AS sit1,
+    NULL::character varying(100) AS sit2,
+    NULL::character varying(100) AS vis_gnss,
+    NULL::integer AS idgo_thing,
+    132 AS numcom,
+    NULL::integer AS id_go,
+    NULL::character varying(254) AS lien_vd,
+    (pfp4.gis_ctrl1)::real AS gis_ctrl1,
+    (pfp4.gis_ctrl2)::real AS gis_ctrl2,
+    (pfp4.gis_ctrl3)::real AS gis_ctrl3,
+    (pfp4.gis_ctrl4)::real AS gis_ctrl4,
+    (pfp4.gis_ctrl5)::real AS gis_ctrl5,
+    (pfp4.gis_ctrl_com1)::character varying(100) AS gis_com1,
+    (pfp4.gis_ctrl_com2)::character varying(100) AS gis_com2,
+    (pfp4.gis_ctrl_com3)::character varying(100) AS gis_com3,
+    (pfp4.gis_ctrl_com4)::character varying(100) AS gis_com4,
+    (pfp4.gis_ctrl_com5)::character varying(100) AS gis_com5,
+    NULL::real AS alt_tech,
+    pfp4.fk_etat AS id_etat,
+    pfp4.geom
+   FROM (qsout_public.pfp4
+     JOIN qsout_public.tbd_signe_pfp4 s ON ((pfp4.fk_signe = s.id)))
+  WHERE ((pfp4.fk_etat <> ALL (ARRAY[20002, 20006, 20010, 20011])) OR (pfp4.fk_etat IS NULL))
+UNION ALL
+ SELECT (p.fid)::integer AS fid,
+    (p.numero)::integer AS no_pt,
+    'PFP1'::character varying(8) AS pftype,
+    (public.st_x(p.geometrie))::numeric(10,3) AS y,
+    (public.st_y(p.geometrie))::numeric(10,3) AS x,
+    p.geomalt AS z,
+    ((p.precplan / (100)::numeric))::real AS prec_pl,
+    ((p.precalt / (100)::numeric))::real AS prec_al,
+    (
+        CASE
+            WHEN ((p.fiabplan)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabplan)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_pl,
+    (
+        CASE
+            WHEN ((p.fiabalt)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabalt)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_al,
+    (p.accessibilite)::character varying(20) AS accessible,
+    (p.signe)::character varying(20) AS signe,
+    NULL::character varying(100) AS sit1,
+    NULL::character varying(100) AS sit2,
+    'inconnue'::character varying(100) AS vis_gnss,
+    NULL::integer AS idgo_thing,
+    (d.datasetname)::integer AS numcom,
+    NULL::integer AS id_go,
+    ((('<a href="https://data.geo.admin.ch/ch.swisstopo.fixpunkte-lfp1/protokolle/LV03AV/1243/CH0300001243_1243'::text || (p.numero)::text) || '.pdf" target="_blank">fiche</a>'::text))::character varying(254) AS lien_vd,
+    NULL::real AS gis_ctrl1,
+    NULL::real AS gis_ctrl2,
+    NULL::real AS gis_ctrl3,
+    NULL::real AS gis_ctrl4,
+    NULL::real AS gis_ctrl5,
+    NULL::character varying(100) AS gis_com1,
+    NULL::character varying(100) AS gis_com2,
+    NULL::character varying(100) AS gis_com3,
+    NULL::character varying(100) AS gis_com4,
+    NULL::character varying(100) AS gis_com5,
+    NULL::real AS alt_tech,
+    NULL::integer AS id_etat,
+    p.geometrie AS geom
+   FROM ((movd.pfp1 p
+     JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+  WHERE ((d.datasetname)::text = ANY (ARRAY[('130'::character varying)::text, ('135'::character varying)::text, '137'::text]))
+UNION ALL
+ SELECT (p.fid)::integer AS fid,
+    (p.numero)::integer AS no_pt,
+    'PFP1'::character varying(8) AS pftype,
+    (public.st_x(p.geometrie))::numeric(10,3) AS y,
+    (public.st_y(p.geometrie))::numeric(10,3) AS x,
+    p.geomalt AS z,
+    ((p.precplan / (100)::numeric))::real AS prec_pl,
+    ((p.precalt / (100)::numeric))::real AS prec_al,
+    (
+        CASE
+            WHEN ((p.fiabplan)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabplan)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_pl,
+    (
+        CASE
+            WHEN ((p.fiabalt)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabalt)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_al,
+    (p.accessibilite)::character varying(20) AS accessible,
+    (p.signe)::character varying(20) AS signe,
+    NULL::character varying(100) AS sit1,
+    NULL::character varying(100) AS sit2,
+    'inconnue'::character varying(100) AS vis_gnss,
+    NULL::integer AS idgo_thing,
+    (d.datasetname)::integer AS numcom,
+    NULL::integer AS id_go,
+    ((('<a href="https://data.geo.admin.ch/ch.swisstopo.fixpunkte-lfp1/protokolle/LV03AV/1243/CH0300001243_1243'::text || (p.numero)::text) || '.pdf" target="_blank">fiche</a>'::text))::character varying(254) AS lien_vd,
+    NULL::real AS gis_ctrl1,
+    NULL::real AS gis_ctrl2,
+    NULL::real AS gis_ctrl3,
+    NULL::real AS gis_ctrl4,
+    NULL::real AS gis_ctrl5,
+    NULL::character varying(100) AS gis_com1,
+    NULL::character varying(100) AS gis_com2,
+    NULL::character varying(100) AS gis_com3,
+    NULL::character varying(100) AS gis_com4,
+    NULL::character varying(100) AS gis_com5,
+    NULL::real AS alt_tech,
+    NULL::integer AS id_etat,
+    p.geometrie AS geom
+   FROM ((movd.pfp2 p
+     JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+  WHERE ((d.datasetname)::text = ANY (ARRAY[('130'::character varying)::text, ('135'::character varying)::text, '137'::text]))
+UNION ALL
+ SELECT (p.fid)::integer AS fid,
+    (p.numero)::integer AS no_pt,
+    'PFP1'::character varying(8) AS pftype,
+    (public.st_x(p.geometrie))::numeric(10,3) AS y,
+    (public.st_y(p.geometrie))::numeric(10,3) AS x,
+    p.geomalt AS z,
+    ((p.precplan / (100)::numeric))::real AS prec_pl,
+    ((p.precalt / (100)::numeric))::real AS prec_al,
+    (
+        CASE
+            WHEN ((p.fiabplan)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabplan)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_pl,
+    (
+        CASE
+            WHEN ((p.fiabalt)::text = 'oui'::text) THEN 'fiable'::text
+            WHEN ((p.fiabalt)::text = 'non'::text) THEN 'non-fiable'::text
+            ELSE NULL::text
+        END)::character varying(10) AS fiab_al,
+    NULL::character varying(20) AS accessible,
+    (p.signe)::character varying(20) AS signe,
+    NULL::character varying(100) AS sit1,
+    NULL::character varying(100) AS sit2,
+    'inconnue'::character varying(100) AS vis_gnss,
+    NULL::integer AS idgo_thing,
+    (d.datasetname)::integer AS numcom,
+    NULL::integer AS id_go,
+    ((('<a href="https://data.geo.admin.ch/ch.swisstopo.fixpunkte-lfp1/protokolle/LV03AV/1243/CH0300001243_1243'::text || (p.numero)::text) || '.pdf" target="_blank">fiche</a>'::text))::character varying(254) AS lien_vd,
+    NULL::real AS gis_ctrl1,
+    NULL::real AS gis_ctrl2,
+    NULL::real AS gis_ctrl3,
+    NULL::real AS gis_ctrl4,
+    NULL::real AS gis_ctrl5,
+    NULL::character varying(100) AS gis_com1,
+    NULL::character varying(100) AS gis_com2,
+    NULL::character varying(100) AS gis_com3,
+    NULL::character varying(100) AS gis_com4,
+    NULL::character varying(100) AS gis_com5,
+    NULL::real AS alt_tech,
+    NULL::integer AS id_etat,
+    p.geometrie AS geom
+   FROM ((movd.pfp3 p
+     JOIN movd.t_ili2db_basket b ON ((p.t_basket = b.fid)))
+     JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)))
+  WHERE ((d.datasetname)::text = ANY (ARRAY[('130'::character varying)::text, ('135'::character varying)::text, '137'::text]));
 
 
 ALTER TABLE movd.gc_pf_pfp_tech OWNER TO gc_transfert_dbo;
@@ -3357,7 +4134,9 @@ CREATE TABLE specificite_lausanne.pfp_label_reperage (
     text_size real,
     text_angle real,
     statut character varying(50),
-    geometrie public.geometry(Point,2056)
+    geometrie public.geometry(Point,2056),
+    text_color character varying(10),
+    type_label character varying(10)
 );
 
 
@@ -3369,12 +4148,18 @@ ALTER TABLE specificite_lausanne.pfp_label_reperage OWNER TO gc_transfert_dbo;
 
 CREATE VIEW movd.gc_pfp_label_reperage AS
  SELECT pfp_label_reperage.fid,
-    pfp_label_reperage.fid_pfp,
-    pfp_label_reperage.text_value,
+    (pfp_label_reperage.text_value)::character varying(100) AS text_value,
     pfp_label_reperage.text_size,
     pfp_label_reperage.text_angle,
-    pfp_label_reperage.statut,
+    (pfp_label_reperage.text_color)::character varying(20) AS text_color,
+    (pfp_label_reperage.type_label)::character varying(100) AS type,
+    (
+        CASE
+            WHEN ((pfp_label_reperage.statut)::text = 'En ordre'::text) THEN 1
+            ELSE 0
+        END)::character varying(1) AS valid,
     132 AS numcom,
+    NULL::real AS idgothing,
     pfp_label_reperage.geometrie AS geom
    FROM specificite_lausanne.pfp_label_reperage;
 
@@ -3403,7 +4188,12 @@ CREATE VIEW movd.gc_pfp_line_reperage AS
  SELECT 132 AS numcom,
     pfp_line_reperage.fid,
     pfp_line_reperage.fid_pfp,
-    pfp_line_reperage.statut,
+        CASE
+            WHEN ((pfp_line_reperage.statut)::text = 'En ordre'::text) THEN 1
+            ELSE 0
+        END AS valid,
+    NULL::character varying(20) AS date_maj,
+    NULL::real AS idgo_thing,
     public.st_curvetoline(pfp_line_reperage.geometrie) AS geom
    FROM specificite_lausanne.pfp_line_reperage;
 
@@ -3431,7 +4221,12 @@ ALTER TABLE specificite_lausanne.pfp_point_reperage OWNER TO gc_transfert_dbo;
 CREATE VIEW movd.gc_pfp_point_reperage AS
  SELECT pfp_point_reperage.fid,
     pfp_point_reperage.fid_pfp,
-    pfp_point_reperage.statut,
+    (
+        CASE
+            WHEN ((pfp_point_reperage.statut)::text = 'En ordre'::text) THEN 1
+            ELSE 0
+        END)::character varying(1) AS valid,
+    NULL::real AS idgo_thing,
     132 AS numcom,
     pfp_point_reperage.geometrie AS geom
    FROM specificite_lausanne.pfp_point_reperage;
@@ -3457,14 +4252,14 @@ CREATE TABLE movd.geometrie_plan (
 ALTER TABLE movd.geometrie_plan OWNER TO gc_transfert_dbo;
 
 --
--- Name: gc_pl_plan_lim; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
+-- Name: gc_rp_plan_lim; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
 --
 
-CREATE VIEW movd.gc_pl_plan_lim AS
- SELECT NULL::text AS fidc,
-    p.identdn AS numbernd,
-    p.codeplan AS plan_code,
-    p.numero AS plan_number,
+CREATE VIEW movd.gc_rp_plan_lim AS
+ SELECT (g.fid)::integer AS fidc,
+    (p.identdn)::character varying(20) AS numbernd,
+    (p.codeplan)::character varying(20) AS plan_code,
+    (p.numero)::character varying(20) AS plan_number,
     (d.datasetname)::integer AS numcom,
     public.st_curvetoline(g.geometrie) AS geom
    FROM (((movd.aplan p
@@ -3473,48 +4268,7 @@ CREATE VIEW movd.gc_pl_plan_lim AS
      JOIN movd.t_ili2db_dataset d ON ((b.dataset = d.fid)));
 
 
-ALTER TABLE movd.gc_pl_plan_lim OWNER TO gc_transfert_dbo;
-
---
--- Name: localisation_place; Type: TABLE; Schema: specificite_lausanne; Owner: gc_transfert_dbo
---
-
-CREATE TABLE specificite_lausanne.localisation_place (
-    fid integer,
-    location_number character varying(25),
-    ufid integer,
-    code_rue smallint,
-    id_rue integer,
-    geometrie public.geometry(Geometry,2056)
-);
-
-
-ALTER TABLE specificite_lausanne.localisation_place OWNER TO gc_transfert_dbo;
-
---
--- Name: gc_place_rue; Type: VIEW; Schema: movd; Owner: gc_transfert_dbo
---
-
-CREATE VIEW movd.gc_place_rue AS
- SELECT g.idthing,
-    g.longname,
-    g.shortname,
-    g.estrid,
-    g.coderue,
-    ts.description AS typestreet,
-    g.datedecisionmuni AS datemuni,
-    132 AS numcom,
-    concat('#', lpad(to_hex((round((random() * ((2)::double precision ^ (24)::double precision))))::integer), 6)) AS color_html,
-    COALESCE(public.st_difference(p.geometrie, b.geom), p.geometrie) AS geom
-   FROM (((goeland.thi_street g
-     JOIN specificite_lausanne.localisation_place p ON ((g.coderue = p.code_rue)))
-     JOIN goeland.type_thi_street ts ON ((g.idtypestreet = ts.idtypestreet)))
-     CROSS JOIN LATERAL ( SELECT public.st_union(s.geometrie) AS geom
-           FROM movd.surfacecs s
-          WHERE (((s.genre)::text = 'batiment'::text) AND public.st_intersects(s.geometrie, p.geometrie))) b);
-
-
-ALTER TABLE movd.gc_place_rue OWNER TO gc_transfert_dbo;
+ALTER TABLE movd.gc_rp_plan_lim OWNER TO gc_transfert_dbo;
 
 --
 -- Name: genre_croix; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
@@ -3802,23 +4556,6 @@ CREATE TABLE movd.lieu_denomme (
 
 
 ALTER TABLE movd.lieu_denomme OWNER TO gc_transfert_dbo;
-
---
--- Name: lieudit; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
---
-
-CREATE TABLE movd.lieudit (
-    fid bigint DEFAULT nextval('movd.t_ili2db_seq'::regclass) NOT NULL,
-    t_basket bigint NOT NULL,
-    t_ili_tid character varying(200),
-    nom character varying(40),
-    ufid bigint,
-    origine bigint,
-    CONSTRAINT lieudit_ufid_check CHECK (((ufid >= 0) AND (ufid <= '9999999999'::bigint)))
-);
-
-
-ALTER TABLE movd.lieudit OWNER TO gc_transfert_dbo;
 
 --
 -- Name: ligne_coordonnees; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
@@ -5295,29 +6032,6 @@ CREATE TABLE movd.posindication_coord (
 ALTER TABLE movd.posindication_coord OWNER TO gc_transfert_dbo;
 
 --
--- Name: poslieudit; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
---
-
-CREATE TABLE movd.poslieudit (
-    fid bigint DEFAULT nextval('movd.t_ili2db_seq'::regclass) NOT NULL,
-    t_basket bigint NOT NULL,
-    t_ili_tid character varying(200),
-    pos public.geometry(Point,2056),
-    ori numeric(4,1),
-    hali character varying(255),
-    vali character varying(255),
-    grandeur character varying(255),
-    astyle character varying(255),
-    ufid bigint,
-    poslieudit_de bigint,
-    CONSTRAINT poslieudit_ori_check CHECK (((ori >= 0.0) AND (ori <= 399.9))),
-    CONSTRAINT poslieudit_ufid_check CHECK (((ufid >= 0) AND (ufid <= '9999999999'::bigint)))
-);
-
-
-ALTER TABLE movd.poslieudit OWNER TO gc_transfert_dbo;
-
---
 -- Name: posniveau_tolerance; Type: TABLE; Schema: movd; Owner: gc_transfert_dbo
 --
 
@@ -6264,6 +6978,1783 @@ CREATE TABLE movd.valignment (
 ALTER TABLE movd.valignment OWNER TO gc_transfert_dbo;
 
 --
+-- Name: sql_statement; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sql_statement (
+    ogc_fid integer NOT NULL,
+    id bigint NOT NULL,
+    id_lc character varying(255) NOT NULL,
+    categorie character varying(250) NOT NULL,
+    qualite character varying(250) NOT NULL,
+    foi_publ character varying(250),
+    plan character varying(50),
+    radiee character varying(250) NOT NULL,
+    num_dgmr character varying(50),
+    date_appro date NOT NULL,
+    nom_plan character varying(150) NOT NULL,
+    geometrie public.geometry(Geometry,2056) NOT NULL
+);
+
+
+ALTER TABLE public.sql_statement OWNER TO postgres;
+
+--
+-- Name: sql_statement_ogc_fid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sql_statement_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sql_statement_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: sql_statement_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sql_statement_ogc_fid_seq OWNED BY public.sql_statement.ogc_fid;
+
+
+--
+-- Name: chantier; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.chantier (
+    id integer NOT NULL,
+    commentaire character varying(100),
+    debut date,
+    fin date,
+    adresse character varying(100),
+    chantier_termine boolean NOT NULL,
+    chantier_controle boolean NOT NULL,
+    id_goeland character varying,
+    chantier_attente boolean NOT NULL,
+    id_gap integer,
+    remarque character varying,
+    fk_commune integer,
+    geom public.geometry(MultiPolygon,2056)
+);
+
+
+ALTER TABLE qsout_public.chantier OWNER TO postgres;
+
+--
+-- Name: chantier_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.chantier_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.chantier_id_seq OWNER TO postgres;
+
+--
+-- Name: chantier_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.chantier_id_seq OWNED BY qsout_public.chantier.id;
+
+
+--
+-- Name: completement; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.completement (
+    id integer NOT NULL,
+    date_demande date,
+    date_completement date,
+    demandeur character varying,
+    remarque character varying,
+    reseau_complete character varying,
+    last_user character varying(30),
+    geom public.geometry(Polygon,2056)
+);
+
+
+ALTER TABLE qsout_public.completement OWNER TO postgres;
+
+--
+-- Name: completement_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.completement_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.completement_id_seq OWNER TO postgres;
+
+--
+-- Name: completement_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.completement_id_seq OWNED BY qsout_public.completement.id;
+
+
+--
+-- Name: feuilles200; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.feuilles200 (
+    id integer NOT NULL,
+    numero character varying(10) NOT NULL,
+    titre1 character varying(50),
+    titre2 character varying(50),
+    geom public.geometry(Polygon,2056)
+);
+
+
+ALTER TABLE qsout_public.feuilles200 OWNER TO postgres;
+
+--
+-- Name: feuilles200_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.feuilles200_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.feuilles200_id_seq OWNER TO postgres;
+
+--
+-- Name: feuilles200_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.feuilles200_id_seq OWNED BY qsout_public.feuilles200.id;
+
+
+--
+-- Name: intervenant; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.intervenant (
+    id integer NOT NULL,
+    nom character varying(50),
+    prenom character varying(50),
+    tel character varying(20),
+    email character varying(100),
+    fk_service integer,
+    fk_entreprise integer
+);
+
+
+ALTER TABLE qsout_public.intervenant OWNER TO postgres;
+
+--
+-- Name: intervenant_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.intervenant_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.intervenant_id_seq OWNER TO postgres;
+
+--
+-- Name: intervenant_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.intervenant_id_seq OWNED BY qsout_public.intervenant.id;
+
+
+--
+-- Name: intervention; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.intervention (
+    id integer NOT NULL,
+    date date NOT NULL,
+    heure time without time zone,
+    duree real,
+    fk_operateur integer,
+    maj date,
+    fk_operateur_maj integer,
+    fk_genreintervention integer,
+    echec boolean,
+    commentaire character varying,
+    fk_chantier integer,
+    fk_methode integer,
+    fk_demande integer,
+    fk_aide integer
+);
+
+
+ALTER TABLE qsout_public.intervention OWNER TO postgres;
+
+--
+-- Name: intervention_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.intervention_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.intervention_id_seq OWNER TO postgres;
+
+--
+-- Name: intervention_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.intervention_id_seq OWNED BY qsout_public.intervention.id;
+
+
+--
+-- Name: layer_styles; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.layer_styles (
+    id integer NOT NULL,
+    f_table_catalog character varying,
+    f_table_schema character varying,
+    f_table_name character varying,
+    f_geometry_column character varying,
+    stylename character varying(30),
+    styleqml character varying,
+    stylesld character varying,
+    useasdefault boolean,
+    description character varying,
+    owner character varying(30),
+    ui character varying,
+    update_time timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE qsout_public.layer_styles OWNER TO postgres;
+
+--
+-- Name: layer_styles_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.layer_styles_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.layer_styles_id_seq OWNER TO postgres;
+
+--
+-- Name: layer_styles_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.layer_styles_id_seq OWNED BY qsout_public.layer_styles.id;
+
+
+--
+-- Name: list_codepoint; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.list_codepoint (
+    id integer NOT NULL,
+    nom character varying(100),
+    reseau_ass character varying(10),
+    active boolean NOT NULL
+);
+
+
+ALTER TABLE qsout_public.list_codepoint OWNER TO postgres;
+
+--
+-- Name: list_codepoint_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.list_codepoint_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.list_codepoint_id_seq OWNER TO postgres;
+
+--
+-- Name: list_codepoint_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.list_codepoint_id_seq OWNED BY qsout_public.list_codepoint.id;
+
+
+--
+-- Name: list_entreprise; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.list_entreprise (
+    id integer NOT NULL,
+    nom character varying(50),
+    adresse character varying(50),
+    numero character varying(10),
+    complement character varying(50),
+    npa character varying(5),
+    commune character varying(50),
+    telephone character varying(20)
+);
+
+
+ALTER TABLE qsout_public.list_entreprise OWNER TO postgres;
+
+--
+-- Name: list_entreprise_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.list_entreprise_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.list_entreprise_id_seq OWNER TO postgres;
+
+--
+-- Name: list_entreprise_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.list_entreprise_id_seq OWNED BY qsout_public.list_entreprise.id;
+
+
+--
+-- Name: list_equipe; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.list_equipe (
+    id integer NOT NULL,
+    nom character varying(20)
+);
+
+
+ALTER TABLE qsout_public.list_equipe OWNER TO postgres;
+
+--
+-- Name: list_equipe_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.list_equipe_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.list_equipe_id_seq OWNER TO postgres;
+
+--
+-- Name: list_equipe_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.list_equipe_id_seq OWNED BY qsout_public.list_equipe.id;
+
+
+--
+-- Name: list_fonction; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.list_fonction (
+    id integer NOT NULL,
+    nom character varying
+);
+
+
+ALTER TABLE qsout_public.list_fonction OWNER TO postgres;
+
+--
+-- Name: list_fonction_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.list_fonction_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.list_fonction_id_seq OWNER TO postgres;
+
+--
+-- Name: list_fonction_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.list_fonction_id_seq OWNED BY qsout_public.list_fonction.id;
+
+
+--
+-- Name: list_genredemande; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.list_genredemande (
+    id integer NOT NULL,
+    nom character varying(50)
+);
+
+
+ALTER TABLE qsout_public.list_genredemande OWNER TO postgres;
+
+--
+-- Name: list_genredemande_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.list_genredemande_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.list_genredemande_id_seq OWNER TO postgres;
+
+--
+-- Name: list_genredemande_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.list_genredemande_id_seq OWNED BY qsout_public.list_genredemande.id;
+
+
+--
+-- Name: list_genrepoint; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.list_genrepoint (
+    id integer NOT NULL,
+    nom character varying
+);
+
+
+ALTER TABLE qsout_public.list_genrepoint OWNER TO postgres;
+
+--
+-- Name: list_genrepoint_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.list_genrepoint_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.list_genrepoint_id_seq OWNER TO postgres;
+
+--
+-- Name: list_genrepoint_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.list_genrepoint_id_seq OWNED BY qsout_public.list_genrepoint.id;
+
+
+--
+-- Name: list_methode; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.list_methode (
+    id integer NOT NULL,
+    nom character varying
+);
+
+
+ALTER TABLE qsout_public.list_methode OWNER TO postgres;
+
+--
+-- Name: list_methode_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.list_methode_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.list_methode_id_seq OWNER TO postgres;
+
+--
+-- Name: list_methode_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.list_methode_id_seq OWNED BY qsout_public.list_methode.id;
+
+
+--
+-- Name: list_service; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.list_service (
+    id integer NOT NULL,
+    nom character varying(100),
+    abrevation character varying(10)
+);
+
+
+ALTER TABLE qsout_public.list_service OWNER TO postgres;
+
+--
+-- Name: list_service_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.list_service_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.list_service_id_seq OWNER TO postgres;
+
+--
+-- Name: list_service_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.list_service_id_seq OWNED BY qsout_public.list_service.id;
+
+
+--
+-- Name: list_typeprisme; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.list_typeprisme (
+    id integer NOT NULL,
+    nom character varying,
+    constante_abs numeric(10,1),
+    constante_leica numeric(10,1)
+);
+
+
+ALTER TABLE qsout_public.list_typeprisme OWNER TO postgres;
+
+--
+-- Name: list_typeprisme_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.list_typeprisme_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.list_typeprisme_id_seq OWNER TO postgres;
+
+--
+-- Name: list_typeprisme_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.list_typeprisme_id_seq OWNED BY qsout_public.list_typeprisme.id;
+
+
+--
+-- Name: nextpoint; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.nextpoint (
+    ogc_fid integer NOT NULL,
+    max integer
+);
+
+
+ALTER TABLE qsout_public.nextpoint OWNER TO postgres;
+
+--
+-- Name: nextpoint_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.nextpoint_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.nextpoint_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: nextpoint_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.nextpoint_ogc_fid_seq OWNED BY qsout_public.nextpoint.ogc_fid;
+
+
+--
+-- Name: nn_chantierintervenant; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.nn_chantierintervenant (
+    id integer NOT NULL,
+    fk_chantier integer,
+    fk_intervenant integer,
+    fk_fonction integer
+);
+
+
+ALTER TABLE qsout_public.nn_chantierintervenant OWNER TO postgres;
+
+--
+-- Name: nn_chantierintervenant_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.nn_chantierintervenant_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.nn_chantierintervenant_id_seq OWNER TO postgres;
+
+--
+-- Name: nn_chantierintervenant_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.nn_chantierintervenant_id_seq OWNED BY qsout_public.nn_chantierintervenant.id;
+
+
+--
+-- Name: nn_chantierservice; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.nn_chantierservice (
+    id integer NOT NULL,
+    fk_chantier integer,
+    fk_service integer
+);
+
+
+ALTER TABLE qsout_public.nn_chantierservice OWNER TO postgres;
+
+--
+-- Name: nn_chantierservice_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.nn_chantierservice_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.nn_chantierservice_id_seq OWNER TO postgres;
+
+--
+-- Name: nn_chantierservice_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.nn_chantierservice_id_seq OWNED BY qsout_public.nn_chantierservice.id;
+
+
+--
+-- Name: nn_demandeservice; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.nn_demandeservice (
+    id integer NOT NULL,
+    fk_demande integer,
+    fk_service integer
+);
+
+
+ALTER TABLE qsout_public.nn_demandeservice OWNER TO postgres;
+
+--
+-- Name: nn_demandeservice_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.nn_demandeservice_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.nn_demandeservice_id_seq OWNER TO postgres;
+
+--
+-- Name: nn_demandeservice_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.nn_demandeservice_id_seq OWNED BY qsout_public.nn_demandeservice.id;
+
+
+--
+-- Name: operateur; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.operateur (
+    id integer NOT NULL,
+    nom character varying(50),
+    prenom character varying(50),
+    nomutilisateur character varying(5),
+    tel character varying(20),
+    email character varying(100),
+    login character varying(30),
+    fk_equipe integer
+);
+
+
+ALTER TABLE qsout_public.operateur OWNER TO postgres;
+
+--
+-- Name: operateur_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.operateur_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.operateur_id_seq OWNER TO postgres;
+
+--
+-- Name: operateur_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.operateur_id_seq OWNED BY qsout_public.operateur.id;
+
+
+--
+-- Name: pfp4_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.pfp4_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.pfp4_id_seq OWNER TO postgres;
+
+--
+-- Name: pfp4_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.pfp4_id_seq OWNED BY qsout_public.pfp4.id;
+
+
+--
+-- Name: point_leve; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.point_leve (
+    ogc_fid integer NOT NULL,
+    id integer NOT NULL,
+    numero character varying(15),
+    fk_genrepoint integer,
+    fk_codepoint integer,
+    fk_demande integer,
+    commentaire character varying,
+    angle_hz numeric(10,5),
+    angle_vz numeric(10,5),
+    d_inclinee numeric(10,5),
+    h_canne numeric(5,3),
+    h_station numeric(5,3),
+    cq_1d numeric(7,2),
+    cq_2d numeric(7,2),
+    fk_intervention integer,
+    modif_geom boolean,
+    depl_angle numeric(5,3),
+    depl_dist numeric(5,3),
+    e_origine numeric(10,3),
+    n_origine numeric(10,3),
+    h_origine numeric(7,3),
+    dateheure timestamp with time zone,
+    typeprisme character varying,
+    typemes character varying,
+    station character varying,
+    annot_1 character varying,
+    annot_2 character varying,
+    non_utilise boolean NOT NULL,
+    archive boolean NOT NULL,
+    geom public.geometry(Geometry,2056)
+);
+
+
+ALTER TABLE qsout_public.point_leve OWNER TO postgres;
+
+--
+-- Name: point_leve_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.point_leve_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.point_leve_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: point_leve_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.point_leve_ogc_fid_seq OWNED BY qsout_public.point_leve.ogc_fid;
+
+
+--
+-- Name: point_mesure; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.point_mesure (
+    id integer NOT NULL,
+    numero character varying(10),
+    fk_genrepoint integer,
+    fk_codepoint integer,
+    fk_demande integer,
+    commentaire character varying,
+    angle_hz numeric(10,5),
+    angle_vz numeric(10,5),
+    d_inclinee numeric(10,5),
+    h_canne numeric(5,3),
+    h_station numeric(5,3),
+    cq_1d numeric(7,2),
+    cq_2d numeric(7,2),
+    fk_intervention integer,
+    modif_geom boolean,
+    depl_angle numeric(5,3),
+    depl_dist numeric(5,3),
+    e_origine numeric(10,3),
+    n_origine numeric(10,3),
+    h_origine numeric(7,3),
+    dateheure timestamp with time zone,
+    typeprisme character varying,
+    typemes character varying,
+    station character varying,
+    annot_1 character varying,
+    annot_2 character varying,
+    non_utilise boolean NOT NULL,
+    source character varying,
+    archive boolean,
+    geom public.geometry(PointZ,2056)
+);
+
+
+ALTER TABLE qsout_public.point_mesure OWNER TO postgres;
+
+--
+-- Name: point_mesure_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.point_mesure_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.point_mesure_id_seq OWNER TO postgres;
+
+--
+-- Name: point_mesure_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.point_mesure_id_seq OWNED BY qsout_public.point_mesure.id;
+
+
+--
+-- Name: secteur_leve; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.secteur_leve (
+    id integer NOT NULL,
+    nom character varying(20),
+    equipe smallint,
+    fluides character varying(50),
+    commune character varying(50),
+    commune_no integer,
+    commune_liste boolean NOT NULL,
+    geom public.geometry(Polygon,2056)
+);
+
+
+ALTER TABLE qsout_public.secteur_leve OWNER TO postgres;
+
+--
+-- Name: secteur_leve_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.secteur_leve_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.secteur_leve_id_seq OWNER TO postgres;
+
+--
+-- Name: secteur_leve_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.secteur_leve_id_seq OWNED BY qsout_public.secteur_leve.id;
+
+
+--
+-- Name: tbd_etat_pfp4; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.tbd_etat_pfp4 (
+    id integer NOT NULL,
+    short_value character varying,
+    value character varying,
+    active boolean
+);
+
+
+ALTER TABLE qsout_public.tbd_etat_pfp4 OWNER TO postgres;
+
+--
+-- Name: tbd_etat_pfp4_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.tbd_etat_pfp4_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.tbd_etat_pfp4_id_seq OWNER TO postgres;
+
+--
+-- Name: tbd_etat_pfp4_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.tbd_etat_pfp4_id_seq OWNED BY qsout_public.tbd_etat_pfp4.id;
+
+
+--
+-- Name: tbd_signe_pfp4_id_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.tbd_signe_pfp4_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.tbd_signe_pfp4_id_seq OWNER TO postgres;
+
+--
+-- Name: tbd_signe_pfp4_id_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.tbd_signe_pfp4_id_seq OWNED BY qsout_public.tbd_signe_pfp4.id;
+
+
+--
+-- Name: view_chantier_methode; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.view_chantier_methode (
+    ogc_fid integer NOT NULL,
+    id_chantier integer,
+    adresse_chantier character varying(100),
+    chantier_termine boolean,
+    gnss bigint,
+    st_fixe bigint,
+    st_libre bigint,
+    centroide_chantier public.geometry(Geometry,2056)
+);
+
+
+ALTER TABLE qsout_public.view_chantier_methode OWNER TO postgres;
+
+--
+-- Name: view_chantier_methode_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.view_chantier_methode_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.view_chantier_methode_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: view_chantier_methode_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.view_chantier_methode_ogc_fid_seq OWNED BY qsout_public.view_chantier_methode.ogc_fid;
+
+
+--
+-- Name: vw_chantier_search; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_chantier_search (
+    ogc_fid integer NOT NULL,
+    id integer,
+    geom public.geometry(Point,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_chantier_search OWNER TO postgres;
+
+--
+-- Name: vw_chantier_search_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_chantier_search_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_chantier_search_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_chantier_search_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_chantier_search_ogc_fid_seq OWNED BY qsout_public.vw_chantier_search.ogc_fid;
+
+
+--
+-- Name: vw_ctrl_chantier_termine; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_ctrl_chantier_termine (
+    ogc_fid integer NOT NULL,
+    id_chantier integer,
+    adresse character varying(100),
+    commentaire character varying(100),
+    nb_intervention bigint,
+    geom public.geometry(MultiPolygon,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_ctrl_chantier_termine OWNER TO postgres;
+
+--
+-- Name: vw_ctrl_chantier_termine_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_ctrl_chantier_termine_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_ctrl_chantier_termine_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_ctrl_chantier_termine_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_ctrl_chantier_termine_ogc_fid_seq OWNED BY qsout_public.vw_ctrl_chantier_termine.ogc_fid;
+
+
+--
+-- Name: vw_demande; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_demande (
+    ogc_fid integer NOT NULL,
+    id integer,
+    date_rdv date,
+    commentaire character varying(100),
+    heure time without time zone,
+    lienfichier character varying(500),
+    fk_genredemande integer,
+    fk_operateur integer,
+    numplan character varying(10),
+    fk_chantier integer,
+    demande_terminee boolean,
+    fk_equipe integer,
+    date_creation date,
+    nb_points bigint,
+    geom public.geometry(Point,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_demande OWNER TO postgres;
+
+--
+-- Name: vw_demande_chantier_line; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_demande_chantier_line (
+    ogc_fid integer NOT NULL,
+    fid bigint,
+    id integer,
+    path integer,
+    st_length double precision,
+    st_makeline public.geometry(LineString,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_demande_chantier_line OWNER TO postgres;
+
+--
+-- Name: vw_demande_chantier_line_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_demande_chantier_line_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_demande_chantier_line_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_demande_chantier_line_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_demande_chantier_line_ogc_fid_seq OWNED BY qsout_public.vw_demande_chantier_line.ogc_fid;
+
+
+--
+-- Name: vw_demande_chantier_line_terminee; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_demande_chantier_line_terminee (
+    ogc_fid integer NOT NULL,
+    fid bigint,
+    id integer,
+    path integer,
+    st_length double precision,
+    st_makeline public.geometry(LineString,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_demande_chantier_line_terminee OWNER TO postgres;
+
+--
+-- Name: vw_demande_chantier_line_terminee_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_demande_chantier_line_terminee_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_demande_chantier_line_terminee_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_demande_chantier_line_terminee_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_demande_chantier_line_terminee_ogc_fid_seq OWNED BY qsout_public.vw_demande_chantier_line_terminee.ogc_fid;
+
+
+--
+-- Name: vw_demande_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_demande_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_demande_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_demande_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_demande_ogc_fid_seq OWNED BY qsout_public.vw_demande.ogc_fid;
+
+
+--
+-- Name: vw_demande_point_line; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_demande_point_line (
+    ogc_fid integer NOT NULL,
+    id integer,
+    id_demande integer,
+    st_makeline public.geometry(LineString,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_demande_point_line OWNER TO postgres;
+
+--
+-- Name: vw_demande_point_line_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_demande_point_line_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_demande_point_line_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_demande_point_line_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_demande_point_line_ogc_fid_seq OWNED BY qsout_public.vw_demande_point_line.ogc_fid;
+
+
+--
+-- Name: vw_demande_point_line_terminee; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_demande_point_line_terminee (
+    ogc_fid integer NOT NULL,
+    id integer,
+    id_demande integer,
+    st_makeline public.geometry(LineString,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_demande_point_line_terminee OWNER TO postgres;
+
+--
+-- Name: vw_demande_point_line_terminee_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_demande_point_line_terminee_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_demande_point_line_terminee_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_demande_point_line_terminee_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_demande_point_line_terminee_ogc_fid_seq OWNED BY qsout_public.vw_demande_point_line_terminee.ogc_fid;
+
+
+--
+-- Name: vw_demande_terminee; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_demande_terminee (
+    ogc_fid integer NOT NULL,
+    id integer,
+    date_rdv date,
+    commentaire character varying(100),
+    heure time without time zone,
+    lienfichier character varying(500),
+    fk_genredemande integer,
+    fk_operateur integer,
+    numplan character varying(10),
+    fk_chantier integer,
+    demande_terminee boolean,
+    fk_equipe integer,
+    date_creation date,
+    nb_points bigint,
+    geom public.geometry(Point,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_demande_terminee OWNER TO postgres;
+
+--
+-- Name: vw_demande_terminee_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_demande_terminee_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_demande_terminee_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_demande_terminee_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_demande_terminee_ogc_fid_seq OWNED BY qsout_public.vw_demande_terminee.ogc_fid;
+
+
+--
+-- Name: vw_implantation_annuel; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_implantation_annuel (
+    ogc_fid integer NOT NULL,
+    service character varying,
+    id_intervention integer,
+    date date,
+    adresse character varying(100),
+    operateur character varying(5),
+    duree_operateur real,
+    aide character varying(5),
+    duree_aide double precision,
+    commentaire character varying
+);
+
+
+ALTER TABLE qsout_public.vw_implantation_annuel OWNER TO postgres;
+
+--
+-- Name: vw_implantation_annuel_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_implantation_annuel_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_implantation_annuel_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_implantation_annuel_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_implantation_annuel_ogc_fid_seq OWNED BY qsout_public.vw_implantation_annuel.ogc_fid;
+
+
+--
+-- Name: vw_intervention; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_intervention (
+    ogc_fid integer NOT NULL,
+    id bigint,
+    id_intervention integer,
+    date date,
+    fk_operateur integer,
+    maj date,
+    fk_operateur_maj integer,
+    fk_genreintervention integer,
+    echec boolean,
+    fk_methode integer,
+    fk_chantier integer,
+    fk_demande integer,
+    nb_points bigint,
+    nb_st bigint,
+    geom public.geometry(Point,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_intervention OWNER TO postgres;
+
+--
+-- Name: vw_intervention_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_intervention_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_intervention_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_intervention_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_intervention_ogc_fid_seq OWNED BY qsout_public.vw_intervention.ogc_fid;
+
+
+--
+-- Name: vw_intervention_pointleve_line; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_intervention_pointleve_line (
+    ogc_fid integer NOT NULL,
+    id bigint,
+    id_pointleve integer,
+    id_intervention bigint,
+    fk_codepoint integer,
+    st_makeline public.geometry(LineString,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_intervention_pointleve_line OWNER TO postgres;
+
+--
+-- Name: vw_intervention_pointleve_line_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_intervention_pointleve_line_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_intervention_pointleve_line_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_intervention_pointleve_line_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_intervention_pointleve_line_ogc_fid_seq OWNED BY qsout_public.vw_intervention_pointleve_line.ogc_fid;
+
+
+--
+-- Name: vw_intervention_traiter; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_intervention_traiter (
+    ogc_fid integer NOT NULL,
+    id_intervention integer,
+    date_intervention date,
+    commentaire_intervention character varying,
+    id_chantier integer,
+    adresse_chantier character varying(100),
+    equipe character varying(20)
+);
+
+
+ALTER TABLE qsout_public.vw_intervention_traiter OWNER TO postgres;
+
+--
+-- Name: vw_intervention_traiter_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_intervention_traiter_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_intervention_traiter_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_intervention_traiter_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_intervention_traiter_ogc_fid_seq OWNED BY qsout_public.vw_intervention_traiter.ogc_fid;
+
+
+--
+-- Name: vw_jasp_chantier; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_jasp_chantier (
+    ogc_fid integer NOT NULL,
+    id_chantier integer,
+    adresse_chantier character varying(100),
+    commentaire_chantier character varying(100),
+    date_debut date,
+    date_fin date,
+    chantier_termine boolean,
+    id_goeland character varying,
+    genre_demande character varying(50),
+    fk_equipe integer,
+    equipe character varying(20),
+    last_interv date,
+    genre_intervention character varying(50),
+    commune character varying(50)
+);
+
+
+ALTER TABLE qsout_public.vw_jasp_chantier OWNER TO postgres;
+
+--
+-- Name: vw_jasp_chantier_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_jasp_chantier_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_jasp_chantier_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_jasp_chantier_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_jasp_chantier_ogc_fid_seq OWNED BY qsout_public.vw_jasp_chantier.ogc_fid;
+
+
+--
+-- Name: vw_jasp_demande; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_jasp_demande (
+    ogc_fid integer NOT NULL,
+    id_chantier integer,
+    adresse_chantier character varying(100),
+    commentaire_chantier character varying(100),
+    date_debut date,
+    date_fin date,
+    chantier_termine boolean,
+    id_goeland character varying,
+    id_demande integer,
+    date_demande date,
+    heure_demande time without time zone,
+    fk_genredemande integer,
+    genre_demande character varying(50),
+    commentaire character varying(100),
+    demande_terminee boolean,
+    fk_equipe integer,
+    equipe character varying(20)
+);
+
+
+ALTER TABLE qsout_public.vw_jasp_demande OWNER TO postgres;
+
+--
+-- Name: vw_jasp_demande_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_jasp_demande_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_jasp_demande_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_jasp_demande_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_jasp_demande_ogc_fid_seq OWNED BY qsout_public.vw_jasp_demande.ogc_fid;
+
+
+--
+-- Name: vw_jasp_intervention_semaine; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_jasp_intervention_semaine (
+    ogc_fid integer NOT NULL,
+    id bigint,
+    id_chantier integer,
+    adresse_chantier character varying(100),
+    commentaire_chantier character varying(100),
+    chantier_termine boolean,
+    no_semaine character varying,
+    nbre_interventions bigint,
+    date_debut date,
+    date_fin date,
+    centroide_chantier public.geometry(Geometry,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_jasp_intervention_semaine OWNER TO postgres;
+
+--
+-- Name: vw_jasp_intervention_semaine_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_jasp_intervention_semaine_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_jasp_intervention_semaine_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_jasp_intervention_semaine_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_jasp_intervention_semaine_ogc_fid_seq OWNED BY qsout_public.vw_jasp_intervention_semaine.ogc_fid;
+
+
+--
+-- Name: vw_jasp_pointleve; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_jasp_pointleve (
+    ogc_fid integer NOT NULL,
+    id_point integer,
+    coord_est numeric(11,3),
+    coord_nord numeric(11,3),
+    z numeric(6,3),
+    d_horizontale numeric(7,3)
+);
+
+
+ALTER TABLE qsout_public.vw_jasp_pointleve OWNER TO postgres;
+
+--
+-- Name: vw_jasp_pointleve_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_jasp_pointleve_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_jasp_pointleve_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_jasp_pointleve_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_jasp_pointleve_ogc_fid_seq OWNED BY qsout_public.vw_jasp_pointleve.ogc_fid;
+
+
+--
+-- Name: vw_points_chantier; Type: TABLE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE TABLE qsout_public.vw_points_chantier (
+    ogc_fid integer NOT NULL,
+    id integer,
+    numero character varying(15),
+    fk_genrepoint integer,
+    fk_codepoint integer,
+    commentaire character varying,
+    dateheure timestamp with time zone,
+    non_utilise boolean,
+    archive boolean,
+    fk_chantier integer,
+    geom public.geometry(PointZ,2056)
+);
+
+
+ALTER TABLE qsout_public.vw_points_chantier OWNER TO postgres;
+
+--
+-- Name: vw_points_chantier_ogc_fid_seq; Type: SEQUENCE; Schema: qsout_public; Owner: postgres
+--
+
+CREATE SEQUENCE qsout_public.vw_points_chantier_ogc_fid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE qsout_public.vw_points_chantier_ogc_fid_seq OWNER TO postgres;
+
+--
+-- Name: vw_points_chantier_ogc_fid_seq; Type: SEQUENCE OWNED BY; Schema: qsout_public; Owner: postgres
+--
+
+ALTER SEQUENCE qsout_public.vw_points_chantier_ogc_fid_seq OWNED BY qsout_public.vw_points_chantier.ogc_fid;
+
+
+--
 -- Name: control_pfp; Type: VIEW; Schema: specificite_lausanne; Owner: postgres
 --
 
@@ -6300,6 +8791,381 @@ CREATE VIEW specificite_lausanne.control_pfp AS
 
 
 ALTER TABLE specificite_lausanne.control_pfp OWNER TO postgres;
+
+--
+-- Name: distances_a_la_foret ogc_fid; Type: DEFAULT; Schema: amenagement; Owner: postgres
+--
+
+ALTER TABLE ONLY amenagement.distances_a_la_foret ALTER COLUMN ogc_fid SET DEFAULT nextval('amenagement.distances_a_la_foret_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: limites_de_la_foret ogc_fid; Type: DEFAULT; Schema: amenagement; Owner: postgres
+--
+
+ALTER TABLE ONLY amenagement.limites_de_la_foret ALTER COLUMN ogc_fid SET DEFAULT nextval('amenagement.limites_de_la_foret_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: limites_des_constructions ogc_fid; Type: DEFAULT; Schema: amenagement; Owner: postgres
+--
+
+ALTER TABLE ONLY amenagement.limites_des_constructions ALTER COLUMN ogc_fid SET DEFAULT nextval('amenagement.limites_des_constructions_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: servitudes ogc_fid; Type: DEFAULT; Schema: amenagement; Owner: postgres
+--
+
+ALTER TABLE ONLY amenagement.servitudes ALTER COLUMN ogc_fid SET DEFAULT nextval('amenagement.servitudes_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: sql_statement ogc_fid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sql_statement ALTER COLUMN ogc_fid SET DEFAULT nextval('public.sql_statement_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: chantier id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.chantier ALTER COLUMN id SET DEFAULT nextval('qsout_public.chantier_id_seq'::regclass);
+
+
+--
+-- Name: completement id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.completement ALTER COLUMN id SET DEFAULT nextval('qsout_public.completement_id_seq'::regclass);
+
+
+--
+-- Name: feuilles200 id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.feuilles200 ALTER COLUMN id SET DEFAULT nextval('qsout_public.feuilles200_id_seq'::regclass);
+
+
+--
+-- Name: intervenant id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.intervenant ALTER COLUMN id SET DEFAULT nextval('qsout_public.intervenant_id_seq'::regclass);
+
+
+--
+-- Name: intervention id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.intervention ALTER COLUMN id SET DEFAULT nextval('qsout_public.intervention_id_seq'::regclass);
+
+
+--
+-- Name: layer_styles id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.layer_styles ALTER COLUMN id SET DEFAULT nextval('qsout_public.layer_styles_id_seq'::regclass);
+
+
+--
+-- Name: list_codepoint id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_codepoint ALTER COLUMN id SET DEFAULT nextval('qsout_public.list_codepoint_id_seq'::regclass);
+
+
+--
+-- Name: list_entreprise id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_entreprise ALTER COLUMN id SET DEFAULT nextval('qsout_public.list_entreprise_id_seq'::regclass);
+
+
+--
+-- Name: list_equipe id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_equipe ALTER COLUMN id SET DEFAULT nextval('qsout_public.list_equipe_id_seq'::regclass);
+
+
+--
+-- Name: list_fonction id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_fonction ALTER COLUMN id SET DEFAULT nextval('qsout_public.list_fonction_id_seq'::regclass);
+
+
+--
+-- Name: list_genredemande id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_genredemande ALTER COLUMN id SET DEFAULT nextval('qsout_public.list_genredemande_id_seq'::regclass);
+
+
+--
+-- Name: list_genrepoint id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_genrepoint ALTER COLUMN id SET DEFAULT nextval('qsout_public.list_genrepoint_id_seq'::regclass);
+
+
+--
+-- Name: list_methode id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_methode ALTER COLUMN id SET DEFAULT nextval('qsout_public.list_methode_id_seq'::regclass);
+
+
+--
+-- Name: list_service id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_service ALTER COLUMN id SET DEFAULT nextval('qsout_public.list_service_id_seq'::regclass);
+
+
+--
+-- Name: list_typeprisme id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_typeprisme ALTER COLUMN id SET DEFAULT nextval('qsout_public.list_typeprisme_id_seq'::regclass);
+
+
+--
+-- Name: nextpoint ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.nextpoint ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.nextpoint_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: nn_chantierintervenant id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.nn_chantierintervenant ALTER COLUMN id SET DEFAULT nextval('qsout_public.nn_chantierintervenant_id_seq'::regclass);
+
+
+--
+-- Name: nn_chantierservice id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.nn_chantierservice ALTER COLUMN id SET DEFAULT nextval('qsout_public.nn_chantierservice_id_seq'::regclass);
+
+
+--
+-- Name: nn_demandeservice id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.nn_demandeservice ALTER COLUMN id SET DEFAULT nextval('qsout_public.nn_demandeservice_id_seq'::regclass);
+
+
+--
+-- Name: operateur id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.operateur ALTER COLUMN id SET DEFAULT nextval('qsout_public.operateur_id_seq'::regclass);
+
+
+--
+-- Name: pfp4 id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.pfp4 ALTER COLUMN id SET DEFAULT nextval('qsout_public.pfp4_id_seq'::regclass);
+
+
+--
+-- Name: point_leve ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.point_leve ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.point_leve_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: point_mesure id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.point_mesure ALTER COLUMN id SET DEFAULT nextval('qsout_public.point_mesure_id_seq'::regclass);
+
+
+--
+-- Name: secteur_leve id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.secteur_leve ALTER COLUMN id SET DEFAULT nextval('qsout_public.secteur_leve_id_seq'::regclass);
+
+
+--
+-- Name: tbd_etat_pfp4 id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.tbd_etat_pfp4 ALTER COLUMN id SET DEFAULT nextval('qsout_public.tbd_etat_pfp4_id_seq'::regclass);
+
+
+--
+-- Name: tbd_signe_pfp4 id; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.tbd_signe_pfp4 ALTER COLUMN id SET DEFAULT nextval('qsout_public.tbd_signe_pfp4_id_seq'::regclass);
+
+
+--
+-- Name: view_chantier_methode ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.view_chantier_methode ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.view_chantier_methode_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_chantier_search ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_chantier_search ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_chantier_search_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_ctrl_chantier_termine ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_ctrl_chantier_termine ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_ctrl_chantier_termine_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_demande ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_demande_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_demande_chantier_line ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_chantier_line ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_demande_chantier_line_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_demande_chantier_line_terminee ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_chantier_line_terminee ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_demande_chantier_line_terminee_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_demande_point_line ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_point_line ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_demande_point_line_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_demande_point_line_terminee ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_point_line_terminee ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_demande_point_line_terminee_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_demande_terminee ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_terminee ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_demande_terminee_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_implantation_annuel ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_implantation_annuel ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_implantation_annuel_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_intervention ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_intervention ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_intervention_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_intervention_pointleve_line ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_intervention_pointleve_line ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_intervention_pointleve_line_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_intervention_traiter ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_intervention_traiter ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_intervention_traiter_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_jasp_chantier ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_jasp_chantier ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_jasp_chantier_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_jasp_demande ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_jasp_demande ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_jasp_demande_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_jasp_intervention_semaine ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_jasp_intervention_semaine ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_jasp_intervention_semaine_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_jasp_pointleve ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_jasp_pointleve ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_jasp_pointleve_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: vw_points_chantier ogc_fid; Type: DEFAULT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_points_chantier ALTER COLUMN ogc_fid SET DEFAULT nextval('qsout_public.vw_points_chantier_ogc_fid_seq'::regclass);
+
+
+--
+-- Name: distances_a_la_foret distances_a_la_foret_pkey; Type: CONSTRAINT; Schema: amenagement; Owner: postgres
+--
+
+ALTER TABLE ONLY amenagement.distances_a_la_foret
+    ADD CONSTRAINT distances_a_la_foret_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: limites_de_la_foret limites_de_la_foret_pkey; Type: CONSTRAINT; Schema: amenagement; Owner: postgres
+--
+
+ALTER TABLE ONLY amenagement.limites_de_la_foret
+    ADD CONSTRAINT limites_de_la_foret_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: limites_des_constructions limites_des_constructions_pkey; Type: CONSTRAINT; Schema: amenagement; Owner: postgres
+--
+
+ALTER TABLE ONLY amenagement.limites_des_constructions
+    ADD CONSTRAINT limites_des_constructions_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: servitudes servitudes_pkey; Type: CONSTRAINT; Schema: amenagement; Owner: postgres
+--
+
+ALTER TABLE ONLY amenagement.servitudes
+    ADD CONSTRAINT servitudes_pkey PRIMARY KEY (ogc_fid);
+
 
 --
 -- Name: dico_cprue_ls pk_dico_cprue_ls; Type: CONSTRAINT; Schema: goeland; Owner: goeland
@@ -8150,11 +11016,387 @@ ALTER TABLE ONLY movd.valignment
 
 
 --
+-- Name: sql_statement sql_statement_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sql_statement
+    ADD CONSTRAINT sql_statement_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: chantier chantier_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.chantier
+    ADD CONSTRAINT chantier_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: completement completement_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.completement
+    ADD CONSTRAINT completement_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: feuilles200 feuilles200_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.feuilles200
+    ADD CONSTRAINT feuilles200_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: intervenant intervenant_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.intervenant
+    ADD CONSTRAINT intervenant_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: intervention intervention_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.intervention
+    ADD CONSTRAINT intervention_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: layer_styles layer_styles_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.layer_styles
+    ADD CONSTRAINT layer_styles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_codepoint list_codepoint_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_codepoint
+    ADD CONSTRAINT list_codepoint_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_entreprise list_entreprise_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_entreprise
+    ADD CONSTRAINT list_entreprise_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_equipe list_equipe_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_equipe
+    ADD CONSTRAINT list_equipe_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_fonction list_fonction_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_fonction
+    ADD CONSTRAINT list_fonction_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_genredemande list_genredemande_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_genredemande
+    ADD CONSTRAINT list_genredemande_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_genrepoint list_genrepoint_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_genrepoint
+    ADD CONSTRAINT list_genrepoint_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_methode list_methode_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_methode
+    ADD CONSTRAINT list_methode_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_service list_service_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_service
+    ADD CONSTRAINT list_service_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_typeprisme list_typeprisme_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.list_typeprisme
+    ADD CONSTRAINT list_typeprisme_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: nextpoint nextpoint_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.nextpoint
+    ADD CONSTRAINT nextpoint_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: nn_chantierintervenant nn_chantierintervenant_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.nn_chantierintervenant
+    ADD CONSTRAINT nn_chantierintervenant_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: nn_chantierservice nn_chantierservice_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.nn_chantierservice
+    ADD CONSTRAINT nn_chantierservice_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: nn_demandeservice nn_demandeservice_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.nn_demandeservice
+    ADD CONSTRAINT nn_demandeservice_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: operateur operateur_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.operateur
+    ADD CONSTRAINT operateur_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pfp4 pfp4_numero_key; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.pfp4
+    ADD CONSTRAINT pfp4_numero_key UNIQUE (numero);
+
+
+--
+-- Name: pfp4 pfp4_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.pfp4
+    ADD CONSTRAINT pfp4_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: point_leve point_leve_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.point_leve
+    ADD CONSTRAINT point_leve_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: point_mesure point_mesure_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.point_mesure
+    ADD CONSTRAINT point_mesure_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: secteur_leve secteur_leve_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.secteur_leve
+    ADD CONSTRAINT secteur_leve_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tbd_etat_pfp4 tbd_etat_pfp4_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.tbd_etat_pfp4
+    ADD CONSTRAINT tbd_etat_pfp4_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tbd_signe_pfp4 tbd_signe_pfp4_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.tbd_signe_pfp4
+    ADD CONSTRAINT tbd_signe_pfp4_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: view_chantier_methode view_chantier_methode_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.view_chantier_methode
+    ADD CONSTRAINT view_chantier_methode_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_chantier_search vw_chantier_search_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_chantier_search
+    ADD CONSTRAINT vw_chantier_search_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_ctrl_chantier_termine vw_ctrl_chantier_termine_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_ctrl_chantier_termine
+    ADD CONSTRAINT vw_ctrl_chantier_termine_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_demande_chantier_line vw_demande_chantier_line_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_chantier_line
+    ADD CONSTRAINT vw_demande_chantier_line_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_demande_chantier_line_terminee vw_demande_chantier_line_terminee_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_chantier_line_terminee
+    ADD CONSTRAINT vw_demande_chantier_line_terminee_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_demande vw_demande_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande
+    ADD CONSTRAINT vw_demande_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_demande_point_line vw_demande_point_line_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_point_line
+    ADD CONSTRAINT vw_demande_point_line_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_demande_point_line_terminee vw_demande_point_line_terminee_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_point_line_terminee
+    ADD CONSTRAINT vw_demande_point_line_terminee_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_demande_terminee vw_demande_terminee_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_demande_terminee
+    ADD CONSTRAINT vw_demande_terminee_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_implantation_annuel vw_implantation_annuel_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_implantation_annuel
+    ADD CONSTRAINT vw_implantation_annuel_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_intervention vw_intervention_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_intervention
+    ADD CONSTRAINT vw_intervention_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_intervention_pointleve_line vw_intervention_pointleve_line_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_intervention_pointleve_line
+    ADD CONSTRAINT vw_intervention_pointleve_line_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_intervention_traiter vw_intervention_traiter_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_intervention_traiter
+    ADD CONSTRAINT vw_intervention_traiter_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_jasp_chantier vw_jasp_chantier_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_jasp_chantier
+    ADD CONSTRAINT vw_jasp_chantier_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_jasp_demande vw_jasp_demande_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_jasp_demande
+    ADD CONSTRAINT vw_jasp_demande_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_jasp_intervention_semaine vw_jasp_intervention_semaine_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_jasp_intervention_semaine
+    ADD CONSTRAINT vw_jasp_intervention_semaine_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_jasp_pointleve vw_jasp_pointleve_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_jasp_pointleve
+    ADD CONSTRAINT vw_jasp_pointleve_pkey PRIMARY KEY (ogc_fid);
+
+
+--
+-- Name: vw_points_chantier vw_points_chantier_pkey; Type: CONSTRAINT; Schema: qsout_public; Owner: postgres
+--
+
+ALTER TABLE ONLY qsout_public.vw_points_chantier
+    ADD CONSTRAINT vw_points_chantier_pkey PRIMARY KEY (ogc_fid);
+
+
+--
 -- Name: surface_batiment_projet batiment_chantier_pkey; Type: CONSTRAINT; Schema: specificite_lausanne; Owner: gc_transfert_dbo
 --
 
 ALTER TABLE ONLY specificite_lausanne.surface_batiment_projet
     ADD CONSTRAINT batiment_chantier_pkey PRIMARY KEY (fid);
+
+
+--
+-- Name: entree_batiment entree_batiment_pkey; Type: CONSTRAINT; Schema: specificite_lausanne; Owner: gc_transfert_dbo
+--
+
+ALTER TABLE ONLY specificite_lausanne.entree_batiment
+    ADD CONSTRAINT entree_batiment_pkey PRIMARY KEY (fid);
 
 
 --
@@ -8171,30 +11413,6 @@ ALTER TABLE ONLY specificite_lausanne.entree_batiment_projet
 
 ALTER TABLE ONLY specificite_lausanne.localisation_rue
     ADD CONSTRAINT localisation_rue_pkey PRIMARY KEY (fid);
-
-
---
--- Name: objet_divers_ponctuel objet_divers_arbre_pkey; Type: CONSTRAINT; Schema: specificite_lausanne; Owner: gc_transfert_dbo
---
-
-ALTER TABLE ONLY specificite_lausanne.objet_divers_ponctuel
-    ADD CONSTRAINT objet_divers_arbre_pkey PRIMARY KEY (ufid);
-
-
---
--- Name: objet_divers_lineaire objet_divers_lineaire_autre_pkey; Type: CONSTRAINT; Schema: specificite_lausanne; Owner: gc_transfert_dbo
---
-
-ALTER TABLE ONLY specificite_lausanne.objet_divers_lineaire
-    ADD CONSTRAINT objet_divers_lineaire_autre_pkey PRIMARY KEY (ufid);
-
-
---
--- Name: objet_divers_surfacique objet_divers_polygon_autre_pkey; Type: CONSTRAINT; Schema: specificite_lausanne; Owner: gc_transfert_dbo
---
-
-ALTER TABLE ONLY specificite_lausanne.objet_divers_surfacique
-    ADD CONSTRAINT objet_divers_polygon_autre_pkey PRIMARY KEY (ufid);
 
 
 --
@@ -8235,6 +11453,34 @@ ALTER TABLE ONLY specificite_lausanne.pfp
 
 ALTER TABLE ONLY specificite_lausanne.pfp_point_reperage
     ADD CONSTRAINT pfp_point_reperage_pkey PRIMARY KEY (fid);
+
+
+--
+-- Name: distances_a_la_foret_geometrie_geom_idx; Type: INDEX; Schema: amenagement; Owner: postgres
+--
+
+CREATE INDEX distances_a_la_foret_geometrie_geom_idx ON amenagement.distances_a_la_foret USING gist (geometrie);
+
+
+--
+-- Name: limites_de_la_foret_geometrie_geom_idx; Type: INDEX; Schema: amenagement; Owner: postgres
+--
+
+CREATE INDEX limites_de_la_foret_geometrie_geom_idx ON amenagement.limites_de_la_foret USING gist (geometrie);
+
+
+--
+-- Name: limites_des_constructions_geometrie_geom_idx; Type: INDEX; Schema: amenagement; Owner: postgres
+--
+
+CREATE INDEX limites_des_constructions_geometrie_geom_idx ON amenagement.limites_des_constructions USING gist (geometrie);
+
+
+--
+-- Name: servitudes_geometrie_geom_idx; Type: INDEX; Schema: amenagement; Owner: postgres
+--
+
+CREATE INDEX servitudes_geometrie_geom_idx ON amenagement.servitudes USING gist (geometrie);
 
 
 --
@@ -10800,6 +14046,160 @@ CREATE INDEX troncon_rue_troncon_rue_de_idx ON movd.troncon_rue USING btree (tro
 
 
 --
+-- Name: sql_statement_geometrie_geom_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX sql_statement_geometrie_geom_idx ON public.sql_statement USING gist (geometrie);
+
+
+--
+-- Name: chantier_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX chantier_geom_geom_idx ON qsout_public.chantier USING gist (geom);
+
+
+--
+-- Name: completement_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX completement_geom_geom_idx ON qsout_public.completement USING gist (geom);
+
+
+--
+-- Name: feuilles200_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX feuilles200_geom_geom_idx ON qsout_public.feuilles200 USING gist (geom);
+
+
+--
+-- Name: pfp4_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX pfp4_geom_geom_idx ON qsout_public.pfp4 USING gist (geom);
+
+
+--
+-- Name: point_leve_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX point_leve_geom_geom_idx ON qsout_public.point_leve USING gist (geom);
+
+
+--
+-- Name: point_mesure_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX point_mesure_geom_geom_idx ON qsout_public.point_mesure USING gist (geom);
+
+
+--
+-- Name: secteur_leve_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX secteur_leve_geom_geom_idx ON qsout_public.secteur_leve USING gist (geom);
+
+
+--
+-- Name: view_chantier_methode_centroide_chantier_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX view_chantier_methode_centroide_chantier_geom_idx ON qsout_public.view_chantier_methode USING gist (centroide_chantier);
+
+
+--
+-- Name: vw_chantier_search_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_chantier_search_geom_geom_idx ON qsout_public.vw_chantier_search USING gist (geom);
+
+
+--
+-- Name: vw_ctrl_chantier_termine_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_ctrl_chantier_termine_geom_geom_idx ON qsout_public.vw_ctrl_chantier_termine USING gist (geom);
+
+
+--
+-- Name: vw_demande_chantier_line_st_makeline_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_demande_chantier_line_st_makeline_geom_idx ON qsout_public.vw_demande_chantier_line USING gist (st_makeline);
+
+
+--
+-- Name: vw_demande_chantier_line_terminee_st_makeline_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_demande_chantier_line_terminee_st_makeline_geom_idx ON qsout_public.vw_demande_chantier_line_terminee USING gist (st_makeline);
+
+
+--
+-- Name: vw_demande_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_demande_geom_geom_idx ON qsout_public.vw_demande USING gist (geom);
+
+
+--
+-- Name: vw_demande_point_line_st_makeline_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_demande_point_line_st_makeline_geom_idx ON qsout_public.vw_demande_point_line USING gist (st_makeline);
+
+
+--
+-- Name: vw_demande_point_line_terminee_st_makeline_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_demande_point_line_terminee_st_makeline_geom_idx ON qsout_public.vw_demande_point_line_terminee USING gist (st_makeline);
+
+
+--
+-- Name: vw_demande_terminee_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_demande_terminee_geom_geom_idx ON qsout_public.vw_demande_terminee USING gist (geom);
+
+
+--
+-- Name: vw_intervention_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_intervention_geom_geom_idx ON qsout_public.vw_intervention USING gist (geom);
+
+
+--
+-- Name: vw_intervention_pointleve_line_st_makeline_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_intervention_pointleve_line_st_makeline_geom_idx ON qsout_public.vw_intervention_pointleve_line USING gist (st_makeline);
+
+
+--
+-- Name: vw_jasp_intervention_semaine_centroide_chantier_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_jasp_intervention_semaine_centroide_chantier_geom_idx ON qsout_public.vw_jasp_intervention_semaine USING gist (centroide_chantier);
+
+
+--
+-- Name: vw_points_chantier_geom_geom_idx; Type: INDEX; Schema: qsout_public; Owner: postgres
+--
+
+CREATE INDEX vw_points_chantier_geom_geom_idx ON qsout_public.vw_points_chantier USING gist (geom);
+
+
+--
+-- Name: entree_batiment_geometrie_idx; Type: INDEX; Schema: specificite_lausanne; Owner: gc_transfert_dbo
+--
+
+CREATE INDEX entree_batiment_geometrie_idx ON specificite_lausanne.entree_batiment USING gist (geometrie);
+
+
+--
 -- Name: entree_batiment_projet_geometrie_idx; Type: INDEX; Schema: specificite_lausanne; Owner: gc_transfert_dbo
 --
 
@@ -10814,10 +14214,24 @@ CREATE INDEX localisation_place_geometrie_idx ON specificite_lausanne.localisati
 
 
 --
--- Name: objet_divers_arbre_geometrie_idx; Type: INDEX; Schema: specificite_lausanne; Owner: gc_transfert_dbo
+-- Name: objet_divers_lineaire_geometrie_idx; Type: INDEX; Schema: specificite_lausanne; Owner: gc_transfert_dbo
 --
 
-CREATE INDEX objet_divers_arbre_geometrie_idx ON specificite_lausanne.objet_divers_ponctuel USING gist (geometrie);
+CREATE INDEX objet_divers_lineaire_geometrie_idx ON specificite_lausanne.objet_divers_lineaire USING gist (geometrie);
+
+
+--
+-- Name: objet_divers_ponctuel_geometrie_idx; Type: INDEX; Schema: specificite_lausanne; Owner: gc_transfert_dbo
+--
+
+CREATE INDEX objet_divers_ponctuel_geometrie_idx ON specificite_lausanne.objet_divers_ponctuel USING gist (geometrie);
+
+
+--
+-- Name: objet_divers_surfacique_geometrie_idx; Type: INDEX; Schema: specificite_lausanne; Owner: gc_transfert_dbo
+--
+
+CREATE INDEX objet_divers_surfacique_geometrie_idx ON specificite_lausanne.objet_divers_surfacique USING gist (geometrie);
 
 
 --
@@ -12863,6 +16277,41 @@ ALTER TABLE ONLY movd.troncon_rue
 
 
 --
+-- Name: SCHEMA amenagement; Type: ACL; Schema: -; Owner: postgres
+--
+
+GRANT USAGE ON SCHEMA amenagement TO fmeserver;
+
+
+--
+-- Name: TABLE distances_a_la_foret; Type: ACL; Schema: amenagement; Owner: postgres
+--
+
+GRANT SELECT ON TABLE amenagement.distances_a_la_foret TO fmeserver;
+
+
+--
+-- Name: TABLE limites_de_la_foret; Type: ACL; Schema: amenagement; Owner: postgres
+--
+
+GRANT SELECT ON TABLE amenagement.limites_de_la_foret TO fmeserver;
+
+
+--
+-- Name: TABLE limites_des_constructions; Type: ACL; Schema: amenagement; Owner: postgres
+--
+
+GRANT SELECT ON TABLE amenagement.limites_des_constructions TO fmeserver;
+
+
+--
+-- Name: TABLE servitudes; Type: ACL; Schema: amenagement; Owner: postgres
+--
+
+GRANT SELECT ON TABLE amenagement.servitudes TO fmeserver;
+
+
+--
 -- Name: TABLE ch_histo_nbr_habi_par_adr; Type: ACL; Schema: goeland; Owner: goeland
 --
 
@@ -13028,6 +16477,27 @@ GRANT SELECT ON TABLE goeland.type_thi_street TO readers;
 --
 
 GRANT SELECT ON TABLE goeland.type_thing TO readers;
+
+
+--
+-- Name: TABLE pfp4; Type: ACL; Schema: qsout_public; Owner: postgres
+--
+
+GRANT SELECT ON TABLE qsout_public.pfp4 TO gc_transfert_dbo;
+
+
+--
+-- Name: TABLE tbd_signe_pfp4; Type: ACL; Schema: qsout_public; Owner: postgres
+--
+
+GRANT SELECT ON TABLE qsout_public.tbd_signe_pfp4 TO gc_transfert_dbo;
+
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: amenagement; Owner: postgres
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA amenagement GRANT SELECT ON TABLES  TO fmeserver;
 
 
 --
