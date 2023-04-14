@@ -16,7 +16,8 @@
 # Get environment variables.
 . $CONFPATH/.env
 
-COMMUNES=$CONFPATH/communes.json
+MO_COMMUNES=$CONFPATH/mo_communes.json
+NPCS_COMMUNES=$CONFPATH/npcs_communes.json
 MOVD_MODEL=$CONFPATH/model/6021.ili
 
 # Get date.
@@ -37,16 +38,31 @@ echo START TIME: $(date +"%T") > $LOGFILE
 
 # DOWNLOAD AND IMPORT INTERLIS FILES FROM AVRIC.
 echo ===================================== BACKING UP DATABASE =====================================
-su - postgres -c "pg_dump $MOVD_DB -Fc > /tmp/gc_transfert_backup.backup" >> $LOGFILE 2>&1
+su - postgres -c "pg_dump $DATABASE -n $MOVD_SCHEMA -n $NPCS_SCHEMA -Fc > /data/mensuration_officielle.backup" >> $LOGFILE 2>&1
 
-echo ===================================== DOWNLOADING FILES =====================================
-$SCRIPTPATH/src/download_itf.sh -a "$AUTHORIZATION" -c $COMMUNES -l $DOWNLOAD_LINK -f $DOWNLOADPATH >> $LOGFILE 2>&1
 
-echo ===================================== CREATING SCHEMA =====================================
-$SCRIPTPATH/src/create_schema.sh -U $MOVD_USER -p $MOVD_PORT -H $MOVD_HOST -s $MOVD_SCHEMA -d $MOVD_DB -w $MOVD_PASSWORD -n $T_ID_NAME -m $MOVD_MODEL -E -T -B >> $LOGFILE 2>&1
+echo ===================================== DOWNLOADS =====================================
+echo Downloading MO files...
+$SCRIPTPATH/src/download_itf.sh -a "$AUTHORIZATION" -c $MO_COMMUNES -l $MOVD_DOWNLOAD_LINK -f $MOVD_DOWNLOADPATH >> $LOGFILE 2>&1
 
-echo ===================================== IMPORT STARTING =====================================
-$SCRIPTPATH/src/import_itf.sh -U $MOVD_USER -p $MOVD_PORT -H $MOVD_HOST -s $MOVD_SCHEMA -d $MOVD_DB -w $MOVD_PASSWORD -n $T_ID_NAME -f $DOWNLOADPATH >> $LOGFILE 2>&1
+echo Downloading NPCS files...
+$SCRIPTPATH/src/download_itf.sh -a "$AUTHORIZATION" -c $NPCS_COMMUNES -l $NPCSVD_DOWNLOAD_LINK -f $NPCSVD_DOWNLOADPATH >> $LOGFILE 2>&1
+
+
+echo ===================================== CREATE SCHEMAS =====================================
+echo Creating MO schema...
+$SCRIPTPATH/src/create_schema.sh -U $USER -p $PORT -H $HOST -s $MOVD_SCHEMA -d $DATABASE -w $PASSWORD -n $T_ID_NAME -m $MOVD_MODEL -E -T -B >> $LOGFILE 2>&1
+
+echo Creating NPCS schema...
+$SCRIPTPATH/src/create_schema.sh -U $USER -p $PORT -H $HOST -s $NPCSVD_SCHEMA -d $DATABASE -w $PASSWORD -n $T_ID_NAME -m $MOVD_MODEL -E -T -B >> $LOGFILE 2>&1
+
+
+echo ===================================== IMPORT DATA =====================================
+echo Importing MO data from Interlis files...
+$SCRIPTPATH/src/import_itf.sh -U $USER -p $PORT -H $HOST -s $MOVD_SCHEMA -d $DATABASE -w $PASSWORD -n $T_ID_NAME -f $MOVD_DOWNLOADPATH >> $LOGFILE 2>&1
+
+echo Importing NPCS data from Interlis files...
+$SCRIPTPATH/src/import_itf.sh -U $USER -p $PORT -H $HOST -s $NPCSVD_SCHEMA -d $DATABASE -w $PASSWORD -n $T_ID_NAME -f $NPCSVD_DOWNLOADPATH >> $LOGFILE 2>&1
 
 
 # TRUNCATE GOELAND SCHEMA THEN DUMP/RESTORE FROM GOELAND DATABASE.
@@ -62,22 +78,28 @@ truncate_command="
 	END \$$;	
 	"
 
-echo ============================= TRUNCATING THE GOELAND SCHEMA =============================
-echo "$truncate_command" | su - postgres -c "psql $MOVD_DB" >> $LOGFILE 2>&1
+echo ============================= UPDATING GOELAND DATA =============================
+echo Truncating the Goeland schema...
+echo "$truncate_command" | su - postgres -c "psql $DATABASE" >> $LOGFILE 2>&1
 
-echo ============================= BACKUP AND RESTORE FROM GOELAND =============================
-su - postgres -c "pg_dump goeland -a -n public -T spatial_ref_sys -T goeland_addresse_lausanne" | sed 's/public\./goeland\./g' | su - postgres -c "psql $MOVD_DB" >> $LOGFILE 2>&1
+echo Backuping and restoring from Goeland replication...
+su - postgres -c "pg_dump goeland -a -n public -T spatial_ref_sys -T goeland_addresse_lausanne" | sed 's/public\./goeland\./g' | su - postgres -c "psql $DATABASE" >> $LOGFILE 2>&1
 
 
 # EXPORT VIEWS AS SHAPEFILES.
 echo ===================================== EXPORTING SHAPEFILES =====================================
-$SCRIPTPATH/src/export_shp.sh -f $EXPORTPATH -d $MOVD_DB -s $MOVD_SCHEMA -x $PREFIX -c $EXPORT_COMMUNES >> $LOGFILE 2>&1
+$SCRIPTPATH/src/export_shp.sh -f $EXPORTPATH -d $DATABASE -s $MOVD_SCHEMA -x $PREFIX -c $EXPORT_COMMUNES >> $LOGFILE 2>&1
 
 
 # COUNT OBJECTS FOR CONTROL
 echo ===================================== COUNTING TABLES AND VIEWS OBJECTS =====================================
-su - postgres -c "psql -d gc_transfert -c \"select db_monitoring.count_table_object('movd'); select db_monitoring.count_table_object('specificite_lausanne');\"" >> $LOGFILE 2>&1
-su - postgres -c "psql -d gc_transfert -c \"select db_monitoring.count_gc_view_object('movd');\"" >> $LOGFILE 2>&1
+echo Counting MO objects...
+su - postgres -c "psql -d gc_transfert -c \"select db_monitoring.count_table_object('$MOVD_SCHEMA'); select db_monitoring.count_table_object('specificite_lausanne');\"" >> $LOGFILE 2>&1
+echo Counting NPCS objects...
+su - postgres -c "psql -d gc_transfert -c \"select db_monitoring.count_table_object('$NPCSVD_SCHEMA');\"" >> $LOGFILE 2>&1
+
+echo Counting views objects...
+su - postgres -c "psql -d gc_transfert -c \"select db_monitoring.count_gc_view_object('$MOVD_SCHEMA');\"" >> $LOGFILE 2>&1
 
 
 # CREATE ATTACHMENTS AND SEND EMAIL NOTIFICATION
