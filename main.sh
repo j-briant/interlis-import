@@ -90,7 +90,7 @@ su - postgres -c "psql -d $DATABASE -c 'CREATE SCHEMA goeland;'" >> $LOGFILE 2>&
 #echo "$truncate_command" | su - postgres -c "psql $DATABASE" >> $LOGFILE 2>&1
 
 echo Backing up and restoring from Goeland replication... >> $LOGFILE 2>&1
-su - postgres -c "pg_dump goeland -a -n public -T spatial_ref_sys -T goeland_addresse_lausanne" | sed 's/public\./goeland\./g' | su - postgres -c "psql $DATABASE" >> $LOGFILE 2>&1
+su - postgres -c "pg_dump goeland -xO -n public -T spatial_ref_sys -T goeland_addresse_lausanne" | sed 's/public\./goeland\./g' | su - postgres -c "psql $DATABASE" >> $LOGFILE 2>&1
 
 
 # TRANSFER DATA
