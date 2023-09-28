@@ -112,9 +112,9 @@ cp -r $TMPEXPORT $EXPORTPATH
 # COUNT OBJECTS FOR CONTROL
 echo ===================================== COUNTING TABLES OBJECTS ===================================== >> $LOGFILE 2>&1
 echo Counting MO objects... >> $LOGFILE 2>&1
-su - postgres -c "psql -d gc_transfert -c \"select db_monitoring.count_table_object('$MOVD_SCHEMA'); select db_monitoring.count_table_object('specificite_lausanne');\"" >> $LOGFILE 2>&1
+su - postgres -c "psql -d $DATABASE -c \"select db_monitoring.count_table_object('$MOVD_SCHEMA'); select db_monitoring.count_table_object('specificite_lausanne');\"" >> $LOGFILE 2>&1
 echo Counting NPCS objects... >> $LOGFILE 2>&1
-su - postgres -c "psql -d gc_transfert -c \"select db_monitoring.count_table_object('$NPCSVD_SCHEMA');\"" >> $LOGFILE 2>&1
+su - postgres -c "psql -d $DATABASE -c \"select db_monitoring.count_table_object('$NPCSVD_SCHEMA');\"" >> $LOGFILE 2>&1
 echo Counting diffusion objects... >> $LOGFILE 2>&1
 su - postgres -c "psql -d diffusion -c \"select db_monitoring.count_table_object('mo_guichet');\"" >> $LOGFILE 2>&1
 
@@ -122,7 +122,7 @@ su - postgres -c "psql -d diffusion -c \"select db_monitoring.count_table_object
 # CREATE ATTACHMENTS AND SEND EMAIL NOTIFICATION
 echo ===================================== SENDING EMAIL NOTIFICATION ===================================== >> $LOGFILE 2>&1
 echo -e "MOVD TABLES COUNTS\n" > /tmp/gc_counts.txt
-su - postgres -c "psql gc_transfert -c \"select * from db_monitoring.table_last_update_difference;\"" >> /tmp/gc_counts.txt
+su - postgres -c "psql $DATABASE -c \"select * from db_monitoring.table_last_update_difference;\"" >> /tmp/gc_counts.txt
 echo -e "\n\nDIFFUSION TABLES COUNTS\n" >> /tmp/gc_counts.txt
 su - postgres -c "psql diffusion -c \"select * from db_monitoring.table_last_update_difference;\"" >> /tmp/gc_counts.txt
 
