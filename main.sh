@@ -69,65 +69,16 @@ echo Importing NPCS data from Interlis files... >> $LOGFILE 2>&1
 $SCRIPTPATH/src/import_itf.sh -U $USER -p $PORT -H $HOST -s $NPCSVD_SCHEMA -d $DATABASE -w $PASSWORD -n $T_ID_NAME -f $NPCSVD_DOWNLOADPATH >> $LOGFILE 2>&1
 
 
-# DELETE GOELAND SCHEMA THEN DUMP/RESTORE FROM GOELAND DATABASE.
-# Run psql.
-truncate_command="
-	DO \$$
-	DECLARE r record;
-	BEGIN
-	FOR r in (SELECT table_schema, table_name FROM information_schema.tables where table_schema = 'goeland')
-	LOOP
-		EXECUTE 'TRUNCATE ' || r.table_schema || '.' || r.table_name || ';';
-	END LOOP;
-	END \$$;	
-	"
-
-echo ============================= UPDATING GOELAND DATA ============================= >> $LOGFILE 2>&1
-echo Deleting the Goeland schema... >> $LOGFILE 2>&1
-su - postgres -c "psql -d $DATABASE -c 'DROP SCHEMA goeland CASCADE;'" >> $LOGFILE 2>&1
-echo Recreating it... >> $LOGFILE 2>&1
-su - postgres -c "psql -d $DATABASE -c 'CREATE SCHEMA goeland;'" >> $LOGFILE 2>&1
-#echo "$truncate_command" | su - postgres -c "psql $DATABASE" >> $LOGFILE 2>&1
-
-echo Backing up and restoring from Goeland replication... >> $LOGFILE 2>&1
-su - postgres -c "pg_dump goeland -xO -n public -T spatial_ref_sys -T goeland_addresse_lausanne" | sed 's/public\./goeland\./g' | su - postgres -c "psql $DATABASE" >> $LOGFILE 2>&1
-
-
-# TRANSFER DATA
-echo =========================== TRANSFERING DATA ================================= >> $LOGFILE 2>&1
-echo Moving formatted data to diffusion database... >> $LOGFILE 2>&1
-/root/bin/ogr_transfer/ogr_transfer.sh -c /etc/ogr_transfer/mo_guichet-conf.json >> $LOGFILE 2>&1
-
-# EXPORT AS SHAPEFILES.
-echo Exporting data as shapefile... >> $LOGFILE 2>&1
-/root/bin/ogr_transfer/ogr_transfer.sh -c /etc/ogr_transfer/export_mo_guichet-conf.json >> $LOGFILE 2>&1
-
-#echo ===================================== EXPORTING SHAPEFILES =====================================
-#$SCRIPTPATH/src/export_shp.sh -f $EXPORTPATH -d $DATABASE -s $MOVD_SCHEMA -x $PREFIX -c $EXPORT_COMMUNES >> $LOGFILE 2>&1
-
-echo Copying data to destination folder... >> $LOGFILE 2>&1
-cp -r $TMPEXPORT $EXPORTPATH
- 
-
 # COUNT OBJECTS FOR CONTROL
 echo ===================================== COUNTING TABLES OBJECTS ===================================== >> $LOGFILE 2>&1
 echo Counting MO objects... >> $LOGFILE 2>&1
-su - postgres -c "psql -d $DATABASE -c \"select db_monitoring.count_table_object('$MOVD_SCHEMA'); select db_monitoring.count_table_object('specificite_lausanne');\"" >> $LOGFILE 2>&1
+su - postgres -c "psql -d $DATABASE -c \"select db_monitoring.count_table_object('$MOVD_SCHEMA');\"" >> $LOGFILE 2>&1
 echo Counting NPCS objects... >> $LOGFILE 2>&1
 su - postgres -c "psql -d $DATABASE -c \"select db_monitoring.count_table_object('$NPCSVD_SCHEMA');\"" >> $LOGFILE 2>&1
+echo Counting Lausanne data objects... >> $LOGFILE 2>&1
+su - postgres -c "psql -d $DATABASE -c \"select db_monitoring.count_table_object('specificite_lausanne');\"" >> $LOGFILE 2>&1
 echo Counting diffusion objects... >> $LOGFILE 2>&1
 su - postgres -c "psql -d diffusion -c \"select db_monitoring.count_table_object('mo_guichet');\"" >> $LOGFILE 2>&1
-
-
-# CREATE ATTACHMENTS AND SEND EMAIL NOTIFICATION
-echo ===================================== SENDING EMAIL NOTIFICATION ===================================== >> $LOGFILE 2>&1
-echo -e "MOVD TABLES COUNTS\n" > /tmp/gc_counts.txt
-su - postgres -c "psql $DATABASE -c \"select * from db_monitoring.table_last_update_difference;\"" >> /tmp/gc_counts.txt
-echo -e "\n\nDIFFUSION TABLES COUNTS\n" >> /tmp/gc_counts.txt
-su - postgres -c "psql diffusion -c \"select * from db_monitoring.table_last_update_difference;\"" >> /tmp/gc_counts.txt
-
-echo -e "Bonjour,\n\nVous trouverez en pièce jointe les décomptes de la mise à jour du $(date +"%Y-%m-%d").\n\nBonne semaine,\n\nUn serveur" | mail -s "Mise a jour du $(date +"%Y-%m-%d")" julien.briant@lausanne.ch -a "From: go-db@update-guichet" -A /tmp/gc_counts.txt
-
 
 # Get end time.
 echo END TIME: $(date +"%T") >> $LOGFILE
@@ -135,3 +86,5 @@ echo END TIME: $(date +"%T") >> $LOGFILE
 # Copy error from LOGFILE into ERRORFILE
 grep -n -i error $LOGFILE > $ERRORFILE 
 
+# Set exit status
+exit 0
