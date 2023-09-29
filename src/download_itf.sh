@@ -25,7 +25,7 @@ do
 done
 
 # Make parameters mandatory
-if [ ! ${communes} ] || [ ! ${authorization} ] || [ ! ${dlink} ] || [ ! ${dfolder} ]; then
+if [[ ( ! ${communes} ) || ( ! ${authorization} ) || ( ! ${dlink} ) || ( ! ${dfolder} ) ]] ; then
   echo "arguments -c, -a, -l and -f must be provided"
   echo "$usage" >&2; exit 1
 fi
