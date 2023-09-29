@@ -86,5 +86,11 @@ echo END TIME: $(date +"%T") >> $LOGFILE
 # Copy error from LOGFILE into ERRORFILE
 grep -n -i error $LOGFILE > $ERRORFILE 
 
-# Set exit status
-exit 0
+# Set exit status depending on $ERRORFILE
+if [ -s $ERRORFILE ]; then
+        # The file is not-empty
+	exit 1
+else
+        # The file is empty
+	exit 0
+fi
