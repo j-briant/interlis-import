@@ -40,7 +40,7 @@ Les scripts sont succintement décrits ci-dessous.
 
 ### download_itf.sh
 
-Ce script permet de télécharger les fichiers interlis se trouvant sur le site de l'AVRIC (viageo.ch/api/download/..., flag ```-l```), en utilisant une _basic authentication_ (```-a```). La liste des fichiers à télécharger est sous la forme d'un fichier json construit comme suit:
+Ce script permet de télécharger les fichiers interlis se trouvant sur le site de l'AVRIC (viageo.ch/api/download/..., option ```-l```), en utilisant une _basic authentication_ (```-a```). La liste des fichiers à télécharger est sous la forme d'un fichier json construit comme suit:
 
 ```json
 {
@@ -51,7 +51,13 @@ Ce script permet de télécharger les fichiers interlis se trouvant sur le site 
 }
 ```
 
-Chaque clé est un numéro de commune fédéral (OFS), chaque valeur son numéro de commune cantonal équivalent. Le chemin vers la fichier json est à renseigner pour le flag ```-c```. Les fichier sont téléchargés dans le dossier passé au flag ```-f```.
+Chaque clé est un numéro de commune fédéral (OFS), chaque valeur son numéro de commune cantonal équivalent. Le chemin vers la fichier json est à renseigner pour l'option ```-c```. Les fichier sont téléchargés dans le dossier passé à l'option ```-f```.
+
+L'appel du script peut ressembler à 
+
+```sh
+src/download_itf.sh -l "viageo.ch/api/download/my_link" -a "basic my_auth" -c "/home/my_role/communes.json" -f "/tmp/my_download_directory/"
+```
 
 ### create_schema.sh
 
@@ -64,6 +70,12 @@ Les options restantes permettent de paramétrer la création du schéma:
 * ```-n t_id``` --> Le nom de la colonne t_id.
 * ```-m interlis_model``` --> Le chemin vers le model interlis (.ili) à construire.
 
+Un exemple d'appel du script ci-dessous:
+
+```sh
+src/create_schema.sh -d my_db -h my_host -p 5432 -s my_schema -U username -w password -E -T -B -n "fid" -m "/path/to/my/model.ili"
+```
+
 ### drop_schema.sh
 
 Le script antagoniste à ```create_schema.sh```. Il permet de supprimer un schéma dans une base de données. Ici un pg_service est utilisé pour stocker les informations de connexion. Pas franchement plus rapide que ```psql service=my_service -c 'DROP my_schema CASCADE;'```
@@ -75,6 +87,12 @@ Ce script réalise l'essentiel du travail, et la très large majorité du temps 
 Comme dans le cas du script ```create_schema.sh```, une bonne partie des options récupèrent les informations de connexion: ```[-U USER]```, ```[-H HOST]```, ```[-p PORT]```, ```[-s SCHEMA]```, ```[-d DATABASE]```, ```[-w PASSWORD]```.
 
 Le chemin vers le dossier contentant les fichiers interlis (potentiellement le même que celui de téléchargement) est donné par le paramètre ```-f source folder```. Le paramètre ```-n tid_name``` indique le nom de la colonne _tid_ utilisé lors de la création du schéma.
+
+Si l'on considère le dossier de téléchargement utilisé dans l'exemple de ```download_itf.sh```, un appel de ```import_itf.sh``` pourrait ressembler à:
+
+```sh
+src/import_itf.sh -d my_db -h my_host -p 5432 -s my_schema -U username -w password -f "/tmp/my_download_directory/" -n "fid"
+```
 
 ### main.sh
 
