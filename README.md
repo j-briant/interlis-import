@@ -40,7 +40,7 @@ L'enchaînement des opérations à travers ```main.sh``` est illustré dans le d
 
 ## Paramétrage
 
-Chaque script peut être lancé individuellement en respectant les paramètres nécessaires au fonctionnement. Ces mêmes scripts peuvent être enchaînés en lançant le script ```main.sh```. Ce dernier est paramétré grâce à un fichier .env. Le fichier .envexample indique les variables d'environnement à définir pour le bon fonctionnement du script.
+Chaque script peut être lancé individuellement en respectant les paramètres nécessaires au fonctionnement. Ces mêmes scripts peuvent être enchaînés en lançant le script ```main.sh```. Ce dernier est paramétré grâce à un fichier .env. Le fichier [.envexample](.envexample) indique les variables d'environnement à définir pour le bon fonctionnement du script.
 
 ## Scripts
 
