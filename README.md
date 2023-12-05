@@ -65,9 +65,9 @@ Ce script permet de créer le schéma dans lequel seront importées les données
 
 Les options restantes permettent de paramétrer la création du schéma:
 * ```-E```/```--createEnumTabs``` --> Crée une table avec les différentes valeurs d'énumération pour chaque définition d'énumération.
-* ```-T```/```--createTidCol``` --> Crée une colonne supplémentaire T_Ili_Tid dans chaque table.
-* ```-B```/```--createBasketCol``` --> Crée dans chaque table une colonne supplémentaire T_basket pour pouvoir identifier le conteneur.
-* ```-n t_id``` --> Le nom de la colonne t_id.
+* ```-T```/```--createTidCol``` --> Crée une colonne supplémentaire _t_ili_tid_ dans chaque table.
+* ```-B```/```--createBasketCol``` --> Crée dans chaque table une colonne supplémentaire _t_basket_ pour pouvoir identifier le conteneur.
+* ```-n t_id``` --> Le nom de la colonne d'identifiant unique utilisé dans le schéma.
 * ```-m interlis_model``` --> Le chemin vers le model interlis (.ili) à construire.
 
 Un exemple d'appel du script ci-dessous:
@@ -82,11 +82,11 @@ Le script antagoniste à ```create_schema.sh```. Il permet de supprimer un sché
 
 ### import_itf.sh
 
-Ce script réalise l'essentiel du travail, et la très large majorité du temps de traitement lui incombe. Il parcours un dossier contenant une liste de fichiers interlis et importe chacun dans la base de données correspondant aux informations de connexion données. La création préalable d'un schéma avec la structure de modèle adapatée aux données importées est obligatoire.
+Ce script réalise l'essentiel du travail, et la très large majorité du temps de traitement lui incombe. Il parcourt un dossier contenant une liste de fichiers interlis et importe chacun dans la base de données correspondant aux informations de connexion données. La création préalable d'un schéma avec la structure de modèle adapatée aux données importées est obligatoire.
 
 Comme dans le cas du script ```create_schema.sh```, une bonne partie des options récupèrent les informations de connexion: ```[-U USER]```, ```[-H HOST]```, ```[-p PORT]```, ```[-s SCHEMA]```, ```[-d DATABASE]```, ```[-w PASSWORD]```.
 
-Le chemin vers le dossier contentant les fichiers interlis (potentiellement le même que celui de téléchargement) est donné par le paramètre ```-f source folder```. Le paramètre ```-n tid_name``` indique le nom de la colonne _tid_ utilisé lors de la création du schéma.
+Le chemin vers le dossier contenant les fichiers interlis (potentiellement le même que celui de téléchargement) est donné par le paramètre ```-f source folder```. Le paramètre ```-n tid_name``` indique le nom de la colonne _t_id_ utilisé lors de la création du schéma.
 
 Si l'on considère le dossier de téléchargement utilisé dans l'exemple de ```download_itf.sh```, un appel de ```import_itf.sh``` pourrait ressembler à:
 
@@ -96,7 +96,7 @@ src/import_itf.sh -d my_db -h my_host -p 5432 -s my_schema -U username -w passwo
 
 ### main.sh
 
-Le script privilégié pour intéragir avec cet ensemble. Il permet d'appeler les différents scripts et de centraliser les variables. Il utilise un ficher ```.env``` pour la lecture des variables et ainsi éviter d'exposer certaines valeurs. Dans son état actuel, le script travail explicitement sur des données MO et des données NPCS, rendant son design assez grossier avec des répétitions d'opérations, ainsi que des traitements très liés au processus en place, et impossible à utiliser dans un autre contexte. Un effort de refactorisation sera le bienvenu.
+Le script privilégié pour intéragir avec cet ensemble. Il permet d'appeler les différents scripts et de centraliser les variables. Il utilise un ficher ```.env``` pour la lecture des variables et ainsi éviter d'exposer certaines valeurs. 
 
 Les variables d'environnement lues sont les suivantes:
 * ```MOVD_DOWNLOAD_LINK``` --> URL de téléchargement des fichiers interlis MO
@@ -110,3 +110,17 @@ Les variables d'environnement lues sont les suivantes:
 * ```MOVD_SCHEMA``` --> le nom du schéma recevant les données MO
 * ```NPCSVD_SCHEMA``` --> le nom du schéma recevant les données NPCS
 * ```T_ID_NAME``` --> le nom de la colonne t_id (identifiant système dans la base de données)
+
+## Réflexions
+
+La motivation initial pour ce travail était de réduire la complexité des flux de données et de centraliser certaines opérations. Il s'agissait également de désemcombrer et décorréler certaines étapes. Dans une certaine mesure cet outil y parvient:
+* l'import de données interlis a désormais son programme dédié, celui-ci est totalement autonome, son exécution est indépendante de tout autre script.
+* le temps de traitement de l'opération de téléchargement et import des données de MO (et même export en shapefile) a été considérablement réduit; de plusieurs jours pour l'ancien traitement (5 pour le téléchargement + import interlis lors de la dernière exécution) celui-ci a été ramené à 1h45 en moyenne, soit 70x plus rapide, ou une amélioration de la performance d'environ 7000%.
+* la MO est stockée dans son modèle de données officielle, plus normalisé que l'ancienne version du traitement, ce qui facilite la communication et le rapprochement avec les informations du canton. La documentation du modèle de données cantonale est complètement applicable.
+* l'ensemble est totalement opensource (mais ne pas oublié le travail réalisé sur [**ili2db**](https://github.com/claeis/ili2db)).
+ 
+L'ensemble de la MO d'intérêt (le canton de Vaud) est désormais téléchargeable chaque semaine, contre une fois tous les 4-5-6 mois auparavant. De plus, elle est désormais stockée en utilisant son modèle de données officielle, ce qui rend sa manipulation bien plus flexible. Le traitement peut être également planifié à l'aide d'un simple ```cron``` job, alors qu'une action manuelle était nécessaire auparavant.
+
+Dans son état actuel, le script travail explicitement sur des données MO et des données NPCS, rendant son design assez grossier avec des répétitions d'opérations, ainsi que des traitements très liés au processus en place, et impossible à utiliser dans un autre contexte. Le type d'opérations réalisées restant simple cela ne pose pas de problème majeur pour l'instant, mais un effort de refactorisation sera le bienvenu. 
+
+Assez peu de contrôle ou alerte existent, tous les output des scripts peuvent être loggés, et l'exécution de ```main.sh``` se termine par la définition d'un code erreur en fonction du contenu du log d'erreur, ce qui est peu élégant. Un système d'alerte pourrait être ajouté.
