@@ -30,6 +30,14 @@ ou
 create_schema.sh [options]
 ```
 
+L'enchaînement des opérations à travers ```main.sh``` est illustré dans le diagramme de flux suivant.
+
+<figure>
+<img src="doc/import_mo.drawio.png" alt="flow_diagram">
+<a name="figure-1"></a><figcaption>Figure 1 - Diagramme de flux de l'outil</figcaption>
+</figure>
+
+
 ## Paramétrage
 
 Chaque script peut être lancé individuellement en respectant les paramètres nécessaires au fonctionnement. Ces mêmes scripts peuvent être enchaînés en lançant le script ```main.sh```. Ce dernier est paramétré grâce à un fichier .env. Le fichier .envexample indique les variables d'environnement à définir pour le bon fonctionnement du script.
@@ -111,16 +119,16 @@ Les variables d'environnement lues sont les suivantes:
 * ```NPCSVD_SCHEMA``` --> le nom du schéma recevant les données NPCS
 * ```T_ID_NAME``` --> le nom de la colonne t_id (identifiant système dans la base de données)
 
-## Réflexions
+## Réflexions et perspectives
 
-La motivation initial pour ce travail était de réduire la complexité des flux de données et de centraliser certaines opérations. Il s'agissait également de désemcombrer et décorréler certaines étapes. Dans une certaine mesure cet outil y parvient:
+La motivation initiale pour ce travail était de réduire la complexité des flux de données et de centraliser certaines opérations. Il s'agissait également de désemcombrer et décorréler certaines étapes. Dans une certaine mesure cet outil y parvient:
 * l'import de données interlis a désormais son programme dédié, celui-ci est totalement autonome, son exécution est indépendante de tout autre script.
-* le temps de traitement de l'opération de téléchargement et import des données de MO (et même export en shapefile) a été considérablement réduit; de plusieurs jours pour l'ancien traitement (5 pour le téléchargement + import interlis lors de la dernière exécution) celui-ci a été ramené à 1h45 en moyenne, soit 70x plus rapide, ou une amélioration de la performance d'environ 7000%.
-* la MO est stockée dans son modèle de données officielle, plus normalisé que l'ancienne version du traitement, ce qui facilite la communication et le rapprochement avec les informations du canton. La documentation du modèle de données cantonale est complètement applicable.
-* l'ensemble est totalement opensource (mais ne pas oublié le travail réalisé sur [**ili2db**](https://github.com/claeis/ili2db)).
+* le temps de traitement des données de MO (et même en incluant l'export en shapefile) a été considérablement réduit; de plusieurs jours pour l'ancien traitement (5 pour le téléchargement + import interlis lors de la dernière exécution) celui-ci a été ramené à 1h45 en moyenne, soit 70x plus rapide, ou une amélioration de la performance d'environ 7000%.
+* la MO est stockée dans son modèle de données officielle, plus normalisé que l'ancienne version du traitement, ce qui facilite la manipulation, la communication et le rapprochement avec les informations du canton. La documentation du modèle de données cantonale est complètement applicable.
+* l'ensemble est totalement opensource (mais ne pas oublier le travail réalisé sur [**ili2db**](https://github.com/claeis/ili2db)).
  
 L'ensemble de la MO d'intérêt (le canton de Vaud) est désormais téléchargeable chaque semaine, contre une fois tous les 4-5-6 mois auparavant. De plus, elle est désormais stockée en utilisant son modèle de données officielle, ce qui rend sa manipulation bien plus flexible. Le traitement peut être également planifié à l'aide d'un simple ```cron``` job, alors qu'une action manuelle était nécessaire auparavant.
 
-Dans son état actuel, le script travail explicitement sur des données MO et des données NPCS, rendant son design assez grossier avec des répétitions d'opérations, ainsi que des traitements très liés au processus en place, et impossible à utiliser dans un autre contexte. Le type d'opérations réalisées restant simple cela ne pose pas de problème majeur pour l'instant, mais un effort de refactorisation sera le bienvenu. 
+Dans son état actuel, le script ````main.sh``` travail explicitement sur des données MO et des données NPCS, rendant son design assez simpliste avec des répétitions d'opérations, ainsi que des traitements très liés au processus en place, et impossible à utiliser dans un autre contexte. Le type d'opérations réalisées restant simple cela ne pose pas de problème majeur pour l'instant, mais un effort de refactorisation sera le bienvenu. Les scripts qui le composent peuvent cependant être utilisés indépendamment, ce qui fut le cas au moment de l'ajout des données de NPCS.
 
 Assez peu de contrôle ou alerte existent, tous les output des scripts peuvent être loggés, et l'exécution de ```main.sh``` se termine par la définition d'un code erreur en fonction du contenu du log d'erreur, ce qui est peu élégant. Un système d'alerte pourrait être ajouté.
