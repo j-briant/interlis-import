@@ -1,0 +1,11 @@
+MOVD_DOWNLOAD_LINK=my_movd_link.ch/url/path
+NPCSVD_DOWNLOAD_LINK=my_npcsvd_link.ch/url/path
+AUTHORIZATION="Basic my_StR0ng_7Ok5n"
+DATABASE="my_database"
+HOST="localhost"
+USER="my_user"
+PASSWORD="my_password"
+PORT=5432
+MOVD_SCHEMA=movd_schema
+NPCSVD_SCHEMA=npcsvd_schema
+T_ID_NAME=fid
