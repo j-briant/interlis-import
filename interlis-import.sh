@@ -34,18 +34,12 @@ done
 # Get environment variables.
 . .env
 
-# Get date.
-# Log folder variable
-LOGNAME=$(basename "$0")
-LOGFILE=$LOGPATH/$LOGNAME.log
-ERRORFILE=$LOGPATH/$LOGNAME.error
-
 # Get start time.
-echo "START TIME: $(date +"%T")" > "$LOGFILE"
+echo "START TIME: $(date +"%T")"
 
 # BACKUP
 if [ "$backup" = true ]; then
-        echo "===================================== BACKING UP DATABASE =====================================" >> "$LOGFILE" 2>&1
+        echo "===================================== BACKING UP DATABASE ====================================="
         PGPASSWORD="$PASSWORD" pg_dump "$DATABASE" -n "$SCHEMA" -Fc > backup_"$(date +"%Y%m%d%H%M%S")".dmp
 fi
 
@@ -57,21 +51,9 @@ fi
 
     echo "===================================== IMPORT DATA ====================================="
     echo "Importing data from Interlis files..."
-    src/import_itf.sh -U "$USER" -p "$PORT" -H "$HOST" -s "$SCHEMA" -d "$DATABASE" -w "$PASSWORD" -n "$T_ID_NAME" -f "$INTERLISDATAFILE"
-} >> "$LOGFILE" 2>&1
+    src/import_itf.sh -U "$USER" -p "$PORT" -H "$HOST" -s "$SCHEMA" -d "$DATABASE" -w "$PASSWORD" -n "$T_ID_NAME" -i "$INTERLISDATA"
+}
 
 # Get end time.
-echo "END TIME: $(date +"%T")" >> "$LOGFILE"
-
-# Copy error from LOGFILE into ERRORFILE
-grep -n -i error "$LOGFILE" > "$ERRORFILE"
-
-# Set exit status depending on $ERRORFILE
-if [ -s "$ERRORFILE" ]; then
-    # The file is not-empty
-    exit 1
-else
-    # The file is empty
-    exit 0
-fi
+echo "END TIME: $(date +"%T")"
 
