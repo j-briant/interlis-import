@@ -1,134 +1,73 @@
-# import-interlis-mensuration-officielle
+# interlis-import
 
-Un projet permettant de télécharger des fichiers interlis, créer un schéma dans une base de données, importer les données.
+Don't think too much about what interlis is, but if you have a .ili or .xtf in your hand then you might wonder what you're supposed to do with it.
 
-## Objectifs
+## Objectives
 
-Le but est d'automatiser l'import des données cantonales localement, en limitant le nombre de scripts et d'outils utilisés. Conserver la structure du modèle MD.01-MO-CH est également voulu pour pouvoir dénormaliser et garder le contrôle au sein de la base de données, et non lors de processsus d'import ou d'export.
+Interlis is a, if not completely obscure, not so well documented format, and tools able to make something out of it are rare. Most of the time we'll just take the file and import it in a more convenient format. The library `ili2db` helps with those conversions but the number of parameter is sometimes overwhelming.
 
-## Outils
+The aim here is to have a kind of minimalist and simple way of loading an interlis file (version 1 or 2) into a database (for now Postgres and Geopackage), without thinking too much about how to do it.
 
-Il s'agit essentiellement de scripts batch/shell. Les opérations demandent de télécharger, manipuler des fichiers et de communiquer avec une base de données. Le coeur des opérations se fait grâce à [ili2db](https://github.com/claeis/ili2db) qui est la seule librairie externe utilisée ici.
+## Tools and requirements
 
-## Fonctionnement
+You'll need a java runtime environment installed on your system (`sudo apt install default-jre` on Ubuntu). Everything is done thanks to [**`ili2db`**](https://github.com/claeis/ili2db) which is the only requirement (lib included though) with **`psql`** if you plan to backup stuff (see later).
 
-Trois opérations peuvent être réalisées indépendamment ou enchaînées:
-1. Télécharger les fichiers interlis sur le site de l'Asit-VD.
-2. Créer le schéma et la structure du modèle dans la base de données, sur la base d'un fichier .ili.
-3. Importer les fichiers interlis se trouvant dans un dossier renseigné.
+## Configuration
 
-Ces trois scripts se touvent dans le dossier /src. Ils peuvent être enchaînés en lançant le script main.sh à la racine du projet.
-Un script se lance par la ligne de commande selon l'exemple qui suit:
+The tool comes with a entry-point script: `interlis-import.sh`, that will call two subscripts: `create_schema.sh` and `import_interlis.sh`, both can be called independantly if you want.
+
+You can print the help message:
 
 ```sh
-main.sh 
+$ ./interlis-import.sh -h
+  interlis-import.sh [-h] [-b]
+  Create the model structure into a schema and import data from interlis:
+     -h show this help text
+     -b backup database schema before anything (must run with backup privilege)
 ```
 
-ou 
+And a typical import will look like:
 
 ```sh
-create_schema.sh [options]
+$ ./interlis-import.sh -b
 ```
 
-L'enchaînement des opérations à travers ```main.sh``` est illustré dans le diagramme de flux suivant.
-
-<figure>
-<img src="doc/import_mo.drawio.png" alt="flow_diagram">
-<a name="figure-1"></a><figcaption>Figure 1 - Diagramme de flux de l'outil</figcaption>
-</figure>
-
-
-## Paramétrage
-
-Chaque script peut être lancé individuellement en respectant les paramètres nécessaires au fonctionnement. Ces mêmes scripts peuvent être enchaînés en lançant le script ```main.sh```. Ce dernier est paramétré grâce à un fichier .env. Le fichier [.envexample](.envexample) indique les variables d'environnement à définir pour le bon fonctionnement du script.
+Parameters can be stored in a `.env` file saved next to the script and will be overwritten if passed in the command line.
 
 ## Scripts
 
-Les scripts sont succintement décrits ci-dessous.
-
-### download_itf.sh
-
-Ce script permet de télécharger les fichiers interlis se trouvant sur le site de l'AVRIC (viageo.ch/api/download/..., option ```-l```), en utilisant une _basic authentication_ (```-a```). La liste des fichiers à télécharger est sous la forme d'un fichier json construit comme suit:
-
-```json
-{
-    "5402": 2,
-    "5406": 6,
-    "5409": 9,
-    ...
-}
-```
-
-Chaque clé est un numéro de commune fédéral (OFS), chaque valeur son numéro de commune cantonal équivalent. Le chemin vers la fichier json est à renseigner pour l'option ```-c```. Les fichier sont téléchargés dans le dossier passé à l'option ```-f```.
-
-L'appel du script peut ressembler à 
-
-```sh
-src/download_itf.sh -l "viageo.ch/api/download/my_link" -a "basic my_auth" -c "/home/my_role/communes.json" -f "/tmp/my_download_directory/"
-```
+Subscripts can be launched separately if you want, here is a short description.
 
 ### create_schema.sh
 
-Ce script permet de créer le schéma dans lequel seront importées les données. L'essentiel des options du script sont utilisées pour le passage des information de connexion à la base de données: ```[-U USER]```, ```[-H HOST]```, ```[-p PORT]```, ```[-s SCHEMA]```, ```[-d DATABASE]```, ```[-w PASSWORD]```. Un pg_service n'est pas utilisé car ili2db ne permet pas leur utilisation au moment d'écrire ce texte. 
+This script will, as its name suggests, create a the structure of the model in your destination dataset. Interlis is strongly modelled and the first step is to create the model indicated by the interlis file.
 
-Les options restantes permettent de paramétrer la création du schéma:
-* ```-E```/```--createEnumTabs``` --> Crée une table avec les différentes valeurs d'énumération pour chaque définition d'énumération.
-* ```-T```/```--createTidCol``` --> Crée une colonne supplémentaire _t_ili_tid_ dans chaque table.
-* ```-B```/```--createBasketCol``` --> Crée dans chaque table une colonne supplémentaire _t_basket_ pour pouvoir identifier le conteneur.
-* ```-n t_id``` --> Le nom de la colonne d'identifiant unique utilisé dans le schéma.
-* ```-m interlis_model``` --> Le chemin vers le model interlis (.ili) à construire.
+Parameters are essentially connection information: `[-U USER]`, `[-H HOST]`, `[-p PORT]`, `[-s SCHEMA]`, `[-d DATABASE]`, `[-w PASSWORD]`. At the time of writing. `pg_service` files are not supported. 
 
-Un exemple d'appel du script ci-dessous:
+Remaining options parameterize the model creation:
+* `-E`/`--createEnumTabs` --> Create a dedicated table for enums.
+* `-T`/`--createTidCol` --> Create a `t_ili_tid` column in each table.
+* `-B`/`--createBasketCol` --> Create a `t_basket` column in each table.
+* `-n t_id` --> The name of the unique id column.
+* `-m interlis_model_name` --> The name of the interlis model.
+* `-i interlis_model_file` --> Path to the model definition (.ili)
+
+The script can be called as below:
 
 ```sh
-src/create_schema.sh -d my_db -h my_host -p 5432 -s my_schema -U username -w password -E -T -B -n "fid" -m "/path/to/my/model.ili"
+src/create_schema.sh -d my_db -h my_host -p 5432 -s my_schema -U username -w password -E -T -B -n "fid" -m "MODELNAME" -i "/path/to/my/model.ili"
 ```
-
-### drop_schema.sh
-
-Le script antagoniste à ```create_schema.sh```. Il permet de supprimer un schéma dans une base de données. Ici un pg_service est utilisé pour stocker les informations de connexion. Pas franchement plus rapide que ```psql service=my_service -c 'DROP my_schema CASCADE;'```
 
 ### import_itf.sh
 
-Ce script réalise l'essentiel du travail, et la très large majorité du temps de traitement lui incombe. Il parcourt un dossier contenant une liste de fichiers interlis et importe chacun dans la base de données correspondant aux informations de connexion données. La création préalable d'un schéma avec la structure de modèle adapatée aux données importées est obligatoire.
+Once the model is build, you can import data. It will read a file (.itf or .xtf) or a folder (of .itf or .xtf) and import them in the destination database. If a folder containing multiple files is passed, each file is loaded into its own `dataset`.
 
-Comme dans le cas du script ```create_schema.sh```, une bonne partie des options récupèrent les informations de connexion: ```[-U USER]```, ```[-H HOST]```, ```[-p PORT]```, ```[-s SCHEMA]```, ```[-d DATABASE]```, ```[-w PASSWORD]```.
+As with `create_schema.sh`, most of parameters are connection information: `[-U USER]`, `[-H HOST]`, `[-p PORT]`, `[-s SCHEMA]`, `[-d DATABASE]`, `[-w PASSWORD]`.
 
-Le chemin vers le dossier contenant les fichiers interlis (potentiellement le même que celui de téléchargement) est donné par le paramètre ```-f source folder```. Le paramètre ```-n tid_name``` indique le nom de la colonne _t_id_ utilisé lors de la création du schéma.
+Path to your input interlis data file or folder is given to `-i interlis data`. The parameter `-n tid_name` indicates the name of the _t_id_ used during the schema creation.
 
-Si l'on considère le dossier de téléchargement utilisé dans l'exemple de ```download_itf.sh```, un appel de ```import_itf.sh``` pourrait ressembler à:
+It could look like:
 
 ```sh
-src/import_itf.sh -d my_db -h my_host -p 5432 -s my_schema -U username -w password -f "/tmp/my_download_directory/" -n "fid"
+src/import_itf.sh -d my_db -h my_host -p 5432 -s my_schema -U username -w password -f "/tmp/my_directory/" -n "fid"
 ```
-
-### main.sh
-
-Le script privilégié pour intéragir avec cet ensemble. Il permet d'appeler les différents scripts et de centraliser les variables. Il utilise un ficher ```.env``` pour la lecture des variables et ainsi éviter d'exposer certaines valeurs. 
-
-Les variables d'environnement lues sont les suivantes:
-* ```MOVD_DOWNLOAD_LINK``` --> URL de téléchargement des fichiers interlis MO
-* ```NPCSVD_DOWNLOAD_LINK``` --> URL de téléchargement des fichiers interlis NPCS
-* ```AUTHORIZATION``` --> Authentification à l'api de téléchargement
-* ```DATABASE``` --> le nom de la base de données hébergeant l'import
-* ```HOST``` --> le hos de la base de données
-* ```USER``` --> _username_ pour le traitement dans la base de données
-* ```PASSWORD``` --> le mot de passe pour la connexion à la base de données
-* ```PORT``` --> le port de connexion à la base de données
-* ```MOVD_SCHEMA``` --> le nom du schéma recevant les données MO
-* ```NPCSVD_SCHEMA``` --> le nom du schéma recevant les données NPCS
-* ```T_ID_NAME``` --> le nom de la colonne t_id (identifiant système dans la base de données)
-
-## Réflexions et perspectives
-
-La motivation initiale pour ce travail était de réduire la complexité des flux de données et de centraliser certaines opérations. Il s'agissait également de désemcombrer et décorréler certaines étapes. Dans une certaine mesure cet outil y parvient:
-* l'import de données interlis a désormais son programme dédié, celui-ci est totalement autonome, son exécution est indépendante de tout autre script.
-* le temps de traitement des données de MO (et même en incluant l'export en shapefile) a été considérablement réduit; de plusieurs jours pour l'ancien traitement (5 pour le téléchargement + import interlis lors de la dernière exécution) celui-ci a été ramené à 1h45 en moyenne, soit 70x plus rapide, ou une amélioration de la performance d'environ 7000%.
-* la MO est stockée dans son modèle de données officielle, plus normalisé que l'ancienne version du traitement, ce qui facilite la manipulation, la communication et le rapprochement avec les informations du canton. La documentation du modèle de données cantonale est complètement applicable.
-* l'ensemble est totalement opensource (mais ne pas oublier le travail réalisé sur [**ili2db**](https://github.com/claeis/ili2db)).
- 
-L'ensemble de la MO d'intérêt (le canton de Vaud) est désormais téléchargeable chaque semaine, contre une fois tous les 4-5-6 mois auparavant. De plus, elle est désormais stockée en utilisant son modèle de données officielle, ce qui rend sa manipulation bien plus flexible. Le traitement peut être également planifié à l'aide d'un simple ```cron``` job, alors qu'une action manuelle était nécessaire auparavant.
-
-Dans son état actuel, le script ````main.sh``` travail explicitement sur des données MO et des données NPCS, rendant son design assez simpliste avec des répétitions d'opérations, ainsi que des traitements très liés au processus en place, et impossible à utiliser dans un autre contexte. Le type d'opérations réalisées restant simple cela ne pose pas de problème majeur pour l'instant, mais un effort de refactorisation sera le bienvenu. Les scripts qui le composent peuvent cependant être utilisés indépendamment, ce qui fut le cas au moment de l'ajout des données de NPCS.
-
-Assez peu de contrôle ou alerte existent, tous les output des scripts peuvent être loggés, et l'exécution de ```main.sh``` se termine par la définition d'un code erreur en fonction du contenu du log d'erreur, ce qui est peu élégant. Un système d'alerte pourrait être ajouté.
