@@ -46,7 +46,7 @@ echo "START TIME: $(date +"%T")" > "$LOGFILE"
 # BACKUP
 if [ "$backup" = true ]; then
         echo "===================================== BACKING UP DATABASE =====================================" >> "$LOGFILE" 2>&1
-        PGPASSWORD="$PASSWORD" pg_dump "$DATABASE" -n "$SCHEMA" -Fc > backup.dmp
+        PGPASSWORD="$PASSWORD" pg_dump "$DATABASE" -n "$SCHEMA" -Fc > backup_"$(date +"%Y%m%d%H%M%S")".dmp
 fi
 
 # IMPORT INTERLIS FILES.
