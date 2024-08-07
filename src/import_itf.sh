@@ -108,9 +108,9 @@ if [[ -d "$interlisdata" ]]; then
     do
         echo "========================= $f ========================="
         datasetname=$(basename "$f" .itf)
-        java -jar "/opt/ili2pg-5.0.1/ili2pg-5.0.1.jar" --replace --dbhost "$host" --dbport "$port" --dbusr "$user" --dbpwd "$password" --dbdatabase "$database" --dbschema "$schema" --t_id_Name "$tidname" --importTid --importBid --disableValidation --dataset "$datasetname" "$f" 2>&1
+        java -jar "/opt/ili2pg-5.1.0/ili2pg-5.1.0.jar" --replace --dbhost "$host" --dbport "$port" --dbusr "$user" --dbpwd "$password" --dbdatabase "$database" --dbschema "$schema" --t_id_Name "$tidname" --importTid --importBid --disableValidation --dataset "$datasetname" "$f" 2>&1
     done
 elif [[ -f "$interlisdata" ]]; then
-        java -jar "/opt/ili2pg-5.0.1/ili2pg-5.0.1.jar" --replace --dbhost "$host" --dbport "$port" --dbusr "$user" --dbpwd "$password" --dbdatabase "$database" --dbschema "$schema" --t_id_Name "$tidname" --importTid --importBid --disableValidation --dataset "$datasetname" "$interlisdata" 2>&1
+        java -jar "/opt/ili2pg-5.1.0/ili2pg-5.1.0.jar" --replace --dbhost "$host" --dbport "$port" --dbusr "$user" --dbpwd "$password" --dbdatabase "$database" --dbschema "$schema" --t_id_Name "$tidname" --importTid --importBid --disableValidation --dataset "$datasetname" "$interlisdata" 2>&1
 fi
 
