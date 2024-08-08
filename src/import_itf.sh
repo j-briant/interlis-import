@@ -12,7 +12,7 @@ Import interlis files stored in a given folder into a Postgres database. Require
     -w database password
     -d database name
     -s database schema
-    -n name of the tid column"
+    -t name of the tid column"
 
 # Die function
 die() {
@@ -75,7 +75,7 @@ while :; do
             else
                 die 'ERROR: "--schema" requires a non-empty option argument.'
             fi;;
-        -n|--tidname)
+        -t|--tidname)
             if [ "$2" ]; then
                 tidname=$2
                 shift
@@ -97,7 +97,7 @@ done
 
 # Make parameters mandatory
 if [ ! "${interlisdata}" ] || [ ! "${host}" ] || [ ! "${port}" ] || [ ! "${user}" ] || [ ! "${password}" ] || [ ! "${database}" ] || [ ! "${schema}" ] || [ ! "${tidname}" ]; then
-    echo "arguments -i, -H, -p, -U, -w, -d, -s and -n must be provided"
+    echo "arguments -i, -H, -p, -U, -w, -d, -s and -t must be provided"
     echo "$usage" >&2; exit 1
 fi
 

@@ -32,7 +32,22 @@ And a typical import will look like:
 $ ./interlis-import.sh -b
 ```
 
-Parameters can be stored in a `.env` file saved next to the script and will be overwritten if passed in the command line.
+Parameters can be stored in a `.env` file saved next to the script and will be overwritten if passed in the command line. The parameters are the following:
+
+```
+DATABASE="my_db"
+HOST="localhost"
+USER="postgres"
+PASSWORD="postgres"
+PORT=5432
+SCHEMA=import_interlis
+INTERLISMODELFILE="model/6021.ili"  # your model file
+INTERLISDATAFILE="test/6.itf"       # your data file
+MODEL=MD01MOVDMN95V24
+T_ID_NAME=fid
+SRS=2056
+LOGPATH="."
+```
 
 ## Scripts
 
