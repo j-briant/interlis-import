@@ -15,7 +15,7 @@ Create a Postgres schema based on an interlis model (.ili):
      -T --createTidCol, keep blank if no
      -B --createBasketCol, keep blank if no
      -t t_id column name
-     -f interlis model file
+     -l interlis model file
      -m interlis model name"
 
 # Die function
@@ -79,7 +79,7 @@ while :; do
             else
                 die 'ERROR: "--tidname" requires a non-empty option argument.'
             fi;;
-        -f|--interlis-model-file)
+        -l|--interlis-model-file)
             if [ "$2" ]; then
                 interlismodelfile=$2
                 shift
@@ -114,7 +114,7 @@ done
 
 # Make parameters mandatory
 if [ ! "${user}" ] || [ ! "${host}" ] || [ ! "${port}" ] || [ ! "${schema}" ] || [ ! "${database}" ] || [ ! "${password}" ] || [ ! "${tidname}" ] || [ ! "${interlismodelfile}" ] || [ ! "${interlismodelname}" ]; then
-    echo "arguments -U, -h, -p, -s, -d, -w, -t, -f and -m must be provided"
+    echo "arguments -U, -h, -p, -s, -d, -w, -t, -l and -m must be provided"
     echo "$usage" >&2; exit 1
 fi
 
