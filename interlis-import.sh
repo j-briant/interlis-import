@@ -21,13 +21,13 @@ fi
 PGJAR="lib/ili2pg-5.1.0/ili2pg-5.1.0.jar"
 GPKGJAR="lib/ili2gpkg-5.1.0/ili2gpkg-5.1.0.jar"
 CREATEOPTIONS=( --schemaimport --sqlEnableNull --coalesceCatalogueRef --createEnumTabs --createNumChecks --createFk --createFkIdx --coalesceMultiSurface --coalesceMultiLine --coalesceMultiPoint --coalesceArray --beautifyEnumDispName --createGeomIdx --createMetaInfo --expandMultilingual --createTypeConstraint --createTidCol --createEnumTabs --createBasketCol --importTid --smart2Inheritance )
-IMPORTOPTIONS=( --replace --importTid --importBid )
+IMPORTOPTIONS=( --replace --importTid --importBid --disableValidation )
 
 # Command
 usage="$(basename "$0") [-h] [-b] [-f FORMAT] [-d DATASET] [-U USER] [-H HOST] [-p PORT] [-w PASSWORD] [-s SCHEMA] [-l INTERLISMODELFILE] [-i INTERLISDATA] [-r SPATIALREFERENCE] [-t TIDNAME] 
 Create the model structure into a dataset and import data from interlis:
     -h, --help                   show this help text
-    -b, --backup                 backup database schema before anything (must run with backup privilege)
+    -b, --backup                 backup dataset before anything (pg_dump or copy gpkg)
     -f, --format                 output format (gpkg or pg)
     -d, --dataset                destination dataset name (gpkg file name or pg table name)
     -U, --user                   user of the database (only for pg)
@@ -38,7 +38,7 @@ Create the model structure into a dataset and import data from interlis:
     -t, --tidname                tid column name (default tid)
     -v, --validate               validate data during import
     -l, --interlis-model-file    interlis model file, usually a .ili file
-    -i, --interlis-data-file     interlis data file, .xtf or .itf
+    -i, --interlis-data-file     interlis data file, .xtf or .itf, or a folder containing those
     -r, --spatial-reference      spatial reference EPSG code (default 2056)"
 
 
@@ -133,8 +133,6 @@ while :; do
             else
                 die 'ERROR: "--tidname" requires a non-empty option argument.'
             fi;;
-        -v|--validate)
-            ;;
         --)
             shift
             break
@@ -184,7 +182,6 @@ fi
 echo "===================================== CREATE SCHEMAS ====================================="
 echo "Creating schema..."
 if [ "$FORMAT" = 'pg' ]; then
-    #src/create_schema.sh -U "$USER" -p "$PORT" -H "$HOST" -s "$SCHEMA" -d "$DATASET" -w "$PASSWORD" -t "$TIDNAME" -l "$INTERLISMODELFILE" -m "$MODEL" -E -T -B
     java -jar "$PGJAR" \
         "${CREATEOPTIONS[@]}" \
         --dbusr "$USER" \
@@ -209,9 +206,8 @@ fi
 echo "===================================== IMPORT DATA ====================================="
 echo "Importing data from Interlis files..."
 if [ "$FORMAT" = 'pg' ]; then
-    #src/import_itf.sh -U "$USER" -p "$PORT" -H "$HOST" -s "$SCHEMA" -d "$DATASET" -w "$PASSWORD" -t "$TIDNAME" -i "$INTERLISDATA"
     if [[ -d "$INTERLISDATA" ]]; then
-        for f in "$INTERLISDATA"/*.itf;
+        for f in "$INTERLISDATA"/*.{xtf,itf};
         do
             echo "========================= $f ========================="
             datasetname="${f%.*}"
@@ -224,7 +220,6 @@ if [ "$FORMAT" = 'pg' ]; then
                 --dbdatabase "$DATASET" \
                 --dbschema "${SCHEMA:-public}" \
                 --t_id_Name "${TIDNAME:-tid}" \
-                "${VALIDATE---disableValidation}" \
                 --dataset "$datasetname" \
                 "$f"
         done
@@ -239,13 +234,12 @@ if [ "$FORMAT" = 'pg' ]; then
             --dbdatabase "$DATASET" \
             --dbschema "${SCHEMA:-public}" \
             --t_id_Name "${TIDNAME:-tid}" \
-            "${VALIDATE---disableValidation}" \
             --dataset "$datasetname" \
             "$INTERLISDATA"
     fi
 elif [ "$FORMAT" = 'gpkg' ]; then
     if [[ -d "$INTERLISDATA" ]]; then
-        for f in "$INTERLISDATA"/*.itf;
+        for f in "$INTERLISDATA"/*.{xtf,itf};
         do
             echo "========================= $f ========================="
             datasetname="${f%.*}"
@@ -253,7 +247,6 @@ elif [ "$FORMAT" = 'gpkg' ]; then
                 "${IMPORTOPTIONS[@]}" \
                 --dbfile "$DATASET" \
                 --t_id_Name "${TIDNAME:-tid}" \
-                "${VALIDATE---disableValidation}" \
                 --dataset "$datasetname" \
                 "$f"
         done
@@ -263,7 +256,6 @@ elif [ "$FORMAT" = 'gpkg' ]; then
             "${IMPORTOPTIONS[@]}" \
             --dbfile "$DATASET" \
             --t_id_Name "${TIDNAME:-tid}" \
-            "${VALIDATE---disableValidation}" \
             --dataset "$datasetname" \
             "$INTERLISDATA"
     fi
