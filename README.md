@@ -1,6 +1,6 @@
 # interlis-import
 
-Don't think too much about what interlis is, but if you have a .ili or .xtf in your hand then you might wonder what you're supposed to do with it.
+For if you have a .ili or .xtf in your hand and you're wondering what you're supposed to do with it.
 
 ## Objectives
 
@@ -14,50 +14,76 @@ You'll need a java runtime environment installed on your system (`sudo apt insta
 
 ## Configuration
 
-The tool comes with a entry-point script: `interlis-import.sh`, that will call two subscripts: `create_schema.sh` and `import_interlis.sh`, both can be called independantly if you want.
+The tool comes with a single script: `interlis-import.sh`. Be aware that the script is dependant on the location of the `ili2db` libraries, hardcoded in `lib`.
 
 You can print the help message:
 
 ```sh
 $ ./interlis-import.sh -h
-  interlis-import.sh [-h] [-b]
-  Create the model structure into a schema and import data from interlis:
-     -h show this help text
-     -b backup database schema before anything (must run with backup privilege)
+  interlis-import.sh [-h] [-b] [-f FORMAT] [-d DATASET] [-U USER] [-H HOST] [-p PORT] [-w PASSWORD] [-s SCHEMA] [-l INTERLISMODELFILE] [-i INTERLISDATA] [-r SPATIALREFERENCE] [-t TIDNAME]
+  Create the model structure into a dataset and import data from interlis:
+    -h, --help                   show this help text
+    -b, --backup                 backup dataset before anything (pg_dump or copy gpkg)
+    -f, --format                 output format (gpkg or pg)
+    -d, --dataset                destination dataset name (gpkg file name or pg table name)
+    -U, --user                   user of the database (only for pg)
+    -H, --host                   host of the postgres server (default localhost)
+    -p, --port                   port of the postgres server (default 5432)
+    -w, --password               password to connect to the postgres database
+    -s, --schema                 schema where to build the model and import the data (default public)
+    -t, --tidname                tid column name (default tid)
+    -l, --interlis-model-file    interlis model file, usually a .ili file
+    -i, --interlis-data-file     interlis data file, .xtf or .itf, or a folder containing those
+    -r, --spatial-reference      spatial reference EPSG code (default 2056)
 ```
 
 And a typical import will look like:
 
 ```sh
-$ ./interlis-import.sh -b
+$ ./interlis-import.sh -b -f gpkg -d dst.gpkg -l model.ili -i data.xtf
 ```
 
-Parameters can be stored in a `.env` file saved next to the script and will be overwritten if passed in the command line. The parameters are the following:
+Parameters can be stored in a `.env` file saved next to the script. They will be overwritten if passed again in the command line. The parameters are the following:
 
 ```
-DATABASE="my_db"
+FORMAT=pg
+DATASET="my_table"
 HOST="localhost"
-USER="postgres"
-PASSWORD="postgres"
+USER="my_user"
+PASSWORD="my_password"
 PORT=5432
-SCHEMA=import_interlis
-INTERLISMODELFILE="model/6021.ili"  # your model file
-INTERLISDATAFILE="test/6.itf"       # your data file
-MODEL=MD01MOVDMN95V24
-T_ID_NAME=fid
-SRS=2056
-LOGPATH="."
+SCHEMA="my_schema"
+INTERLISMODELFILE="./model/model.ili"
+INTERLISDATA="./data/data.xtf"
+TIDNAME=fid
+SPATIALREFERENCE=2056
 ```
+
+### Formats
+
+Two formats are supported here: PostgreSQL and GeoPackage. Given by the -f/--format parameter, it influence the required parameters. Using the `pg` format, you'll then need to pass connection parameters (-H, -U, -w, -s, -p, some of them have a default) to your database. With GeoPackage (`gpkg`), those parameters will be ignored.
+
+### Dataset
+
+It's the name of a Postgres table or of a GeoPackage file (with extension).
+
+### Interlis model file
+
+The is the file descibing the model of your data. It's usually in a .ili file. If you don't have one and working with a .xtf file (same as your data), you can try to pass it instead, as `ili2db` will try to find the model definition in well-known repos.
+
+### Interlis data
+
+A file or a directory of files, in .itf or .xtf format, containing data to be imported. If multiple files are imported, each of them will be imported into a separate `dataset`, allowing to identify there source after the import.
 
 ## Scripts
 
-Subscripts can be launched separately if you want, here is a short description.
+Two legacy subscripts can be launched separately if you want, here is a short description.
 
 ### create_schema.sh
 
 This script will, as its name suggests, create a the structure of the model in your destination dataset. Interlis is strongly modelled and the first step is to create the model indicated by the interlis file.
 
-Parameters are essentially connection information: `[-U USER]`, `[-H HOST]`, `[-p PORT]`, `[-s SCHEMA]`, `[-d DATABASE]`, `[-w PASSWORD]`. At the time of writing. `pg_service` files are not supported. 
+Parameters are essentially connection information: `[-U USER]`, `[-H HOST]`, `[-p PORT]`, `[-s SCHEMA]`, `[-d DATABASE]`, `[-w PASSWORD]`. At the time of writing. `pg_service` files are not supported.
 
 Remaining options parameterize the model creation:
 * `-E`/`--createEnumTabs` --> Create a dedicated table for enums.
