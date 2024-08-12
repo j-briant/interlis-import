@@ -61,7 +61,7 @@ SPATIALREFERENCE=2056
 
 ### Formats
 
-Two formats are supported here: PostgreSQL and GeoPackage. Given by the -f/--format parameter, it influence the required parameters. Using the `pg` format, you'll then need to pass connection parameters (-H, -U, -w, -s, -p, some of them have a default) to your database. With GeoPackage (`gpkg`), those parameters will be ignored.
+Two formats are supported here: PostgreSQL and GeoPackage. Given by the -f/--format parameter, it influence the required parameters. Using the `pg` format, you'll then need to pass connection parameters (`-H`, `-U`, `-w`, `-s`, `-p`, some of them have a default) to your database. With GeoPackage (`gpkg`), those parameters will be ignored.
 
 ### Dataset
 
@@ -69,11 +69,11 @@ It's the name of a Postgres table or of a GeoPackage file (with extension).
 
 ### Interlis model file
 
-This is the file describing the model of your data. It's usually a .ili file. If you don't have one and working with a .xtf file (same as your data), you can try to pass it instead, as `ili2db` will try to find the model definition in well-known repos.
+This is the file describing the model of your data. It's usually a `.ili` file. If you don't have one and working with a `.xtf` file, you can try to pass it instead, as `ili2db` will try to find the model definition in well-known repos.
 
 ### Interlis data
 
-A file or a directory of files, in .itf or .xtf format, containing data to be imported. If multiple files are imported, each of them will be imported into a separate `dataset`, allowing to identify their source after the import.
+A file or a directory of files, in `.itf` or `.xtf` format, containing data to be imported. If multiple files are imported, each of them will be imported into a separate `dataset`, allowing to identify their source after the import.
 
 ### Backup
 
