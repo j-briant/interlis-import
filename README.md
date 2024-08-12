@@ -4,7 +4,7 @@ For if you have a .ili or .xtf in your hand and you're wondering what you're sup
 
 ## Objectives
 
-Interlis is a, if not completely obscure, not so well documented format, and tools able to make something out of it are rare. Most of the time we'll just take the file and import it in a more convenient format. The library `ili2db` helps with those conversions but the number of parameter is sometimes overwhelming.
+Interlis is a, if not completely obscure, not so well documented format, and tools able to make something out of it are rare. Most of the time, as it's a "transfert" format, we'll just take the file and import it in a more convenient format. The library `ili2db` helps with those conversions but the number of parameter is sometimes overwhelming.
 
 The aim here is to have a kind of minimalist and simple way of loading an interlis file (version 1 or 2) into a database (for now Postgres and Geopackage), without thinking too much about how to do it.
 
@@ -103,7 +103,7 @@ Two legacy subscripts can be launched separately if you want, here is a short de
 
 ### create_schema.sh
 
-This script will, as its name suggests, create a the structure of the model in your destination dataset. Interlis is strongly modelled and the first step is to create the model indicated by the interlis file.
+This script will, as its name suggests, create the structure of the model in your destination dataset. Interlis is strongly modelled and the first step is to create the model indicated by the interlis file.
 
 Parameters are essentially connection information: `[-U USER]`, `[-H HOST]`, `[-p PORT]`, `[-s SCHEMA]`, `[-d DATABASE]`, `[-w PASSWORD]`. At the time of writing. `pg_service` files are not supported.
 
