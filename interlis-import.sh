@@ -13,7 +13,7 @@ die() {
 }
 
 # Make sure java is installed
-if command java -h &> /dev/null ; then
+if command -v java &> /dev/null ; then
     echo 'Starting interlis process'
 else
     die 'ERROR: missing a java installation'
