@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+# shellcheck source=.env
 
 # This script is the main script for updating data from interlis. Processes are:
 #	1. Backing-up the database if desired
@@ -11,6 +12,12 @@ die() {
     exit 1
 }
 
+# Make sure java is installed
+if command java -h &> /dev/null ; then
+    echo 'Starting interlis process'
+else
+    die 'ERROR: missing a java installation'
+fi
 
 # Get environment variables.
 if [ -f ".env" ]; then
