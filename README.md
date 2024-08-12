@@ -12,11 +12,21 @@ The aim here is to have a kind of minimalist and simple way of loading an interl
 
 You'll need a java runtime environment installed on your system (`sudo apt install default-jre` on Ubuntu). Everything is done thanks to [**`ili2db`**](https://github.com/claeis/ili2db) which is the only requirement (lib included though) with **`psql`** if you plan to backup stuff (see later).
 
-## Configuration
+## How to run?
 
-The tool comes with a single script: `interlis-import.sh`. Be aware that the script is dependant on the location of the `ili2db` libraries, hardcoded in `lib`.
+First clone the repo:
 
-You can print the help message:
+```sh
+$ git clone https://github.com/j-briant/interlis-import.git
+```
+
+And try to run:
+
+```sh
+$ ./interlis-import.sh -h
+```
+
+The help message should show:
 
 ```sh
 $ ./interlis-import.sh -h
@@ -42,6 +52,10 @@ And a typical import will look like:
 ```sh
 $ ./interlis-import.sh -b -f gpkg -d dst.gpkg -l model.ili -i data.xtf
 ```
+
+## Configuration
+
+The tool comes with a single script: `interlis-import.sh`. Be aware that the script is dependant on the location of the `ili2db` libraries, hardcoded in `lib`.
 
 Parameters can be stored in a `.env` file saved next to the script. They will be overwritten if passed again in the command line. The parameters are the following:
 
