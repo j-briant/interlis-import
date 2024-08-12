@@ -4,7 +4,7 @@
 # This script is the main script for updating data from interlis. Processes are:
 #	1. Backing-up the database if desired
 #	2. Creating the dataset from the Interlis file model
-#	3. Importing downloaded Interlis files into the newly created dataset
+#	3. Importing Interlis files into the newly created dataset
 
 # Functions
 die() {
@@ -31,7 +31,7 @@ CREATEOPTIONS=( --schemaimport --sqlEnableNull --coalesceCatalogueRef --createEn
 IMPORTOPTIONS=( --replace --importTid --importBid --disableValidation )
 
 # Command
-usage="$(basename "$0") [-h] [-b] [-f FORMAT] [-d DATASET] [-U USER] [-H HOST] [-p PORT] [-w PASSWORD] [-s SCHEMA] [-l INTERLISMODELFILE] [-i INTERLISDATA] [-r SPATIALREFERENCE] [-t TIDNAME] 
+usage="$(basename "$0") [-h] [-b] [-f FORMAT] [-d DATASET] [-U USER] [-H HOST] [-p PORT] [-w PASSWORD] [-s SCHEMA] [-l INTERLISMODELFILE] [-i INTERLISDATA] [-r SPATIALREFERENCE] [-t TIDNAME]
 Create the model structure into a dataset and import data from interlis:
     -h, --help                   show this help text
     -b, --backup                 backup dataset before anything (pg_dump or copy gpkg)
@@ -43,7 +43,6 @@ Create the model structure into a dataset and import data from interlis:
     -w, --password               password to connect to the postgres database
     -s, --schema                 schema where to build the model and import the data (default public)
     -t, --tidname                tid column name (default tid)
-    -v, --validate               validate data during import
     -l, --interlis-model-file    interlis model file, usually a .ili file
     -i, --interlis-data-file     interlis data file, .xtf or .itf, or a folder containing those
     -r, --spatial-reference      spatial reference EPSG code (default 2056)"
@@ -59,7 +58,7 @@ while :; do
             BACKUP=true;;
         -f|--format)
             if [ "$2" ]; then
-                case "$2" in 
+                case "$2" in
                     pg|gpkg)
                         FORMAT=$2
                         shift
