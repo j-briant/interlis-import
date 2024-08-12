@@ -75,7 +75,7 @@ SPATIALREFERENCE=2056
 
 ### Formats
 
-Two formats are supported here: PostgreSQL and GeoPackage. Given by the -f/--format parameter, it influence the required parameters. Using the `pg` format, you'll then need to pass connection parameters (`-H`, `-U`, `-w`, `-s`, `-p`, some of them have a default) to your database. With GeoPackage (`gpkg`), those parameters will be ignored.
+Two formats are supported here: PostgreSQL and GeoPackage. Given by the `-f/--format` parameter, it influences the required parameters. Using the `pg` format, you'll then need to pass connection parameters (`-H`, `-U`, `-w`, `-s`, `-p`, some of them have a default) to your database. With GeoPackage (`gpkg`), those parameters will be ignored.
 
 ### Dataset
 
